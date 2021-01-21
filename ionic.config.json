@@ -1,0 +1,8 @@
+{
+  "name": "datika",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "aced8237"
+}
