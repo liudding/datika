@@ -22,9 +22,9 @@
 
       <ion-list>
         <QuizItem
-          v-for="message in messages"
-          :key="message.id"
-          :message="message"
+          v-for="quiz in quizzes"
+          :key="quiz.id"
+          :quiz="quiz"
         />
       </ion-list>
     </ion-content>
@@ -47,7 +47,7 @@ import {
 } from "ionicons/icons";
 import { useRouter } from "vue-router";
 
-import QuizItem from "@/components/QuizItem.vue";
+import QuizItem from "./QuizItem.vue";
 
 export default {
   name: "Tab1",
@@ -71,29 +71,16 @@ export default {
   },
   data: () => {
     return {
-      classrooms: [
+      quizzes: [
         {
-          name: "class 1",
-          studentCount: 40,
+          name: "Quiz 1",
+          recordCount: 40,
+          subject: '2323',
+          date: '2020-09-09'
         },
         {
-          name: "class 2",
-          studentCount: 40,
-        },
-      ],
-
-      messages: [
-        {
-          fromName: "Matt Chorsey",
-          subject: "New event: Trip to Vegas",
-          date: "9:32 AM",
-          id: 0,
-        },
-        {
-          fromName: "Lauren Ruthford",
-          subject: "Long time no chat",
-          date: "6:12 AM",
-          id: 1,
+          name: "Quiz 2",
+          recordCount: 40,
         },
       ],
     };
@@ -101,7 +88,7 @@ export default {
   methods: {
     gotoEdit() {
       console.log('+++');
-      // this.router.push('/classrooms/edit')
+      // this.router.push('/quizzes/edit')
     },
     refresh() {
       return true;
