@@ -5,7 +5,7 @@ import Tabs from '../views/Tabs.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/tab1'
+    redirect: '/tabs/classrooms'
   },
   {
     path: '/tabs/',
@@ -13,22 +13,42 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        redirect: '/tabs/tab1'
+        redirect: '/tabs/classrooms'
       },
       {
-        path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        path: 'classrooms',
+        component: () => import('@/views/Classrooms.vue'),
+        children: [
+        ]
       },
       {
-        path: 'tab2',
-        component: () => import('@/views/Tab2.vue')
+        path: 'quizzes',
+        component: () => import('@/views/Quizzes.vue')
       },
       {
-        path: 'tab3',
-        component: () => import('@/views/Tab3.vue')
+        path: 'me',
+        component: () => import('@/views/Me.vue')
       }
     ]
+  },
+
+  {
+    path: '/message/:id',
+    component: () => import('@/views/classrooms/Classroom.vue')
+  },
+
+  {
+    path: '/classrooms/edit',
+    name: 'EditClassroom',
+    component: () => import('@/views/classrooms/Edit.vue')
+  },
+
+  {
+    path: '/scan',
+    name: 'EditClassroom',
+    component: () => import('@/views/scan/Scan.vue')
   }
+  
 ]
 
 const router = createRouter({
