@@ -8,23 +8,27 @@
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Tab 3</ion-title>
+          <ion-title size="large">我的</ion-title>
         </ion-toolbar>
       </ion-header>
 
-      <ion-item>
-        <ion-avatar>
-          <img
-            src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-          />
-        </ion-avatar>
+      <ion-card>
+        <ion-card-content>
+          <div class="ion-flex">
+            <ion-avatar>
+              <img
+                src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+              />
+            </ion-avatar>
+            <h2>name</h2>
+          </div>
+        </ion-card-content>
+      </ion-card>
 
-        <ion-label class="ion-text-wrap">
-          <h2>Name</h2>
-        </ion-label>
-      </ion-item>
+
 
       <ion-list>
+         <ion-item button>设置</ion-item>
         <ion-item button>帮助与反馈</ion-item>
         <ion-item button>关于</ion-item>
       </ion-list>
@@ -40,6 +44,13 @@ import {
   IonTitle,
   IonContent,
   IonAvatar,
+  IonCard,
+  IonCardContent,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonCol,
+  IonGrid,
+  IonRow,
 } from "@ionic/vue";
 
 export default {
@@ -51,6 +62,8 @@ export default {
     IonContent,
     IonPage,
     IonAvatar,
+    IonCard,
+    IonCardContent,
   },
 };
 </script>

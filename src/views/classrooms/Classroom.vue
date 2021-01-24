@@ -22,6 +22,13 @@
         </ion-label>
       </ion-item>
       
+      <ion-list>
+        <ion-item v-for="student in students" :key="student.id" detail>
+          <h3>{{student.name}}</h3>
+          <ion-label slot="end">{{student.number}}</ion-label>
+        </ion-item>
+      </ion-list>
+
       <div class="ion-padding">
         <h1>{{ message.subject }}</h1>
         <p>
@@ -34,7 +41,7 @@
 
 <script lang="ts">
 import { useRoute } from 'vue-router';
-import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonNote, IonPage, IonToolbar } from '@ionic/vue';
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonList, IonItem, IonLabel, IonNote, IonPage, IonToolbar } from '@ionic/vue';
 import { personCircle } from 'ionicons/icons';
 import { defineComponent } from 'vue';
 
@@ -47,7 +54,12 @@ export default defineComponent({
         const win = window as any;
         const mode = win && win.Ionic && win.Ionic.mode;
         return mode === 'ios' ? 'Inbox' : '';
-      }
+      },
+      students: [{
+        id: 1,
+        name: 'zhangsan',
+        number: '1234'
+      }]
     }
   },
   setup() {
@@ -62,12 +74,14 @@ export default defineComponent({
 
     return { message }
   },
+
   components: {
     IonBackButton,
     IonButtons,
     IonContent,
     IonHeader,
     IonIcon,
+     IonList,
     IonItem,
     IonLabel,
     IonNote,
