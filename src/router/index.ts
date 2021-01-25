@@ -10,7 +10,7 @@ const router = createRouter({
 
 
 function isLoggedIn(): boolean {
-    return false;
+    return true;
 }
 
 // permission judge function

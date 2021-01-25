@@ -1,10 +1,12 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
+    <ion-header :translucent="false">
       <ion-toolbar>
         <ion-title>Quizzes</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="() => router.push('/quizzes/edit')"> New </ion-button>
+          <ion-button @click="setOpen(true)">
+            <ion-icon :icon="addOutline"></ion-icon>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -21,13 +23,14 @@
       </ion-header>
 
       <ion-list>
-        <QuizItem
-          v-for="quiz in quizzes"
-          :key="quiz.id"
-          :quiz="quiz"
-        />
+        <QuizItem v-for="quiz in quizzes" :key="quiz.id" :quiz="quiz" />
       </ion-list>
     </ion-content>
+
+    <popup>
+      <Create></Create>
+    </popup>
+
   </ion-page>
 </template>
 
@@ -38,19 +41,19 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  modalController,
 } from "@ionic/vue";
 
-import {
-  ellipsisHorizontal,
-  ellipsisVertical,
-  addOutline,
-} from "ionicons/icons";
+import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
+import { defineComponent } from "vue";
 
 import QuizItem from "./QuizItem.vue";
+import Create from "./Create.vue";
+import Popup from "@/components/Popup.vue";
 
-export default {
-  name: "Tab1",
+export default defineComponent({
+  name: "Quizzes",
   components: {
     IonHeader,
     IonToolbar,
@@ -58,16 +61,12 @@ export default {
     IonContent,
     IonPage,
     QuizItem,
+    Popup,
+    Create,
   },
   setup() {
     const router = useRouter();
-
-    return {
-      ellipsisHorizontal,
-      ellipsisVertical,
-      addOutline,
-      router,
-    };
+    return { addOutline, router };
   },
   data: () => {
     return {
@@ -75,11 +74,14 @@ export default {
         {
           name: "Quiz 1",
           recordCount: 40,
-          subject: '2323',
-          date: '2020-09-09'
+          totalCount: 100,
+          questionCount: 50,
+          subject: "2323",
+          date: "2020-09-09",
         },
         {
           name: "Quiz 2",
+          questionCount: 50,
           recordCount: 40,
         },
       ],
@@ -87,12 +89,61 @@ export default {
   },
   methods: {
     gotoEdit() {
-      console.log('+++');
+      console.log("+++");
       // this.router.push('/quizzes/edit')
+    },
+    async showCreate() {
+      const modal = await modalController.create({
+        component: Create,
+        componentProps: {
+          title: "创建测验",
+          swipeToClose: true,
+        },
+      });
+      return modal.present();
     },
     refresh() {
       return true;
     },
   },
-};
+});
 </script>
+
+<style >
+.create-modal {
+  height: 70%;
+  top: 30%;
+  position: absolute;
+  display: block;
+}
+</style>
+
+<style scoped>
+ion-list {
+  padding: 8px;
+  background: rgb(246, 246, 246);
+}
+
+ion-header {
+  background: white;
+}
+
+ion-content {
+  --background: rgb(246, 246, 246);
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-header {
+    background: #000;
+  }
+
+  ion-list {
+    padding: 8px;
+    background: #111;
+  }
+
+  ion-content {
+    --background: #111;
+  }
+}
+</style>
