@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-title>Quiz</ion-title>
         <ion-buttons slot="primary">
-           <ion-button @click="gotoQuestions" color="primary">
+          <ion-button @click="gotoQuestions" color="primary">
             <ion-icon slot="end" :icon="documentTextOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -15,18 +15,12 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item>
-      
-        <ion-label class="ion-text-wrap">
-          <h2>
-            sdssd
-            <span class="date">
-              <ion-note>sss</ion-note>
-            </span>
-          </h2>
-          <h3>To: <ion-note>Me</ion-note></h3>
-        </ion-label>
-          <ion-icon :icon="scanOutline" color="primary"></ion-icon>
+      <ion-item lines="none">
+        <div class="brief-infos">
+          <ion-router-link :href="'/quizzes/' + quiz.id + '/records'" class="brief-item">班级</ion-router-link>
+          <div class="brief-item">学生</div>
+          <div class="brief-item">题目</div>
+        </div>
       </ion-item>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
@@ -69,10 +63,7 @@ import {
   IonFabButton,
   popoverController,
 } from "@ionic/vue";
-import { 
-  add,
-  create
-} from 'ionicons/icons';
+import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 
@@ -83,12 +74,12 @@ export default defineComponent({
       scanOutline,
       showFab: true,
       quiz: {
-        id: 1
-      }
+        id: 1,
+      },
     };
   },
   setup() {
-     const router = useRouter();
+    const router = useRouter();
 
     const isOpenRef = ref(false);
     const refEvent = ref();
@@ -96,7 +87,15 @@ export default defineComponent({
       refEvent.value = event;
       isOpenRef.value = state;
     };
-    return { router, isOpenRef, setOpen, refEvent, add, create , documentTextOutline};
+    return {
+      router,
+      isOpenRef,
+      setOpen,
+      refEvent,
+      add,
+      create,
+      documentTextOutline,
+    };
   },
   components: {
     IonBackButton,
@@ -105,18 +104,16 @@ export default defineComponent({
     IonHeader,
     IonIcon,
     IonItem,
-    IonLabel,
-    IonNote,
     IonPage,
     IonToolbar,
     IonPopover,
     IonFab,
-    IonFabButton
+    IonFabButton,
   },
   methods: {
     gotoQuestions() {
-      this.router.push(`/quizzes/${this.quiz.id}/questions`)
-    }
+      this.router.push(`/quizzes/${this.quiz.id}/questions`);
+    },
   },
   ionViewDidLeave() {
     this.showFab = false;
@@ -128,44 +125,26 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-content {
+  --padding-top: 8px;
+}
 ion-item {
-  --inner-padding-end: 0;
+  /* --inner-padding-end: 0; */
   --background: transparent;
 }
 
-ion-label {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-ion-item h2 {
-  font-weight: 600;
-}
-
-ion-item .date {
-  float: right;
-  align-items: center;
+.brief-infos {
+  width: 100%;
   display: flex;
+  justify-content: space-around;
 }
 
-ion-item ion-icon {
-  font-size: 42px;
-  margin-right: 8px;
-}
-
-ion-item ion-note {
-  font-size: 15px;
-  margin-right: 12px;
-  font-weight: normal;
-}
-
-h1 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-p {
-  line-height: 22px;
+.brief-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  text-align: center;
+  padding: 4px;
+  background: red;
 }
 </style>
