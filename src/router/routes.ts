@@ -52,6 +52,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'QuizQuestions',
         component: () => import('@/views/quizzes/Questions.vue')
     },
+    {
+        path: '/quizzes/:id/records',
+        name: 'QuizRecords',
+        component: () => import('@/views/quizzes/Records.vue')
+    },
 
     {
         path: '/scan',
