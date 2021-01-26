@@ -46,6 +46,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'EditClassroom',
         component: () => import('@/views/classrooms/Edit.vue')
     },
+    {
+        path: '/classrooms/:id',
+        name: 'Classroom',
+        component: () => import('@/views/classrooms/Classroom.vue')
+    },
 
     {
         path: '/quizzes/:id/questions',
@@ -60,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
 
     {
         path: '/scan',
-        name: 'EditClassroom',
+        name: 'Scan',
         component: () => import('@/views/scan/Scan.vue')
     },
 
