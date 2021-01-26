@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>Quizzes</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="setOpen(true)">
+          <ion-button @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -27,10 +27,9 @@
       </ion-list>
     </ion-content>
 
-    <popup>
+    <popup :show="showCreatePopup">
       <Create></Create>
     </popup>
-
   </ion-page>
 </template>
 
@@ -46,7 +45,7 @@ import {
 
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
@@ -61,12 +60,16 @@ export default defineComponent({
     IonContent,
     IonPage,
     QuizItem,
-    Popup,
     Create,
+    Popup,
   },
   setup() {
     const router = useRouter();
-    return { addOutline, router };
+    const show = ref(false);
+    const showPopup = () => {
+      show.value = true;
+    };
+    return { addOutline, router, show, showPopup };
   },
   data: () => {
     return {
@@ -84,7 +87,38 @@ export default defineComponent({
           questionCount: 50,
           recordCount: 40,
         },
+        {
+          name: "Quiz 2",
+          questionCount: 50,
+          recordCount: 40,
+        },
+         {
+          name: "Quiz 2",
+          questionCount: 50,
+          recordCount: 40,
+        },
+         {
+          name: "Quiz 2",
+          questionCount: 50,
+          recordCount: 40,
+        },
+        {
+          name: "Quiz 2",
+          questionCount: 50,
+          recordCount: 40,
+        },
+        {
+          name: "Quiz 2",
+          questionCount: 50,
+          recordCount: 40,
+        },
+        {
+          name: "Quiz 2",
+          questionCount: 50,
+          recordCount: 40,
+        },
       ],
+      showCreatePopup: false,
     };
   },
   methods: {
@@ -92,15 +126,8 @@ export default defineComponent({
       console.log("+++");
       // this.router.push('/quizzes/edit')
     },
-    async showCreate() {
-      const modal = await modalController.create({
-        component: Create,
-        componentProps: {
-          title: "创建测验",
-          swipeToClose: true,
-        },
-      });
-      return modal.present();
+    showCreate() {
+      this.showCreatePopup = true;
     },
     refresh() {
       return true;
@@ -108,15 +135,6 @@ export default defineComponent({
   },
 });
 </script>
-
-<style >
-.create-modal {
-  height: 70%;
-  top: 30%;
-  position: absolute;
-  display: block;
-}
-</style>
 
 <style scoped>
 ion-list {

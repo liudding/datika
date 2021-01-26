@@ -48,7 +48,6 @@ export default defineComponent({
 
 <style scoped>
 ion-item {
-  --inner-padding-end: 0;
   --min-height: 80px;
 
   border-radius: 8px;
@@ -56,8 +55,6 @@ ion-item {
 }
 
 .list-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
   min-height: 80px;
 }
 

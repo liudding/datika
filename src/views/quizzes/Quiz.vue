@@ -3,15 +3,12 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            :text="getBackButtonText()"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
         <ion-title>Quiz</ion-title>
         <ion-buttons slot="primary">
-          <ion-button @click="setOpen(true, $event)" color="danger">
-            <ion-icon slot="end" :icon="create"></ion-icon>
+           <ion-button @click="gotoQuestions" color="primary">
+            <ion-icon slot="end" :icon="documentTextOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -19,7 +16,7 @@
 
     <ion-content :fullscreen="true">
       <ion-item>
-        <ion-icon :icon="personCircle" color="primary"></ion-icon>
+      
         <ion-label class="ion-text-wrap">
           <h2>
             sdssd
@@ -29,11 +26,12 @@
           </h2>
           <h3>To: <ion-note>Me</ion-note></h3>
         </ion-label>
+          <ion-icon :icon="scanOutline" color="primary"></ion-icon>
       </ion-item>
 
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
-          <ion-icon :icon="add"></ion-icon>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
+        <ion-fab-button @click="() => router.push('/scan')">
+          <ion-icon :icon="scanOutline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-content>
@@ -54,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import {
   IonBackButton,
   IonButtons,
@@ -75,29 +73,30 @@ import {
   add,
   create
 } from 'ionicons/icons';
-import { personCircle } from "ionicons/icons";
+import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "Home",
   data() {
     return {
-      personCircle,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "Inbox" : "";
-      },
+      scanOutline,
+      showFab: true,
+      quiz: {
+        id: 1
+      }
     };
   },
   setup() {
+     const router = useRouter();
+
     const isOpenRef = ref(false);
     const refEvent = ref();
     const setOpen = (state: boolean, event: Event) => {
       refEvent.value = event;
       isOpenRef.value = state;
     };
-    return { isOpenRef, setOpen, refEvent, add, create };
+    return { router, isOpenRef, setOpen, refEvent, add, create , documentTextOutline};
   },
   components: {
     IonBackButton,
@@ -115,16 +114,15 @@ export default defineComponent({
     IonFabButton
   },
   methods: {
-    async openPopover(ev: Event) {
-      // const popover = await popoverController
-      //   .create({
-      //     component: Popover,
-      //     cssClass: 'my-custom-class',
-      //     event: ev,
-      //     translucent: true
-      //   })
-      // return popover.present();
-    },
+    gotoQuestions() {
+      this.router.push(`/quizzes/${this.quiz.id}/questions`)
+    }
+  },
+  ionViewDidLeave() {
+    this.showFab = false;
+  },
+  ionViewWillEnter() {
+    this.showFab = true;
   },
 });
 </script>
