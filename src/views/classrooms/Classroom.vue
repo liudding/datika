@@ -33,7 +33,6 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from 'vue-router';
 import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonNote, IonPage, IonToolbar } from '@ionic/vue';
 import { personCircle } from 'ionicons/icons';
 import { defineComponent } from 'vue';
@@ -51,16 +50,7 @@ export default defineComponent({
     }
   },
   setup() {
-    const route = useRoute();
-    const message = {
-    fromName: 'Jordan Firth',
-    subject: 'Report Results',
-    date: '4:55 AM',
-    id: 2
-
-  };
-
-    return { message }
+    return {  }
   },
   components: {
     IonBackButton,

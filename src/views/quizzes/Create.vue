@@ -1,14 +1,5 @@
 <template>
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>创建测验</ion-title>
-      <ion-buttons slot="end">
-        <ion-button onclick="dismissModal()">Close</ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content class="ion-padding">
-    <div style="margin-top: 30px">
+    <div class="content">
       <ion-item lines="none">
         <ion-input
           :value="name"
@@ -23,24 +14,22 @@
         >创建</ion-button
       >
     </div>
-  </ion-content>
 </template>
 
 <script>
-import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/vue";
+import { IonItem, IonInput } from "@ionic/vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "CreateModal",
   props: {
-    title: { type: String, default: "Super Modal" },
   },
   data() {
     return {
       name: "",
     };
   },
-  components: { IonContent, IonHeader, IonTitle, IonToolbar },
+  components: { IonItem, IonInput},
   methods: {
     dismissModal() {
       this.dismiss();
@@ -50,4 +39,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.content {
+    background: white;
+    padding: 32px 16px 0 16px;
+    height: 70vh;
+
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+
+    box-shadow: 0 -8px 5px rgba(0, 0, 0, 0.1);
+}
+
+ion-item {
+    --background: #eee;
+}
+
 </style>
