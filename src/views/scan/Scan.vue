@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button text="back" default-href="/"></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -11,34 +11,50 @@
     <div id="camera-container"></div>
 
     <ion-content :fullscreen="false">
-
-       <ion-fab vertical="bottom" horizontal="end">
-        <ion-fab-button @click="gotoScan" translucent>
-          <ion-icon :icon="appsOutline"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
-
-      <div class="panel show" v-if="false">
-        <div class="panel-center"></div>
-        <div class="record">
+      <van-popup
+        v-model:show="popupStatus"
+        position="bottom"
+        round
+        safe-area-inset-bottom
+        :overlay-style="{ background: 'rgba(0,0,0,0.1)' }"
+      >
+        <div class="record-panel">
           <div>张无忌</div>
-          <div style="margin-top: 8px;">
-            <span style="font-size: 36px;">20</span>
-            <span style="font-size:10px; margin-left:3px;color:dark;">分</span>
+          <div style="margin-top: 8px">
+            <span style="font-size: 36px">20</span>
+            <span style="font-size: 10px; margin-left: 3px; color: dark"
+              >分</span
+            >
           </div>
 
-          <div style="color: gray;margin-top: 16px;">
+          <div style="color: gray; margin-top: 16px">
             <small>正确：</small>
             <small>错误：</small>
           </div>
         </div>
-      </div>
+      </van-popup>
+
+      <van-popup
+        v-model:show="recordsPopupStatus"
+        position="bottom"
+        round
+        closeable
+        safe-area-inset-bottom
+        :style="{ height: '90%' }"
+      >
+        <Records></Records>
+      </van-popup>
+
+      <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button @click="onClickFab" translucent>
+          <ion-icon :icon="appsOutline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { useRoute } from "vue-router";
 import {
   IonBackButton,
   IonButtons,
@@ -46,13 +62,12 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  modalController,
 } from "@ionic/vue";
 import { appsOutline } from "ionicons/icons";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 import Scanner from "@/services/gradecam/Scanner";
-import Modal from "./Modal.vue";
+import Records from "./Records.vue";
 
 let scanner: Scanner;
 
@@ -60,24 +75,27 @@ export default defineComponent({
   name: "Scan",
   data() {
     return {
-      // scanner: Scanner,
       appsOutline,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "Inbox" : "";
-      },
     };
   },
   setup() {
-    const message = {
-      fromName: "Jordan Firth",
-      subject: "Report Results",
-      date: "4:55 AM",
-      id: 2,
+    const popupStatus = ref(false);
+    const showPopup = (show = true) => {
+      popupStatus.value = show;
     };
 
-    return { message };
+    const recordsPopupStatus = ref(false);
+    const showRecords = (show = true) => {
+      recordsPopupStatus.value = show;
+    };
+
+    return {
+      popupStatus,
+      showPopup,
+
+      recordsPopupStatus,
+      showRecords,
+    };
   },
   components: {
     IonBackButton,
@@ -86,9 +104,9 @@ export default defineComponent({
     IonHeader,
     IonPage,
     IonToolbar,
+    Records,
   },
   mounted() {
-    console.log("====");
     this.initScanner();
   },
   ionViewWillLeave() {
@@ -97,8 +115,6 @@ export default defineComponent({
   methods: {
     initScanner() {
       scanner = new Scanner("camera-container", 10, 10);
-
-      // const scanner = this.scanner;
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
@@ -113,24 +129,15 @@ export default defineComponent({
         });
     },
 
-    async openModal() {
-      const modal = await modalController.create({
-        component: Modal,
-        cssClass: "my-custom-class",
-        componentProps: {
-          title: "New Title",
-          swipeToClose: true,
-        },
-      });
-      return modal.present();
-    },
-
     gcInitCallback(suc: boolean) {
       return suc;
     },
     onScan(scanObj: object) {
       // const scanner = this.scanner as Scanner;
       // scanner.pause();
+
+      this.showPopup(false);
+      this.showPopup(true);
 
       return scanObj;
     },
@@ -141,6 +148,10 @@ export default defineComponent({
     gcValidateCallback(validateObj: object, finish: boolean) {
       console.log(finish);
       return validateObj;
+    },
+
+    onClickFab() {
+      this.showRecords();
     },
   },
 });
@@ -206,9 +217,10 @@ ion-fab-button {
   /* bottom: -100px; */
 }
 
-.record {
+.record-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 16px;
 }
 </style>
