@@ -17,14 +17,18 @@
     <ion-content :fullscreen="true">
       <ion-item lines="none">
         <div class="brief-infos">
-          <ion-router-link :href="'/quizzes/' + quiz.id + '/records'" class="brief-item">班级</ion-router-link>
+          <ion-router-link
+            :href="'/quizzes/' + quiz.id + '/records'"
+            class="brief-item"
+            >班级</ion-router-link
+          >
           <div class="brief-item">学生</div>
           <div class="brief-item">题目</div>
         </div>
       </ion-item>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
-        <ion-fab-button @click="() => router.push('/scan')">
+        <ion-fab-button @click="gotoScan">
           <ion-icon :icon="scanOutline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -75,6 +79,7 @@ export default defineComponent({
       showFab: true,
       quiz: {
         id: 1,
+        classrooms: [1,2],
       },
     };
   },
@@ -111,6 +116,15 @@ export default defineComponent({
     IonFabButton,
   },
   methods: {
+    gotoScan() {
+      if (this.quiz.classrooms && this.quiz.classrooms.length > 0) {
+        this.router.push("/scan");
+        return;
+      }
+
+      // 选择班级
+
+    },
     gotoQuestions() {
       this.router.push(`/quizzes/${this.quiz.id}/questions`);
     },
