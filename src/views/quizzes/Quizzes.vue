@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>Quizzes</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="showCreate">
+          <ion-button @click="showCreatePopup">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -25,11 +25,13 @@
       <ion-list>
         <QuizItem v-for="quiz in quizzes" :key="quiz.id" :quiz="quiz" />
       </ion-list>
+
+      <van-popup v-model:show="showCreate" position="bottom" round closeable>
+        <Create @created="onQuizCreated"></Create>
+      </van-popup>
+
     </ion-content>
 
-    <popup :show="showCreatePopup">
-      <Create></Create>
-    </popup>
   </ion-page>
 </template>
 
@@ -40,7 +42,6 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  modalController,
 } from "@ionic/vue";
 
 import { addOutline } from "ionicons/icons";
@@ -49,7 +50,6 @@ import { defineComponent, ref } from "vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
-import Popup from "@/components/Popup.vue";
 
 export default defineComponent({
   name: "Quizzes",
@@ -61,15 +61,14 @@ export default defineComponent({
     IonPage,
     QuizItem,
     Create,
-    Popup,
   },
   setup() {
     const router = useRouter();
-    const show = ref(false);
-    const showPopup = () => {
-      show.value = true;
+    const showCreate = ref(false);
+    const showCreatePopup = (status=true) => {
+      showCreate.value = status;
     };
-    return { addOutline, router, show, showPopup };
+    return { addOutline, router, showCreate, showCreatePopup };
   },
   data: () => {
     return {
@@ -118,17 +117,17 @@ export default defineComponent({
           recordCount: 40,
         },
       ],
-      showCreatePopup: false,
     };
   },
   methods: {
     gotoEdit() {
-      console.log("+++");
-      // this.router.push('/quizzes/edit')
+      //
     },
-    showCreate() {
-      this.showCreatePopup = true;
+
+    onQuizCreated() {
+      this.showCreatePopup(false)
     },
+  
     refresh() {
       return true;
     },
