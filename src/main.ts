@@ -27,7 +27,7 @@ import 'vant/lib/index.css';
 import '@/styles/index.css';
 
 import { Popup, Stepper } from 'vant';
-import { IonItem, IonPage, IonContent, IonList, IonButton, IonButtons, IonRefresher, IonRefresherContent, IonIcon, IonTitle } from '@ionic/vue';
+import { IonItem, IonPage, IonContent, IonList, IonButton, IonButtons, IonBackButton, IonRefresher, IonRefresherContent, IonIcon, IonTitle } from '@ionic/vue';
 
 const app = createApp(App)
   .use(IonicVue)
@@ -45,6 +45,7 @@ app.component('IonPage', IonPage)
   .component('IonItem', IonItem)
   .component('IonButton', IonButton)
   .component('IonButtons', IonButtons)
+  .component('IonBackButton', IonBackButton)
   .component('IonRefresher', IonRefresher)
   .component('IonRefresherContent', IonRefresherContent)
   .component('IonIcon', IonIcon)
