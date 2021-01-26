@@ -78,7 +78,17 @@ const routes: Array<RouteRecordRaw> = [
         path: '/login/password',
         name: 'LoginWithPassword',
         component: () => import('@/views/login/LoginWithPassword.vue')
+    },
+
+    /**
+     * 设置
+     */
+    {
+        path: '/about',
+        name: 'About',
+        component: () => import('@/views/settings/About.vue')
     }
+
 
 ]
 
