@@ -27,14 +27,21 @@ import 'vant/lib/index.css';
 import '@/styles/index.css';
 
 import { Popup, Stepper } from 'vant';
+import { IonItem, IonPage, IonList, IonButton, IonButtons, IonRefresher, IonRefresherContent, IonIcon } from '@ionic/vue';
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
-  
+
 router.isReady().then(() => {
   app.mount('#app');
 });
 
-app.use(Stepper);
-app.use(Popup);
+app.use(Stepper).use(Popup);
+
+app.component('IonPage', IonPage).component('IonList', IonList).component('IonItem', IonItem)
+  .component('IonButton', IonButton)
+  .component('IonButtons', IonButtons)
+  .component('IonRefresher', IonRefresher)
+  .component('IonRefresherContent', IonRefresherContent)
+  .component('IonIcon', IonIcon);
