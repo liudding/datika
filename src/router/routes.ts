@@ -1,5 +1,8 @@
 import { RouteRecordRaw } from 'vue-router';
 import Tabs from '../views/Tabs.vue'
+import Quizzes from '@/views/quizzes/Quizzes.vue'
+import Classrooms from '@/views/classrooms/Classrooms.vue'
+import My from '@/views/my/My.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -16,17 +19,17 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'quizzes',
-                component: () => import('@/views/quizzes/Quizzes.vue')
+                component: () => Quizzes
             },
             {
                 path: 'classrooms',
-                component: () => import('@/views/classrooms/Classrooms.vue'),
+                component: () => Classrooms,
                 children: [
                 ]
             },
             {
                 path: 'my',
-                component: () => import('@/views/my/My.vue')
+                component: My
             }
         ]
     },
