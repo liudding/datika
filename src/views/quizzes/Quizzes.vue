@@ -87,10 +87,12 @@ export default defineComponent({
       //
     },
 
-    onQuizCreated(quiz: object) {
+    onQuizCreated(quiz: any) {
 
       this.quizzes.push(quiz)
       this.showCreatePopup(false)
+
+      this.router.push(`/quizzes/${quiz.id}/questions`)
     },
   
     refresh() {

@@ -10,7 +10,8 @@
       ></ion-input>
     </ion-item>
 
-    <ion-button @click="submit" expand="block" style="margin-top: 32px">创建</ion-button
+    <ion-button @click="submit" expand="block" style="margin-top: 32px"
+      >创建</ion-button
     >
   </div>
 </template>
@@ -18,6 +19,7 @@
 <script>
 import { IonItem, IonInput } from "@ionic/vue";
 import { defineComponent } from "vue";
+import Api from "@/api";
 
 export default defineComponent({
   name: "CreateModal",
@@ -29,8 +31,39 @@ export default defineComponent({
   },
   components: { IonItem, IonInput },
   methods: {
-    submit() {
-      this.$emit('created', {});
+    async submit() {
+      const questions = this.makeQuestions();
+      try {
+        const resp = await Api.quiz.create({
+          name: this.name,
+          questions
+        });
+        this.$emit("created", resp.data);
+
+        this.resetData();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    makeQuestions() {
+      // 从个人设置中获取 默认问题数量
+
+      const count = 10;
+
+      const questions = [];
+      for (let i = 0; i < count; i++) {
+        questions.push({
+          label: i + "",
+          choices: "ABCD",
+        });
+      }
+
+      return questions;
+    },
+
+    resetData() {
+      this.name = "";
     },
   },
 });

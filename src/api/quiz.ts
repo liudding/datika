@@ -20,10 +20,12 @@ function update(id: number) {
   })
 }
 
-function create(id: number) {
+
+function create(data: any) {
   return request({
-    url: `/quizzes/${id}`,
-    method: 'post'
+    url: `/quizzes`,
+    method: 'post',
+    data,
   })
 }
 
