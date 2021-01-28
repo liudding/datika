@@ -9,7 +9,7 @@
     <ion-label class="ion-text-wrap">
       <div style="display: flex; justify-content:space-between;">
         <h2>{{ quiz.name }}</h2>
-        <div class="progress">{{ quiz.recordCount }}/{{ quiz.totalCount }}</div>
+        <div class="progress">{{ quiz.recordCount }}/{{ quiz.studentCount }}</div>
       </div>
 
       <div>
@@ -17,7 +17,7 @@
           <ion-note>题数：{{ quiz.questionCount }}</ion-note>
         </span>
         <span class="date">
-          <ion-note>{{ quiz.date }}</ion-note>
+          <ion-note>{{ quiz.createdAt }}</ion-note>
         </span>
       </div>
     </ion-label>
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { IonIcon, IonItem, IonLabel, IonNote } from "@ionic/vue";
+import {  IonItem, IonLabel, IonNote } from "@ionic/vue";
 import { chevronForward } from "ionicons/icons";
 import { defineComponent } from "vue";
 

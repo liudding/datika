@@ -72,14 +72,14 @@ export default defineComponent({
     return { addOutline, router, showCreate, showCreatePopup };
   },
   data: () => {
+    const quizzes: object[] = [];
     return {
-      quizzes: []
+      quizzes
     };
   },
   async created() {
     const resp = await Api.quiz.list();
-
-    this.quizzes = resp.data;
+    this.quizzes = resp.data.data;
 
   },
   methods: {
@@ -87,7 +87,9 @@ export default defineComponent({
       //
     },
 
-    onQuizCreated() {
+    onQuizCreated(quiz: object) {
+
+      this.quizzes.push(quiz)
       this.showCreatePopup(false)
     },
   
