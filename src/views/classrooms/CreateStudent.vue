@@ -36,9 +36,9 @@
 <script>
 import { IonItem, IonInput } from "@ionic/vue";
 import { defineComponent } from "vue";
+import Api from "@/api";
 
 export default defineComponent({
-  name: "CreateModal",
   props: {},
   data() {
     return {
@@ -48,8 +48,25 @@ export default defineComponent({
   },
   components: { IonItem, IonInput },
   methods: {
-    submit() {
-      this.$emit("created", {});
+    async submit() {
+      const classId = this.$route.params.id;
+
+      try {
+        const resp = await Api.classroom.createStudent(+classId, {
+          name: this.name,
+          number: this.number,
+        });
+        this.$emit("created", resp.data);
+
+        this.resetData();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    resetData() {
+      this.name = "";
+      this.number = "";
     },
   },
 });

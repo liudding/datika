@@ -34,16 +34,18 @@ function destroy(id: number) {
   })
 }
 
-function students(classroom: number) {
+function students(classroom: number, query: object) {
   return request({
-    url: '/classrooms/' + classroom + '/students'
+    url: '/classrooms/' + classroom + '/students',
+    params: query
   })
 }
 
-function createStudent(id: number) {
+function createStudent(id: number, data: any) {
   return request({
     url: `/classrooms/${id}/students/`,
-    method: 'post'
+    method: 'post',
+    data: data
   })
 }
 
