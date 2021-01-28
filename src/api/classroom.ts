@@ -13,10 +13,11 @@ function show(id: number) {
   })
 }
 
-function create(id: number) {
+function create(data: any) {
   return request({
-    url: `/classrooms/${id}`,
-    method: 'post'
+    url: `/classrooms`,
+    method: 'post',
+    data
   })
 }
 

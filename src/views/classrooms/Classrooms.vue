@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Classrooms</ion-title>
+        <ion-title>班级</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
@@ -18,7 +18,7 @@
 
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Inbox</ion-title>
+          <ion-title size="large">班级</ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -56,6 +56,7 @@ import { defineComponent, ref } from "vue";
 
 import ClassroomItem from "./ClassroomItem.vue";
 import CreateClassroom from "./CreateClassroom.vue";
+import Api from '@/api'
 
 export default defineComponent({
   name: "Classrooms",
@@ -86,27 +87,23 @@ export default defineComponent({
     };
   },
   data: () => {
+    const classrooms: any[] = [];
     return {
-      classrooms: [
-        {
-          id: 1,
-          name: "class 1",
-          studentCount: 40,
-        },
-        {
-          name: "class 2",
-          studentCount: 40,
-        },
-      ],
+      classrooms,
     };
+  },
+  created() {
+    Api.classroom.list().then(res => {
+      this.classrooms = res.data.data
+    })
   },
   methods: {
     gotoEdit() {
-      console.log("+++");
-      // this.router.push('/classrooms/edit')
-    },
-    onClassroomCreated() {
       //
+    },
+    onClassroomCreated(classroom: any) {
+        this.classrooms.push(classroom);
+        this.showCreatePopup(false);
     },
     refresh() {
       return true;

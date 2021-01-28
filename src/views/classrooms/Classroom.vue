@@ -13,13 +13,16 @@
           <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
+          <ion-button @click="setPopoverOpen(true, $event)">
+            <ion-icon slot="end" :icon="settingsOutline"></ion-icon>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true" v-if="classroom">
-      <div class="d-flex">共 {{studentCount}} 学生</div>
-      
+      <div class="d-flex">共 {{ studentCount }} 学生</div>
+
       <ion-list>
         <ion-item v-for="student in students" :key="student.id" detail>
           <div>{{ student.name }}</div>
@@ -30,13 +33,25 @@
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
         <CreateStudent @created="onStudentCreated"></CreateStudent>
       </van-popup>
+
+      <ion-popover
+        :is-open="popoverOpenRef"
+        :event="popoverRefEvent"
+        :translucent="true"
+        @onDidDismiss="setPopoverOpen(false)"
+      >
+        <ion-list>
+          <ion-item button>编辑班级</ion-item>
+          <ion-item button>删除班级</ion-item>
+        </ion-list>
+      </ion-popover>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonBackButton, IonHeader, IonToolbar } from "@ionic/vue";
-import { personCircle, addOutline } from "ionicons/icons";
+import { IonBackButton, IonHeader, IonToolbar, IonPopover } from "@ionic/vue";
+import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import CreateStudent from "./CreateStudent.vue";
@@ -47,7 +62,7 @@ export default defineComponent({
   data() {
     const students: any[] = [];
     return {
-      personCircle,
+      settingsOutline,
       addOutline,
       classroom: {},
       students,
@@ -60,6 +75,13 @@ export default defineComponent({
     };
   },
   setup() {
+    const popoverOpenRef = ref(false);
+    const popoverRefEvent = ref();
+    const setPopoverOpen = (state: boolean, event: Event) => {
+      popoverRefEvent.value = event;
+      popoverOpenRef.value = state;
+    };
+
     const showCreate = ref(false);
     const showCreatePopup = (status = true) => {
       showCreate.value = status;
@@ -67,28 +89,36 @@ export default defineComponent({
 
     const router = useRouter();
 
-    return { showCreate, showCreatePopup, router };
+    return {
+      popoverOpenRef,
+      setPopoverOpen,
+      popoverRefEvent,
+      showCreate,
+      showCreatePopup,
+      router,
+    };
   },
   components: {
     IonBackButton,
     IonHeader,
     IonToolbar,
     CreateStudent,
+    IonPopover,
   },
   created() {
     const classId = this.$route.params.id;
-    Api.classroom.students(+classId, {size: 50}).then((res) => {
+    Api.classroom.students(+classId, { size: 50 }).then((res) => {
       this.students = res.data.data;
-      this.studentCount = res.data.total
+      this.studentCount = res.data.total;
     });
   },
   methods: {
     onStudentCreated(student: any) {
-      this.students.push(student)
-      this.studentCount ++
-      console.log(student)
+      this.students.push(student);
+      this.studentCount++;
+      console.log(student);
 
-      this.showCreatePopup(false)
+      this.showCreatePopup(false);
     },
   },
 });
