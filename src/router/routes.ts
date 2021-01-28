@@ -19,11 +19,11 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'quizzes',
-                component: () => Quizzes
+                component: Quizzes
             },
             {
                 path: 'classrooms',
-                component: () => Classrooms,
+                component: Classrooms,
                 children: [
                 ]
             },
@@ -33,37 +33,36 @@ const routes: Array<RouteRecordRaw> = [
             }
         ]
     },
-
-    {
-        path: '/message/:id',
-        component: () => import('@/views/classrooms/Classroom.vue')
-    },
-
     {
         path: '/quizzes/:id',
-        component: () => import('@/views/quizzes/Quiz.vue')
+        name: 'Quiz',
+        component: () => import('@/views/quizzes/Quiz.vue'),
+        props: true,
     },
 
     {
         path: '/classrooms/edit',
         name: 'EditClassroom',
-        component: () => import('@/views/classrooms/Edit.vue')
+        component: () => import('@/views/classrooms/Edit.vue'),
     },
     {
         path: '/classrooms/:id',
         name: 'Classroom',
-        component: () => import('@/views/classrooms/Classroom.vue')
+        component: () => import('@/views/classrooms/Classroom.vue'),
+        props: true,
     },
 
     {
         path: '/quizzes/:id/questions',
         name: 'QuizQuestions',
-        component: () => import('@/views/quizzes/Questions.vue')
+        component: () => import('@/views/quizzes/Questions.vue'),
+        props: true,
     },
     {
         path: '/quizzes/:id/records',
         name: 'QuizRecords',
-        component: () => import('@/views/quizzes/Records.vue')
+        component: () => import('@/views/quizzes/Records.vue'),
+        props: true,
     },
 
     {
