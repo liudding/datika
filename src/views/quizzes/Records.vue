@@ -6,11 +6,6 @@
         <ion-buttons>
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button @click="showCreate">
-            <ion-icon :icon="scanOutline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -44,12 +39,11 @@ import {
   IonTitle,
   IonContent,
   IonNote,
-  modalController,
 } from "@ionic/vue";
 
 import { scanOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 import RecordItem from "./RecordItem.vue";
 
@@ -66,11 +60,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const show = ref(false);
-    const showPopup = () => {
-      show.value = true;
-    };
-    return { scanOutline, router, show, showPopup };
+
+    return { scanOutline, router };
   },
   data: () => {
     return {

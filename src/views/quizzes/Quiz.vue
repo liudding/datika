@@ -5,7 +5,7 @@
         <ion-buttons>
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title>Quiz</ion-title>
+        <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="primary">
           <ion-button @click="gotoQuestions" color="primary">
             <ion-icon slot="end" :icon="documentTextOutline"></ion-icon>
@@ -17,11 +17,7 @@
     <ion-content :fullscreen="true">
       <ion-item lines="none">
         <div class="brief-infos">
-          <ion-router-link
-            :href="'/quizzes/' + quiz.id + '/records'"
-            class="brief-item"
-            >班级</ion-router-link
-          >
+          <div @click="gotoRecords" class="brief-item">班级</div>
           <div class="brief-item">学生</div>
           <div class="brief-item">题目</div>
         </div>
@@ -54,32 +50,28 @@ import { useRouter } from "vue-router";
 import {
   IonBackButton,
   IonButtons,
-  IonContent,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonPage,
   IonToolbar,
   IonPopover,
   IonFab,
   IonFabButton,
-  popoverController,
 } from "@ionic/vue";
 import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
+import Api from "@/api";
 
 export default defineComponent({
   name: "Home",
+  props: ["id"],
   data() {
     return {
       scanOutline,
       showFab: true,
       quiz: {
-        id: 1,
-        classrooms: [1,2],
+        id: 0,
+        name: "",
+        classrooms: [],
       },
     };
   },
@@ -102,20 +94,24 @@ export default defineComponent({
       documentTextOutline,
     };
   },
+  inject: ["quizzes"],
   components: {
     IonBackButton,
     IonButtons,
-    IonContent,
     IonHeader,
-    IonIcon,
-    IonItem,
-    IonPage,
     IonToolbar,
     IonPopover,
     IonFab,
     IonFabButton,
   },
+  created() {
+    this.getDetail();
+  },
   methods: {
+    async getDetail() {
+      const resp = await Api.quiz.show(this.id);
+      this.quiz = resp.data;
+    },
     gotoScan() {
       if (this.quiz.classrooms && this.quiz.classrooms.length > 0) {
         this.router.push("/scan");
@@ -123,10 +119,13 @@ export default defineComponent({
       }
 
       // 选择班级
-
     },
     gotoQuestions() {
       this.router.push(`/quizzes/${this.quiz.id}/questions`);
+    },
+
+    gotoRecords() {
+      this.router.push("/quizzes/" + this.quiz.id + "/records");
     },
   },
   ionViewDidLeave() {

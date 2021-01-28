@@ -28,9 +28,9 @@ import '@/styles/index.css';
 
 import { Popup, Stepper } from 'vant';
 import {
-  IonItem, IonPage, IonContent, IonList,
+  IonItem, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, 
-  IonRefresher, IonRefresherContent, IonIcon, IonTitle,
+  IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonToolbar,
   IonAlert,
 } from '@ionic/vue';
 
@@ -46,6 +46,7 @@ app.use(Stepper).use(Popup);
 
 app.component('IonPage', IonPage)
   .component('IonContent', IonContent)
+  .component('IonHeader', IonHeader)
   .component('IonList', IonList)
   .component('IonItem', IonItem)
   .component('IonButton', IonButton)
@@ -54,5 +55,6 @@ app.component('IonPage', IonPage)
   .component('IonRefresher', IonRefresher)
   .component('IonRefresherContent', IonRefresherContent)
   .component('IonIcon', IonIcon)
+  .component('IonToolbar', IonToolbar)
   .component('IonTitle', IonTitle)
   .component('IonAlert', IonAlert);

@@ -29,9 +29,7 @@
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
         <Create @created="onQuizCreated"></Create>
       </van-popup>
-
     </ion-content>
-
   </ion-page>
 </template>
 
@@ -50,7 +48,7 @@ import { defineComponent, ref } from "vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
-import Api from '@/api'
+import Api from "@/api";
 
 export default defineComponent({
   name: "Quizzes",
@@ -63,10 +61,15 @@ export default defineComponent({
     QuizItem,
     Create,
   },
+  provide() {
+    return {
+      quizzes: this.quizzes
+    }
+  },
   setup() {
     const router = useRouter();
     const showCreate = ref(false);
-    const showCreatePopup = (status=true) => {
+    const showCreatePopup = (status = true) => {
       showCreate.value = status;
     };
     return { addOutline, router, showCreate, showCreatePopup };
@@ -74,13 +77,12 @@ export default defineComponent({
   data: () => {
     const quizzes: object[] = [];
     return {
-      quizzes
+      quizzes,
     };
   },
   async created() {
     const resp = await Api.quiz.list();
     this.quizzes = resp.data.data;
-
   },
   methods: {
     gotoEdit() {
@@ -88,13 +90,15 @@ export default defineComponent({
     },
 
     onQuizCreated(quiz: any) {
+      this.quizzes.push(quiz);
+      this.showCreatePopup(false);
 
-      this.quizzes.push(quiz)
-      this.showCreatePopup(false)
-
-      this.router.push(`/quizzes/${quiz.id}/questions`)
+      this.router.push({
+        path: `/quizzes/${quiz.id}/questions`,
+        params: { quiz },
+      });
     },
-  
+
     refresh() {
       return true;
     },

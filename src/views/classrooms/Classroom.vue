@@ -111,6 +111,11 @@ export default defineComponent({
       this.students = res.data.data;
       this.studentCount = res.data.total;
     });
+   
+    this.classroom = {
+      id: classId,
+      name:  this.$route.query.name
+    }
   },
   methods: {
     onStudentCreated(student: any) {
