@@ -50,6 +50,7 @@ import { defineComponent, ref } from "vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
+import Api from '@/api'
 
 export default defineComponent({
   name: "Quizzes",
@@ -72,52 +73,14 @@ export default defineComponent({
   },
   data: () => {
     return {
-      quizzes: [
-        {
-          name: "Quiz 1",
-          recordCount: 40,
-          totalCount: 100,
-          questionCount: 50,
-          subject: "2323",
-          date: "2020-09-09",
-        },
-        {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-        {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-         {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-         {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-        {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-        {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-        {
-          name: "Quiz 2",
-          questionCount: 50,
-          recordCount: 40,
-        },
-      ],
+      quizzes: []
     };
+  },
+  async created() {
+    const resp = await Api.quiz.list();
+
+    this.quizzes = resp.data;
+
   },
   methods: {
     gotoEdit() {
