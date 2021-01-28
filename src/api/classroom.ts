@@ -13,6 +13,13 @@ function show(id: number) {
   })
 }
 
+function create(id: number) {
+  return request({
+    url: `/classrooms/${id}`,
+    method: 'post'
+  })
+}
+
 function update(id: number) {
   return request({
     url: `/classrooms/${id}`,
@@ -33,10 +40,19 @@ function students(classroom: number) {
   })
 }
 
+function createStudent(id: number) {
+  return request({
+    url: `/classrooms/${id}/students/`,
+    method: 'post'
+  })
+}
+
 export default {
   list,
   show,
+  create,
   update,
   destroy,
-  students
+  students,
+  createStudent
 }
