@@ -22,7 +22,7 @@
         <ion-item-divider></ion-item-divider>
 
         <ion-item button>设置</ion-item>
-        <ion-item button>帮助与反馈</ion-item>
+        <ion-item button routerLink="/help">帮助与反馈</ion-item>
         <ion-item button routerLink="/about">关于</ion-item>
       </ion-item-group>
     </ion-content>
@@ -32,9 +32,8 @@
 <script lang="ts">
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonItemDivider,
+  IonItemGroup,
   IonContent,
   IonAvatar,
 } from "@ionic/vue";
@@ -45,6 +44,8 @@ export default {
     IonContent,
     IonPage,
     IonAvatar,
+    IonItemDivider,
+    IonItemGroup
   },
   data() {
     return {

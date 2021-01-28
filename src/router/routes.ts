@@ -86,6 +86,11 @@ const routes: Array<RouteRecordRaw> = [
      * 设置
      */
     {
+        path: '/help',
+        name: 'Help',
+        component: () => import('@/views/settings/Help.vue')
+    },
+    {
         path: '/about',
         name: 'About',
         component: () => import('@/views/settings/About.vue')

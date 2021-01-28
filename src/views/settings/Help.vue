@@ -5,10 +5,15 @@
         <ion-buttons>
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title>关于</ion-title>
+        <ion-title>使用帮助</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content :fullscreen="true"> </ion-content>
+    <ion-content :fullscreen="true"> 
+      <iframe width="100%" height="100%">
+
+      </iframe>
+
+    </ion-content>
   </ion-page>
 </template>
 
@@ -27,13 +32,7 @@ export default {
 </script>
 
 <style scoped>
-.profile ion-item {
-  /* height: 80px; */
-  --padding-top: 16px;
-  --padding-bottom: 16px;
-}
-.profile .name {
-  margin-left: 8px;
-  font-weight: 700;
+iframe {
+  border: none;
 }
 </style>
