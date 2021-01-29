@@ -263,5 +263,9 @@ export default class Form extends Section {
 
         return this._size
     }
+
+    get border(): number {
+        return Config.BORDER_WIDTH
+    }
 }
 

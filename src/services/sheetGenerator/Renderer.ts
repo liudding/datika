@@ -1,7 +1,4 @@
 import Form from './Form'
-import { Size } from './Size'
-import Section from './Section'
-import Config from './Config'
 import BubbleGroup from './BubbleGroup';
 import BubbleSection from './BubbleSection';
 import NumberSection from './NumberSection';
@@ -22,9 +19,10 @@ export default class Renderer {
 
     createCanvas(): HTMLElement {
         const htmlString = `
-        <div id="form-container">
-            <div class="box" style="width:${this.form.width}px;min-width:${this.form.width}px;height:${this.form.height}px;min-height:${this.form.height}px">
-                <div class="number" id="number"></div>
+        <div id="form-container" style="user-select: none; padding: 16px;background: white;">
+            <div class="header" style="position: relative;width: 100%;"></div>
+            <div class="box" style="width:${this.form.width}px;min-width:${this.form.width}px;height:${this.form.height}px;min-height:${this.form.height}px;border: ${this.form.border}px solid black;position: relative;">
+                <div class="number" id="number" style="position: absolute; right: 0;top: 0;display: flex;border-left: 9px solid black;border-bottom: 9px solid black;"></div>
                 <div id="bubbles" class="bubbles"></div>
             </div>
         </div>`;
@@ -46,8 +44,9 @@ export default class Renderer {
         return ele;
     }
 
-    makeBubble(text: string, radius: number) {
-        return `<div class="bubble" style="height:${radius}px;width: ${radius}px;">${text}</div>`
+    makeBubble(text: string, radius: number, border = 8) {
+        const lineHeight = this.form.bubbleRadius - border * 2;
+        return `<div class="bubble" style="height:${radius}px;width: ${radius}px;border: ${border}px solid black;box-sizing: border-box; line-height:${lineHeight};">${text}</div>`
     }
 
     makeSection(section: BubbleSection, x: number, y = 0) {
@@ -87,7 +86,27 @@ export default class Renderer {
 
         const number = this.canvas.getElementsByClassName('number')[0]
         number.innerHTML = html
+
+        this.drawNumberGrid()
     }
+
+    drawNumberGrid() {
+        if (!this.form.numberSection) {
+            return;
+        }
+
+        let html = '<div class="number-grid" style="right: 12px;">'
+        for (let i = 0; i < this.form.numberSection.digits; i++) {
+            const width = this.form.bubbleRadius + this.form.numberSection.columnPaddingX * 2
+            const height = 90;
+            html += `<div class="item" style="width:${width}px;height:${height}px;"></div>`
+        }
+        html += '</div>'
+
+        const header = this.canvas.getElementsByClassName('header')[0]
+        header.innerHTML = html
+    }
+
 
     render() {
       
