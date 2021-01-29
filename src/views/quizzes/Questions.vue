@@ -23,13 +23,38 @@
           </div>
         </div>
         <div class="questions-stats">
-          <ion-label>
+          <ion-label
+            v-if="!showQuestionCountInput"
+            @click="
+              () => {
+                showQuestionCountInput = true;
+              }
+            "
+          >
             <h1>
               {{ questions.length }} 题
               <span>
                 <ion-icon :icon="createOutline"></ion-icon>
               </span>
             </h1>
+          </ion-label>
+          <ion-label v-if="showQuestionCountInput">
+            <div>
+              <div class="question-count-input-wrapper">
+                <ion-input
+                  :value="questions.length"
+                  @ionBlur="onQuestionCountChange($event)"
+                  type="number"
+                  max="120"
+                  min="3"
+                  step="1"
+                  enterkeyhint="enter"
+                  class="question-count-input"
+                  autofocus
+                />
+              </div>
+              <span> 题</span>
+            </div>
           </ion-label>
           <div class="stats">
             <ion-note
@@ -56,18 +81,12 @@
       <ion-list>
         <QuestionItem
           v-for="question in questions"
-          :key="question.id"
+          :key="question.label"
           :question="question"
           @change="onQuestionChange"
         >
         </QuestionItem>
       </ion-list>
-
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
-        <ion-fab-button @click="() => router.push('/scan')">
-          <ion-icon :icon="scanOutline"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
     </ion-content>
 
     <ion-popover
@@ -87,65 +106,24 @@
 
 <script lang="ts">
 import { useRouter } from "vue-router";
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonPage,
-  IonToolbar,
-  IonPopover,
-  IonFab,
-  IonFabButton,
-} from "@ionic/vue";
+import { IonBackButton, IonNote, IonPopover, IonFabButton } from "@ionic/vue";
 import { add, createOutline } from "ionicons/icons";
 import { scanOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
+import Api from "@/api";
 
 export default defineComponent({
   name: "Home",
   data() {
+    const questions: any[] = [];
     return {
       scanOutline,
-      questions: [
-        {
-          id: 1,
-          label: "1",
-          bubbles: "ABCDE",
-          type: "single_choice",
-          score: 1,
-        },
-        {
-          id: 2,
-          label: "2",
-          bubbles: "ABCDE",
-        },
-        {
-          id: 3,
-          label: "3",
-          bubbles: "ABCDE",
-        },
-        {
-          id: 4,
-          label: "4",
-          bubbles: "ABCDE",
-        },
-        {
-          id: 5,
-          label: "5",
-          bubbles: "ABCDE",
-        },
-        {
-          id: 6,
-          label: "6",
-          bubbles: "ABCDE",
-        },
-      ],
+      quiz: {
+        questions: [],
+      },
+      questions,
+      showQuestionCountInput: false,
     };
   },
   computed: {
@@ -155,7 +133,7 @@ export default defineComponent({
       let booleanCount = 0;
       let score = 0;
 
-      this.questions.forEach((item) => {
+      this.questions.forEach((item: any) => {
         if (item.type === "single_choice") {
           singleCount++;
         } else if (item.type === "multi_choice") {
@@ -188,36 +166,80 @@ export default defineComponent({
   },
   components: {
     IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonItem,
-    IonLabel,
     IonNote,
-    IonPage,
-    IonToolbar,
     IonPopover,
-    IonFab,
-    IonFabButton,
     QuestionItem,
+  },
+  created() {
+    this.getQuestions();
   },
   methods: {
     onQuestionChange(question: any, type: string) {
-      const index = this.questions.findIndex((i) => i.id === question.id);
+      const index = this.questions.findIndex(
+        (i: any) => i.label === question.label
+      );
       this.questions.splice(index, 1, question);
+
+      this.updateQuestion(question.id, question);
 
       console.log(type, question);
     },
+    /**
+     * 改变了题目数量
+     */
+    onQuestionCountChange($event: any) {
+      const count = +$event.target.value;
 
-    getDefaultQuestion() {
-      return {
-        id: "",
-        label: "",
-        type: "single_choice",
-        bubbles: "ABCDE",
-        score: 1,
-      };
+      if (count > this.questions.length) {
+        this.createQuestions(count - this.questions.length);
+      } else if (count < this.questions.length) {
+        this.trimQuestions(this.questions.length - count);
+      }
+    },
+
+    async getQuestions() {
+      const quiz = this.$route.params.id;
+      const resp = await Api.quiz.questions(+quiz);
+
+      // this.quiz = resp.data;
+
+      this.questions = resp.data || [];
+    },
+
+    async updateQuestion(id: number, data: any) {
+      await Api.question.update(id, data);
+    },
+
+    async createQuestions(count: number) {
+      const questions = [];
+
+      const lastQuestion = this.questions[this.questions.length - 1];
+
+      const index = lastQuestion ? +lastQuestion.label : 1;
+
+      for (let i = 0; i < count; i++) {
+        questions.push({
+          label: index + i + "",
+          choices: "ABCD",
+        });
+      }
+
+      const quiz = this.$route.params.id;
+      const resp = await Api.question.batchCreate(+quiz, {
+        questions: questions,
+      });
+
+      this.questions = this.questions.concat(resp.data);
+    },
+
+    async trimQuestions(count: number) {
+      const quiz = this.$route.params.id;
+
+      const ids = this.questions.slice(-count).map((i) => i.id);
+
+      await Api.question.batchDestroy(+quiz, ids);
+
+      this.questions = this.questions.slice(0, -count);
     },
   },
 });
@@ -265,5 +287,19 @@ ion-item {
 .stats-number {
   width: 20px;
   margin-right: 8px;
+}
+
+.question-count-input-wrapper {
+  background: rgb(246, 246, 246);
+  padding-left: 8px;
+  display: inline-block;
+  border-radius: 8px;
+}
+
+.question-count-input {
+  width: 40px;
+  --background: rgb(246, 246, 246);
+  display: inline-block;
+  border-radius: 8px;
 }
 </style>

@@ -1,12 +1,14 @@
 <template>
   <ion-item lines="none">
     <div style="width: 100%">
-      <div class="d-flex align-items-center bubbles-wrapper">
-        <div @click="onClickLabel" class="question-label">{{ question.label }}.</div>
+      <div class="d-flex align-items-center choices-wrapper">
+        <div @click="onClickLabel" class="question-label">
+          {{ question.label }}.
+        </div>
 
-        <div class="bubbles">
+        <div class="choices">
           <div
-            v-for="bubble in question.bubbles"
+            v-for="bubble in question.choices"
             :key="bubble"
             @click="onClickBubble(bubble)"
             class="bubble"
@@ -28,14 +30,16 @@
             :value="question.score"
             :name="question.id"
             button-size="20"
+            disable-input
             @change="onScoreChange"
           ></van-stepper>
         </div>
       </div>
     </div>
 
-    <van-popup v-model="showPopup" position="top" :style="{ height: '30%' }" >内容</van-popup>
-
+    <van-popup v-model="showPopup" position="top" :style="{ height: '30%' }"
+      >内容</van-popup
+    >
   </ion-item>
 </template>
 
@@ -50,11 +54,10 @@ export default defineComponent({
   },
   setup() {
     const isOpenRef = ref(false);
-    const setOpen = (state) => isOpenRef.value = state;
-    const data = { content: 'New Content' };
-    return { isOpenRef, setOpen, data }
+    const setOpen = (state) => (isOpenRef.value = state);
+    const data = { content: "New Content" };
+    return { isOpenRef, setOpen, data };
   },
-  // emits: ["update:question"],
   data() {
     return {
       showPopup: false,
@@ -62,12 +65,14 @@ export default defineComponent({
         return (this.question.answer || "").indexOf(opt) >= 0;
       },
       questionType(val) {
-        return {
-          'single_choice': '单选题',
-          'multi_choice': '多选题',
-          'boolean': '判断题'
-        }[val] || '单选题';
-      }
+        return (
+          {
+            1: "单选题",
+            2: "多选题",
+            3: "判断题",
+          }[val] || "单选题"
+        );
+      },
     };
   },
   components: { IonItem },
@@ -81,33 +86,41 @@ export default defineComponent({
         answer += bubble;
       }
 
-      this.$emit("change", {
-        id: this.question.id,
-        label: this.question.label,
-        answer: answer,
-        bubbles: this.question.bubbles,
-        type: this.detectQuestionType(answer, this.question.bubbles)
-      }, 'answer');
+      this.$emit(
+        "change",
+        {
+          id: this.question.id,
+          label: this.question.label,
+          answer: answer,
+          choices: this.question.choices,
+          type: this.detectQuestionType(answer, this.question.choices),
+        },
+        "answer"
+      );
     },
 
     onClickLabel() {
       this.showPopup = true;
-      console.log("onClickLabel")
+      console.log("onClickLabel");
     },
 
     onScoreChange(value, detail) {
-      this.$emit("change", {
-        id: this.question.id,
-        label: this.question.label,
-        answer: this.question.answer,
-        bubbles: this.question.bubbles,
-        score: +value
-      }, 'score');
+      this.$emit(
+        "change",
+        {
+          id: this.question.id,
+          label: this.question.label,
+          answer: this.question.answer,
+          choices: this.question.choices,
+          score: +value,
+        },
+        "score"
+      );
     },
 
-    detectQuestionType(answer, bubbles) {
-      if (bubbles.length === 2) return 'boolean'
-      return answer.length === 1 ? 'single_choice' : 'multi_choice'
+    detectQuestionType(answer, choices) {
+      if (choices.length === 2) return 3;
+      return answer.length > 1 ? 2 : 1;
     },
 
     showLabelPopup() {
@@ -132,11 +145,10 @@ ion-page {
 
 .my-custom-class .modal-wrapper {
   height: 300px;
-   --background: transparent;
-    background: transparent;
+  --background: transparent;
+  background: transparent;
 }
 .sc-ion-modal-md {
-
 }
 </style>
 
@@ -160,11 +172,11 @@ ion-item {
   margin-bottom: 4px;
 }
 
-.bubbles-wrapper {
+.choices-wrapper {
   padding: 4px 0;
 }
 
-.bubbles {
+.choices {
   display: flex;
   margin-left: 8px;
 }

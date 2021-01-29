@@ -94,7 +94,6 @@ export default defineComponent({
       documentTextOutline,
     };
   },
-  inject: ["quizzes"],
   components: {
     IonBackButton,
     IonButtons,

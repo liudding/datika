@@ -54,7 +54,7 @@ export default defineComponent({
       const questions = [];
       for (let i = 0; i < count; i++) {
         questions.push({
-          label: i + "",
+          label: i + 1 + "",
           choices: "ABCD",
         });
       }

@@ -56,7 +56,7 @@ import { defineComponent, ref } from "vue";
 
 import ClassroomItem from "./ClassroomItem.vue";
 import CreateClassroom from "./CreateClassroom.vue";
-import Api from '@/api'
+import Api from "@/api";
 
 export default defineComponent({
   name: "Classrooms",
@@ -93,20 +93,28 @@ export default defineComponent({
     };
   },
   created() {
-    Api.classroom.list().then(res => {
-      this.classrooms = res.data.data
-    })
+    this.getClassrooms();  
   },
   methods: {
     gotoEdit() {
       //
     },
     onClassroomCreated(classroom: any) {
-        this.classrooms.push(classroom);
-        this.showCreatePopup(false);
+      this.classrooms.push(classroom);
+      this.showCreatePopup(false);
     },
-    refresh() {
-      return true;
+    async getClassrooms() {
+      try {
+        const resp = await Api.classroom.list();
+        this.classrooms = resp.data.data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async refresh($event: any) {
+      await this.getClassrooms();
+      
+      $event.target.complete();
     },
   },
 });

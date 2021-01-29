@@ -21,6 +21,7 @@ function update(id: number) {
 }
 
 
+
 function create(data: any) {
   return request({
     url: `/quizzes`,
@@ -49,6 +50,20 @@ function creteRecord(id: number) {
   })
 }
 
+function questions(id: number) {
+  return request({
+    url: `/quizzes/${id}/questions`,
+  })
+}
+
+function updateQuestion(question: number) {
+  return request({
+    url: `/questions/${question}`,
+    method: 'put',
+  })
+}
+
+
 export default {
   list,
   show,
@@ -56,5 +71,7 @@ export default {
   update,
   destroy,
   records,
-  creteRecord
+  creteRecord,
+  questions,
+  updateQuestion
 }

@@ -30,7 +30,8 @@ import { Popup, Stepper } from 'vant';
 import {
   IonItem, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, 
-  IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonToolbar,
+  IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel,
+  IonToolbar,
   IonAlert,
 } from '@ionic/vue';
 
@@ -57,4 +58,5 @@ app.component('IonPage', IonPage)
   .component('IonIcon', IonIcon)
   .component('IonToolbar', IonToolbar)
   .component('IonTitle', IonTitle)
+  .component('IonLabel', IonLabel)
   .component('IonAlert', IonAlert);
