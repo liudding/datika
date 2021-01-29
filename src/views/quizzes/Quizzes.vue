@@ -1,10 +1,12 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
+    <ion-header :translucent="false">
       <ion-toolbar>
         <ion-title>Quizzes</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="() => router.push('/quizzes/edit')"> New </ion-button>
+          <ion-button @click="showCreatePopup">
+            <ion-icon :icon="addOutline"></ion-icon>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -21,12 +23,12 @@
       </ion-header>
 
       <ion-list>
-        <QuizItem
-          v-for="quiz in quizzes"
-          :key="quiz.id"
-          :quiz="quiz"
-        />
+        <QuizItem v-for="quiz in quizzes" :key="quiz.id" :quiz="quiz" />
       </ion-list>
+
+      <van-popup v-model:show="showCreate" position="bottom" round closeable>
+        <Create @created="onQuizCreated"></Create>
+      </van-popup>
     </ion-content>
   </ion-page>
 </template>
@@ -40,17 +42,16 @@ import {
   IonContent,
 } from "@ionic/vue";
 
-import {
-  ellipsisHorizontal,
-  ellipsisVertical,
-  addOutline,
-} from "ionicons/icons";
+import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
+import { defineComponent, ref } from "vue";
 
 import QuizItem from "./QuizItem.vue";
+import Create from "./Create.vue";
+import Api from "@/api";
 
-export default {
-  name: "Tab1",
+export default defineComponent({
+  name: "Quizzes",
   components: {
     IonHeader,
     IonToolbar,
@@ -58,41 +59,79 @@ export default {
     IonContent,
     IonPage,
     QuizItem,
+    Create,
+  },
+  provide() {
+    return {
+      quizzes: this.quizzes
+    }
   },
   setup() {
     const router = useRouter();
-
-    return {
-      ellipsisHorizontal,
-      ellipsisVertical,
-      addOutline,
-      router,
+    const showCreate = ref(false);
+    const showCreatePopup = (status = true) => {
+      showCreate.value = status;
     };
+    return { addOutline, router, showCreate, showCreatePopup };
   },
   data: () => {
+    const quizzes: object[] = [];
     return {
-      quizzes: [
-        {
-          name: "Quiz 1",
-          recordCount: 40,
-          subject: '2323',
-          date: '2020-09-09'
-        },
-        {
-          name: "Quiz 2",
-          recordCount: 40,
-        },
-      ],
+      quizzes,
     };
+  },
+  async created() {
+    const resp = await Api.quiz.list();
+    this.quizzes = resp.data.data;
   },
   methods: {
     gotoEdit() {
-      console.log('+++');
-      // this.router.push('/quizzes/edit')
+      //
     },
+
+    onQuizCreated(quiz: any) {
+      this.quizzes.push(quiz);
+      this.showCreatePopup(false);
+
+      this.router.push({
+        path: `/quizzes/${quiz.id}/questions`,
+        params: { quiz },
+      });
+    },
+
     refresh() {
       return true;
     },
   },
-};
+});
 </script>
+
+<style scoped>
+ion-list {
+  padding: 8px;
+  background: rgb(246, 246, 246);
+}
+
+ion-header {
+  background: white;
+}
+
+ion-content {
+  --background: rgb(246, 246, 246);
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-header {
+    background: #000;
+  }
+
+  ion-list {
+    padding: 8px;
+    background: #111;
+  }
+
+  ion-content {
+    --background: #111;
+  }
+}
+</style>

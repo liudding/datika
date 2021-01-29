@@ -1,37 +1,30 @@
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Tab 3</ion-title>
-      </ion-toolbar>
-    </ion-header>
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">我的</ion-title>
-        </ion-toolbar>
-      </ion-header>
+      <ion-item lines="none"></ion-item>
 
-      <ion-card>
-        <ion-card-content>
-          <div class="ion-flex">
-            <ion-avatar>
-              <img
-                src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-              />
-            </ion-avatar>
-            <h2>name</h2>
-          </div>
-        </ion-card-content>
-      </ion-card>
+      <div class="profile">
+        <ion-item lines="none" detail>
+          <ion-avatar>
+            <img
+              src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
+          </ion-avatar>
 
+          <div class="name">{{ user.name }}</div>
+        </ion-item>
+      </div>
 
+      <ion-item-group>
+        <!-- <ion-item-divider></ion-item-divider> -->
 
-      <ion-list>
-         <ion-item button>设置</ion-item>
-        <ion-item button>帮助与反馈</ion-item>
-        <ion-item button>关于</ion-item>
-      </ion-list>
+        <ion-item button lines="none">订阅</ion-item>
+        <ion-item-divider></ion-item-divider>
+
+        <ion-item button>设置</ion-item>
+        <ion-item button routerLink="/help">帮助与反馈</ion-item>
+        <ion-item button routerLink="/about">关于</ion-item>
+      </ion-item-group>
     </ion-content>
   </ion-page>
 </template>
@@ -39,9 +32,8 @@
 <script lang="ts">
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonItemDivider,
+  IonItemGroup,
   IonContent,
   IonAvatar,
   IonCard,
@@ -54,16 +46,42 @@ import {
 } from "@ionic/vue";
 
 export default {
-  name: "Tab3",
+  name: "My",
   components: {
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonPage,
     IonAvatar,
-    IonCard,
-    IonCardContent,
+    IonItemDivider,
+    IonItemGroup
+  },
+  data() {
+    return {
+      user: {
+        name: "Liu Ding",
+      },
+    };
   },
 };
 </script>
+
+<style scoped>
+ion-item-divider {
+  --background: transparent;
+  --inner-padding-bottom: 0;
+  --inner-padding-top: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  min-height: 8px;
+}
+
+.profile ion-item {
+  /* height: 80px; */
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  margin-bottom: 8px;
+}
+.profile .name {
+  margin-left: 8px;
+  font-weight: 700;
+}
+</style>

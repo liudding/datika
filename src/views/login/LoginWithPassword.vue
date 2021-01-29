@@ -3,31 +3,25 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            :text="getBackButtonText()"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
+        <ion-title>登录</ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true" v-if="message">
-    
-      <ion-item>
-          <ion-icon :icon="personCircle" color="primary"></ion-icon>
-        <ion-label>
+    <ion-content :fullscreen="true">
+      <div style="margin-top: 40px">
+        <ion-item lines="none">
+          <ion-icon :icon="personOutline" color="primary"></ion-icon>
+          <ion-input :value="username" @ionChange="username = $event.target.value" autofocus required placeholder="手机号/邮箱"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon :icon="lockClosedOutline" color="primary"></ion-icon>
+          <ion-input :value="password" @ionChange="password = $event.target.value" type="password" required placeholder="密码"></ion-input>
+        </ion-item>
 
-        </ion-label>
-        <ion-input placeholder="手机号"></ion-input>
-      </ion-item>
-
-       <ion-item>
-        <ion-label>密码</ion-label>
-        <ion-input></ion-input>
-      </ion-item>
-
-      <ion-button expand="block">登录</ion-button>
-
+        <ion-button @click="login" expand="block" style="margin-top: 32px;">登录</ion-button>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -40,34 +34,25 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
-  IonLabel,
   IonPage,
   IonToolbar,
 } from "@ionic/vue";
-import { personCircle } from "ionicons/icons";
+import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Home",
   data() {
     return {
-      personCircle,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "Inbox" : "";
-      },
+      personOutline,
+      lockClosedOutline,
+
+      username: 'ding',
+      password: 'aaa',
     };
   },
   setup() {
-    const message = {
-      fromName: "Jordan Firth",
-      subject: "Report Results",
-      date: "4:55 AM",
-      id: 2,
-    };
-
-    return { message };
+    return { };
   },
   components: {
     IonBackButton,
@@ -76,52 +61,45 @@ export default defineComponent({
     IonHeader,
     IonIcon,
     IonItem,
-    IonLabel,
     IonPage,
     IonToolbar,
   },
+  methods: {
+    login() {
+      //
+      console.log(this.username)
+    }
+  }
 });
 </script>
 
 <style scoped>
 ion-item {
   --inner-padding-end: 0;
-  --background: transparent;
+  --min-height: 54px;
+  --background: #efefef;
+
+  border-radius: 100px;
+  margin-bottom: 8px;
+
+
 }
 
-ion-label {
-  margin-top: 12px;
-  margin-bottom: 12px;
+ion-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
 }
 
-ion-item h2 {
-  font-weight: 600;
+ion-toolbar {
+  --border-color: white;
 }
 
-ion-item .date {
-  float: right;
-  align-items: center;
-  display: flex;
+ion-button {
+  --border-radius: 100px;
 }
 
 ion-item ion-icon {
-  font-size: 42px;
-  margin-right: 8px;
+  margin-right: 16px;
 }
 
-ion-item ion-note {
-  font-size: 15px;
-  margin-right: 12px;
-  font-weight: normal;
-}
-
-h1 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-p {
-  line-height: 22px;
-}
 </style>

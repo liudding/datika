@@ -3,10 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            text="back"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -14,21 +11,50 @@
     <div id="camera-container"></div>
 
     <ion-content :fullscreen="false">
-     
-    </ion-content>
+      <van-popup
+        v-model:show="popupStatus"
+        position="bottom"
+        round
+        safe-area-inset-bottom
+        :overlay-style="{ background: 'rgba(0,0,0,0.1)' }"
+      >
+        <div class="record-panel">
+          <div>张无忌</div>
+          <div style="margin-top: 8px">
+            <span style="font-size: 36px">20</span>
+            <span style="font-size: 10px; margin-left: 3px; color: dark"
+              >分</span
+            >
+          </div>
 
-    <ion-footer class="ion-no-border">
-    <ion-toolbar>
-      <ion-title>
-        <ion-button @click="openModal">Open Modal</ion-button>
-      </ion-title>
-    </ion-toolbar>
-  </ion-footer>
+          <div style="color: gray; margin-top: 16px">
+            <small>正确：</small>
+            <small>错误：</small>
+          </div>
+        </div>
+      </van-popup>
+
+      <van-popup
+        v-model:show="recordsPopupStatus"
+        position="bottom"
+        round
+        closeable
+        safe-area-inset-bottom
+        :style="{ height: '90%' }"
+      >
+        <Records></Records>
+      </van-popup>
+
+      <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button @click="onClickFab" translucent>
+          <ion-icon :icon="appsOutline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { useRoute } from "vue-router";
 import {
   IonBackButton,
   IonButtons,
@@ -36,13 +62,12 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  modalController
 } from "@ionic/vue";
-import { personCircle } from "ionicons/icons";
-import { defineComponent } from "vue";
+import { appsOutline } from "ionicons/icons";
+import { defineComponent, ref } from "vue";
 
 import Scanner from "@/services/gradecam/Scanner";
-import Modal from './Modal.vue'
+import Records from "./Records.vue";
 
 let scanner: Scanner;
 
@@ -50,24 +75,27 @@ export default defineComponent({
   name: "Scan",
   data() {
     return {
-      // scanner: Scanner,
-      personCircle,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "Inbox" : "";
-      },
+      appsOutline,
     };
   },
   setup() {
-    const message = {
-      fromName: "Jordan Firth",
-      subject: "Report Results",
-      date: "4:55 AM",
-      id: 2,
+    const popupStatus = ref(false);
+    const showPopup = (show = true) => {
+      popupStatus.value = show;
     };
 
-    return { message };
+    const recordsPopupStatus = ref(false);
+    const showRecords = (show = true) => {
+      recordsPopupStatus.value = show;
+    };
+
+    return {
+      popupStatus,
+      showPopup,
+
+      recordsPopupStatus,
+      showRecords,
+    };
   },
   components: {
     IonBackButton,
@@ -75,21 +103,18 @@ export default defineComponent({
     IonContent,
     IonHeader,
     IonPage,
-    IonToolbar
+    IonToolbar,
+    Records,
   },
   mounted() {
-    console.log('====')
     this.initScanner();
   },
   ionViewWillLeave() {
-    console.log(' page will leave');
     scanner.stop();
   },
   methods: {
     initScanner() {
       scanner = new Scanner("camera-container", 10, 10);
-
-      // const scanner = this.scanner;
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
@@ -104,25 +129,15 @@ export default defineComponent({
         });
     },
 
-    async openModal() {
-      const modal = await modalController
-        .create({
-          component: Modal,
-          cssClass: 'my-custom-class',
-          componentProps: {
-            title: 'New Title',
-            swipeToClose: true
-          },
-        })
-      return modal.present();
-    },
-
     gcInitCallback(suc: boolean) {
       return suc;
     },
     onScan(scanObj: object) {
       // const scanner = this.scanner as Scanner;
       // scanner.pause();
+
+      this.showPopup(false);
+      this.showPopup(true);
 
       return scanObj;
     },
@@ -133,6 +148,10 @@ export default defineComponent({
     gcValidateCallback(validateObj: object, finish: boolean) {
       console.log(finish);
       return validateObj;
+    },
+
+    onClickFab() {
+      this.showRecords();
     },
   },
 });
@@ -160,51 +179,48 @@ ion-toolbar {
   --background: transparent !important;
   --background-color: transparent;
   --ion-color-base: transparent !important;
+  --border-width: 0px;
+  --border-color: transparent;
 }
 
-ion-item {
-  --inner-padding-end: 0;
-  --background: transparent;
-}
-
-ion-label {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-ion-item h2 {
-  font-weight: 600;
-}
-
-ion-item .date {
-  float: right;
-  align-items: center;
-  display: flex;
-}
-
-ion-item ion-icon {
-  font-size: 42px;
-  margin-right: 8px;
-}
-
-ion-item ion-note {
-  font-size: 15px;
-  margin-right: 12px;
-  font-weight: normal;
-}
-
-h1 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-p {
-  line-height: 22px;
+ion-fab-button {
+  --color: white;
+  --background: rgba(255, 255, 255, 0.3);
+  --background-activated: rgba(255, 255, 255, 0.5);
 }
 
 #camera-container {
   height: 100%;
   width: 100%;
+}
+
+.panel {
+  position: fixed;
+  z-index: 1000000000000;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  height: 150px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+
+  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
+
+  padding: 8px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.panel.show {
+  /* bottom: -100px; */
+}
+
+.record-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
 }
 </style>

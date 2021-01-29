@@ -37,7 +37,6 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from "vue-router";
 import {
   IonBackButton,
   IonButtons,

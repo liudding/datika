@@ -3,37 +3,29 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            :text="getBackButtonText()"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title>Quiz</ion-title>
+        <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="primary">
-          <ion-button @click="setOpen(true, $event)" color="danger">
-            <ion-icon slot="end" :icon="create"></ion-icon>
+          <ion-button @click="gotoQuestions" color="primary">
+            <ion-icon slot="end" :icon="documentTextOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item>
-        <ion-icon :icon="personCircle" color="primary"></ion-icon>
-        <ion-label class="ion-text-wrap">
-          <h2>
-            sdssd
-            <span class="date">
-              <ion-note>sss</ion-note>
-            </span>
-          </h2>
-          <h3>To: <ion-note>Me</ion-note></h3>
-        </ion-label>
+      <ion-item lines="none">
+        <div class="brief-infos">
+          <div @click="gotoRecords" class="brief-item">班级</div>
+          <div class="brief-item">学生</div>
+          <div class="brief-item">题目</div>
+        </div>
       </ion-item>
 
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
-          <ion-icon :icon="add"></ion-icon>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
+        <ion-fab-button @click="gotoScan">
+          <ion-icon :icon="scanOutline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-content>
@@ -54,120 +46,117 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import {
   IonBackButton,
   IonButtons,
-  IonContent,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonPage,
   IonToolbar,
   IonPopover,
   IonFab,
   IonFabButton,
-  popoverController,
 } from "@ionic/vue";
-import { 
-  add,
-  create
-} from 'ionicons/icons';
-import { personCircle } from "ionicons/icons";
+import { add, create } from "ionicons/icons";
+import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
+import Api from "@/api";
 
 export default defineComponent({
   name: "Home",
+  props: ["id"],
   data() {
     return {
-      personCircle,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "Inbox" : "";
+      scanOutline,
+      showFab: true,
+      quiz: {
+        id: 0,
+        name: "",
+        classrooms: [],
       },
     };
   },
   setup() {
+    const router = useRouter();
+
     const isOpenRef = ref(false);
     const refEvent = ref();
     const setOpen = (state: boolean, event: Event) => {
       refEvent.value = event;
       isOpenRef.value = state;
     };
-    return { isOpenRef, setOpen, refEvent, add, create };
+    return {
+      router,
+      isOpenRef,
+      setOpen,
+      refEvent,
+      add,
+      create,
+      documentTextOutline,
+    };
   },
   components: {
     IonBackButton,
     IonButtons,
-    IonContent,
     IonHeader,
-    IonIcon,
-    IonItem,
-    IonLabel,
-    IonNote,
-    IonPage,
     IonToolbar,
     IonPopover,
     IonFab,
-    IonFabButton
+    IonFabButton,
+  },
+  created() {
+    this.getDetail();
   },
   methods: {
-    async openPopover(ev: Event) {
-      // const popover = await popoverController
-      //   .create({
-      //     component: Popover,
-      //     cssClass: 'my-custom-class',
-      //     event: ev,
-      //     translucent: true
-      //   })
-      // return popover.present();
+    async getDetail() {
+      const resp = await Api.quiz.show(this.id);
+      this.quiz = resp.data;
     },
+    gotoScan() {
+      if (this.quiz.classrooms && this.quiz.classrooms.length > 0) {
+        this.router.push("/scan");
+        return;
+      }
+
+      // 选择班级
+    },
+    gotoQuestions() {
+      this.router.push(`/quizzes/${this.quiz.id}/questions`);
+    },
+
+    gotoRecords() {
+      this.router.push("/quizzes/" + this.quiz.id + "/records");
+    },
+  },
+  ionViewDidLeave() {
+    this.showFab = false;
+  },
+  ionViewWillEnter() {
+    this.showFab = true;
   },
 });
 </script>
 
 <style scoped>
+ion-content {
+  --padding-top: 8px;
+}
 ion-item {
-  --inner-padding-end: 0;
+  /* --inner-padding-end: 0; */
   --background: transparent;
 }
 
-ion-label {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-ion-item h2 {
-  font-weight: 600;
-}
-
-ion-item .date {
-  float: right;
-  align-items: center;
+.brief-infos {
+  width: 100%;
   display: flex;
+  justify-content: space-around;
 }
 
-ion-item ion-icon {
-  font-size: 42px;
-  margin-right: 8px;
-}
-
-ion-item ion-note {
-  font-size: 15px;
-  margin-right: 12px;
-  font-weight: normal;
-}
-
-h1 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-p {
-  line-height: 22px;
+.brief-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  text-align: center;
+  padding: 4px;
+  background: red;
 }
 </style>

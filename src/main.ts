@@ -22,13 +22,43 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import 'vant/lib/index.css';
+
+import '@/styles/index.css';
+
+import { Popup, Stepper } from 'vant';
+import {
+  IonItem, IonPage, IonContent, IonHeader, IonList,
+  IonButton, IonButtons, IonBackButton, 
+  IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel,
+  IonToolbar,
+  IonAlert,
+} from '@ionic/vue';
 
 import '@/styles/index.scss'
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
-  
+
 router.isReady().then(() => {
   app.mount('#app');
 });
+
+app.use(Stepper).use(Popup);
+
+app.component('IonPage', IonPage)
+  .component('IonContent', IonContent)
+  .component('IonHeader', IonHeader)
+  .component('IonList', IonList)
+  .component('IonItem', IonItem)
+  .component('IonButton', IonButton)
+  .component('IonButtons', IonButtons)
+  .component('IonBackButton', IonBackButton)
+  .component('IonRefresher', IonRefresher)
+  .component('IonRefresherContent', IonRefresherContent)
+  .component('IonIcon', IonIcon)
+  .component('IonToolbar', IonToolbar)
+  .component('IonTitle', IonTitle)
+  .component('IonLabel', IonLabel)
+  .component('IonAlert', IonAlert);

@@ -3,46 +3,35 @@
     v-if="quiz"
     :routerLink="'/quizzes/' + quiz.id"
     :detail="false"
+    lines="none"
     class="list-item"
   >
-    <div slot="start" :class="!quiz.read ? 'dot dot-unread' : 'dot'">
-
-    </div>
-
     <ion-label class="ion-text-wrap">
-      <h2>
-        {{ quiz.name }}
-        <span class="date">
-          <ion-note>{{ quiz.date }}</ion-note>
-          
-        </span>
-      </h2>
-      <h3>{{ quiz.recordCount }}</h3>
-      <p>
-       
-      </p>
-    </ion-label>
+      <div style="display: flex; justify-content:space-between;">
+        <h2>{{ quiz.name }}</h2>
+        <div class="progress">{{ quiz.recordCount }}/{{ quiz.studentCount }}</div>
+      </div>
 
-    <div slot="end">
-      10/80
-      <ion-icon
-            :icon="chevronForward"
-            size="small"
-            v-if="isIos()"
-          ></ion-icon>
-    </div>
+      <div>
+        <span class="">
+          <ion-note>题数：{{ quiz.questionCount }}</ion-note>
+        </span>
+        <span class="date">
+          <ion-note>{{ quiz.createdAt }}</ion-note>
+        </span>
+      </div>
+    </ion-label>
   </ion-item>
 </template>
 
 <script lang="ts">
-import { IonIcon, IonItem, IonLabel, IonNote } from "@ionic/vue";
+import {  IonItem, IonLabel, IonNote } from "@ionic/vue";
 import { chevronForward } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "QuizListItem",
   components: {
-    IonIcon,
     IonItem,
     IonLabel,
     IonNote,
@@ -50,12 +39,7 @@ export default defineComponent({
   props: {
     quiz: Object,
   },
-  methods: {
-    isIos: () => {
-      const win = window as any;
-      return win && win.Ionic && win.Ionic.mode === "ios";
-    },
-  },
+  methods: {},
   data() {
     return { chevronForward };
   },
@@ -63,9 +47,15 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-item {
+  --min-height: 80px;
+
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
 .list-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
+  min-height: 80px;
 }
 
 .list-item ion-label {
@@ -75,16 +65,14 @@ export default defineComponent({
 
 .list-item h2 {
   font-weight: 600;
-  margin: 0;
+  margin-bottom: 16px;
 }
 
-.list-item p {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 95%;
+.progress {
+  /* position: absolute;
+  right: 0;
+  top: 50%; */
 }
-
 .list-item .date {
   float: right;
   align-items: center;
@@ -116,5 +104,8 @@ export default defineComponent({
 
 .list-item .dot-unread {
   background: var(--ion-color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
 }
 </style>

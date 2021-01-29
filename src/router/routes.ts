@@ -1,5 +1,8 @@
 import { RouteRecordRaw } from 'vue-router';
 import Tabs from '../views/Tabs.vue'
+import Quizzes from '@/views/quizzes/Quizzes.vue'
+import Classrooms from '@/views/classrooms/Classrooms.vue'
+import My from '@/views/my/My.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -16,40 +19,55 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'quizzes',
-                component: () => import('@/views/quizzes/Quizzes.vue')
+                component: Quizzes
             },
             {
                 path: 'classrooms',
-                component: () => import('@/views/classrooms/Classrooms.vue'),
+                component: Classrooms,
                 children: [
                 ]
             },
             {
                 path: 'my',
-                component: () => import('@/views/my/My.vue')
+                component: My
             }
         ]
     },
-
-    {
-        path: '/message/:id',
-        component: () => import('@/views/classrooms/Classroom.vue')
-    },
-
     {
         path: '/quizzes/:id',
-        component: () => import('@/views/quizzes/Quiz.vue')
+        name: 'Quiz',
+        component: () => import('@/views/quizzes/Quiz.vue'),
+        props: true,
     },
 
     {
         path: '/classrooms/edit',
         name: 'EditClassroom',
-        component: () => import('@/views/classrooms/Edit.vue')
+        component: () => import('@/views/classrooms/Edit.vue'),
+    },
+    {
+        path: '/classrooms/:id',
+        name: 'Classroom',
+        component: () => import('@/views/classrooms/Classroom.vue'),
+        props: true,
+    },
+
+    {
+        path: '/quizzes/:id/questions',
+        name: 'QuizQuestions',
+        component: () => import('@/views/quizzes/Questions.vue'),
+        props: true,
+    },
+    {
+        path: '/quizzes/:id/records',
+        name: 'QuizRecords',
+        component: () => import('@/views/quizzes/Records.vue'),
+        props: true,
     },
 
     {
         path: '/scan',
-        name: 'EditClassroom',
+        name: 'Scan',
         component: () => import('@/views/scan/Scan.vue')
     },
 
@@ -62,7 +80,22 @@ const routes: Array<RouteRecordRaw> = [
         path: '/login/password',
         name: 'LoginWithPassword',
         component: () => import('@/views/login/LoginWithPassword.vue')
+    },
+
+    /**
+     * 设置
+     */
+    {
+        path: '/help',
+        name: 'Help',
+        component: () => import('@/views/settings/Help.vue')
+    },
+    {
+        path: '/about',
+        name: 'About',
+        component: () => import('@/views/settings/About.vue')
     }
+
 
 ]
 
