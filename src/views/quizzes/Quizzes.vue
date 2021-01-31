@@ -63,8 +63,8 @@ export default defineComponent({
   },
   provide() {
     return {
-      quizzes: this.quizzes
-    }
+      quizzes: this.quizzes,
+    };
   },
   setup() {
     const router = useRouter();
@@ -81,12 +81,16 @@ export default defineComponent({
     };
   },
   async created() {
-    const resp = await Api.quiz.list();
-    this.quizzes = resp.data.data;
+    this.getQuizzes();
   },
   methods: {
     gotoEdit() {
       //
+    },
+
+    async getQuizzes() {
+      const resp = await Api.quiz.list();
+      this.quizzes = resp.data.data;
     },
 
     onQuizCreated(quiz: any) {
@@ -99,8 +103,10 @@ export default defineComponent({
       });
     },
 
-    refresh() {
-      return true;
+    async refresh($event: any) {
+      await this.getQuizzes();
+
+      $event.target.complete();
     },
   },
 });
