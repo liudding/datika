@@ -2,22 +2,68 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
+        <ion-buttons>
+          <ion-back-button default-href="/"></ion-back-button>
+        </ion-buttons>
         <ion-title>我的订阅</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">我的订阅</ion-title>
-        </ion-toolbar>
-      </ion-header>
+      <div v-if="showPlans">
+        <Plans @subscribed="subscribed"></Plans>
+      </div>
+      <div v-else>
+        <ion-label>{{ subscription.plan.name }}</ion-label>
+      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+import Plans from "./Plans.vue";
+import Api from "@/api";
+
+export default defineComponent({
   name: "Subscription",
-  components: {},
-};
+  components: { Plans },
+  data() {
+    return {
+      subscription: {},
+      plans: [],
+      showPlans: false,
+    };
+  },
+  async created() {
+    this.getSubscription();
+  },
+  methods: {
+    async getSubscription() {
+      const resp = await Api.subscription.subscriptions();
+
+      this.subscription = resp.data[0];
+
+      if (this.subscription) {
+        this.showPlans = false;
+      } else {
+        this.showPlans = true;
+      }
+    },
+    subscribed(subscription: any) {
+      this.subscription = subscription;
+      this.showPlans = false;
+    },
+  },
+});
 </script>
+
+<style scoped>
+ion-content {
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+ion-item {
+  --padding-top: 16px;
+  --border-radius: 16px;
+}
+</style>

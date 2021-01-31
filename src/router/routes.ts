@@ -82,6 +82,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/login/LoginWithPassword.vue')
     },
 
+  
+    {
+        path: '/subscriptions',
+        name: 'Subscription',
+        component: () => import('@/views/subscription/Subscription.vue')
+    },
     /**
      * 设置
      */
