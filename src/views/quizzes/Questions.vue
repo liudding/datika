@@ -106,7 +106,6 @@
 
 <script lang="ts">
 import { useRouter } from "vue-router";
-import { IonBackButton, IonNote, IonPopover, IonFabButton } from "@ionic/vue";
 import { add, createOutline } from "ionicons/icons";
 import { scanOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
@@ -165,9 +164,6 @@ export default defineComponent({
     return { router, isOpenRef, setOpen, refEvent, add, createOutline };
   },
   components: {
-    IonBackButton,
-    IonNote,
-    IonPopover,
     QuestionItem,
   },
   created() {

@@ -31,25 +31,14 @@
 
 <script lang="ts">
 import {
-  IonPage,
   IonItemDivider,
   IonItemGroup,
-  IonContent,
   IonAvatar,
-  IonCard,
-  IonCardContent,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
-  IonGrid,
-  IonRow,
 } from "@ionic/vue";
 
 export default {
   name: "My",
   components: {
-    IonContent,
-    IonPage,
     IonAvatar,
     IonItemDivider,
     IonItemGroup

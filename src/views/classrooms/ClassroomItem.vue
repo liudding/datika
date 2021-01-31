@@ -1,9 +1,5 @@
 <template>
-  <ion-item
-    v-if="classroom"
-    @click="gotoDetail"
-    :detail="true"
-  >
+  <ion-item v-if="classroom" @click="gotoDetail" :detail="true">
     <ion-label class="ion-text-wrap">
       <h2>
         {{ classroom.name }}
@@ -14,16 +10,12 @@
 </template>
 
 <script lang="ts">
-import { IonItem, IonLabel } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "ClassroomItem",
-  components: {
-    IonItem,
-    IonLabel,
-  },
+  components: {},
   props: {
     classroom: Object,
   },
@@ -36,13 +28,13 @@ export default defineComponent({
       const classroom = this.classroom as any;
 
       this.router.push({
-        name: 'Classroom',
+        name: "Classroom",
         query: {
           name: classroom.name,
         },
         params: {
           id: classroom.id,
-        }
+        },
       });
     },
   },

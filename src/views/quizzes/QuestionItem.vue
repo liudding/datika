@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import { IonItem } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -75,7 +74,6 @@ export default defineComponent({
       },
     };
   },
-  components: { IonItem },
   methods: {
     onClickBubble(bubble) {
       let answer = this.question.answer || "";

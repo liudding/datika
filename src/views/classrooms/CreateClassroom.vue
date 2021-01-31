@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { IonItem, IonInput } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Api from "@/api";
 
@@ -27,7 +26,7 @@ export default defineComponent({
       name: "",
     };
   },
-  components: { IonItem, IonInput },
+  components: {},
   methods: {
     async submit() {
       try {

@@ -72,11 +72,6 @@
 <script lang="ts">
 import { useRouter } from "vue-router";
 import {
-  IonBackButton,
-  IonButtons,
-  IonHeader,
-  IonToolbar,
-  IonPopover,
   IonFab,
   IonFabButton,
 } from "@ionic/vue";
@@ -127,8 +122,6 @@ export default defineComponent({
     };
   },
   components: {
-    IonToolbar,
-    IonPopover,
     IonFab,
     IonFabButton,
   },

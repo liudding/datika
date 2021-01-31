@@ -50,7 +50,6 @@
 </template>
 
 <script lang="ts">
-import { IonBackButton, IonHeader, IonToolbar, IonPopover } from "@ionic/vue";
 import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -100,11 +99,7 @@ export default defineComponent({
   },
 
   components: {
-    IonBackButton,
-    IonHeader,
-    IonToolbar,
     CreateStudent,
-    IonPopover,
   },
   created() {
     const classId = this.$route.params.id;
@@ -112,11 +107,11 @@ export default defineComponent({
       this.students = res.data.data;
       this.studentCount = res.data.total;
     });
-   
+
     this.classroom = {
       id: classId,
-      name:  this.$route.query.name
-    }
+      name: this.$route.query.name,
+    };
   },
   methods: {
     onStudentCreated(student: any) {

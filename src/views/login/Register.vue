@@ -12,38 +12,23 @@
     </ion-header>
 
     <ion-content :fullscreen="true" v-if="message">
-    
       <ion-item>
-          <ion-icon :icon="personCircle" color="primary"></ion-icon>
-        <ion-label>
-
-        </ion-label>
+        <ion-icon :icon="personCircle" color="primary"></ion-icon>
+        <ion-label> </ion-label>
         <ion-input placeholder="手机号"></ion-input>
       </ion-item>
 
-       <ion-item>
+      <ion-item>
         <ion-label>密码</ion-label>
         <ion-input></ion-input>
       </ion-item>
 
       <ion-button expand="block">登录</ion-button>
-
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonPage,
-  IonToolbar,
-} from "@ionic/vue";
 import { personCircle } from "ionicons/icons";
 import { defineComponent } from "vue";
 
@@ -69,17 +54,7 @@ export default defineComponent({
 
     return { message };
   },
-  components: {
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonItem,
-    IonLabel,
-    IonPage,
-    IonToolbar,
-  },
+  components: {},
 });
 </script>
 

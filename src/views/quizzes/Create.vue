@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { IonItem, IonInput } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Api from "@/api";
 
@@ -29,14 +28,13 @@ export default defineComponent({
       name: "",
     };
   },
-  components: { IonItem, IonInput },
   methods: {
     async submit() {
       const questions = this.makeQuestions();
       try {
         const resp = await Api.quiz.create({
           name: this.name,
-          questions
+          questions,
         });
         this.$emit("created", resp.data);
 

@@ -31,24 +31,11 @@
       </ion-item>
 
       <ion-button expand="block">Outline + Full</ion-button>
-
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonNote,
-  IonPage,
-  IonToolbar,
-} from "@ionic/vue";
 import { personCircle } from "ionicons/icons";
 import { defineComponent } from "vue";
 
@@ -74,18 +61,7 @@ export default defineComponent({
 
     return { message };
   },
-  components: {
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonItem,
-    IonLabel,
-    IonNote,
-    IonPage,
-    IonToolbar,
-  },
+  components: {},
 });
 </script>
 

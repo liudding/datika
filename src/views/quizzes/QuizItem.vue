@@ -7,9 +7,11 @@
     class="list-item"
   >
     <ion-label class="ion-text-wrap">
-      <div style="display: flex; justify-content:space-between;">
+      <div style="display: flex; justify-content: space-between">
         <h2>{{ quiz.name }}</h2>
-        <div class="progress">{{ quiz.recordCount }}/{{ quiz.studentCount }}</div>
+        <div class="progress">
+          {{ quiz.recordCount }}/{{ quiz.studentCount }}
+        </div>
       </div>
 
       <div>
@@ -25,17 +27,12 @@
 </template>
 
 <script lang="ts">
-import {  IonItem, IonLabel, IonNote } from "@ionic/vue";
 import { chevronForward } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "QuizListItem",
-  components: {
-    IonItem,
-    IonLabel,
-    IonNote,
-  },
+
   props: {
     quiz: Object,
   },

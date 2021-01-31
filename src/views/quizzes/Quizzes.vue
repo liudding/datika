@@ -34,14 +34,6 @@
 </template>
 
 <script lang="ts">
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-} from "@ionic/vue";
-
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
@@ -53,11 +45,6 @@ import Api from "@/api";
 export default defineComponent({
   name: "Quizzes",
   components: {
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonPage,
     QuizItem,
     Create,
   },

@@ -6,20 +6,17 @@
     lines="none"
   >
     <h4>{{ record.name }}</h4>
-    <div slot="end">{{record.score}}</div>
+    <div slot="end">{{ record.score }}</div>
   </ion-item>
 </template>
 
 <script lang="ts">
-import { IonIcon, IonItem, IonLabel, IonNote } from "@ionic/vue";
 import { chevronForward } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "recordListItem",
-  components: {
-    IonItem,
-  },
+  components: {},
   props: {
     record: Object,
   },

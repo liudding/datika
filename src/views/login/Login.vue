@@ -1,10 +1,7 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <ion-img
-        src=""
-        class="background"
-      ></ion-img>
+      <ion-img src="" class="background"></ion-img>
 
       <div class="main">
         <div class="main-content">
@@ -18,9 +15,17 @@
 
           <div class="bottom flex">
             <ion-button expand="block">微信登录</ion-button>
-            <ion-button routerLink="/login/password" expand="block" class="outline" style="margin-top: 16px;">密码登录</ion-button>
+            <ion-button
+              routerLink="/login/password"
+              expand="block"
+              class="outline"
+              style="margin-top: 16px"
+              >密码登录</ion-button
+            >
 
-             <ion-router-link href="/register" class="mt-1">注册</ion-router-link>
+            <ion-router-link href="/register" class="mt-1"
+              >注册</ion-router-link
+            >
           </div>
         </div>
       </div>
@@ -29,7 +34,6 @@
 </template>
 
 <script lang="ts">
-import { IonButton, IonContent, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -40,11 +44,7 @@ export default defineComponent({
   setup() {
     return {};
   },
-  components: {
-    IonContent,
-    IonPage,
-    IonButton,
-  },
+  components: {},
   methods: {},
 });
 </script>
@@ -108,7 +108,6 @@ ion-content {
   border: none;
 }
 .app-name {
-
 }
 
 .slogan {

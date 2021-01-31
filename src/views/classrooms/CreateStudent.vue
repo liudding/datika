@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import { IonItem, IonInput } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Api from "@/api";
 
@@ -46,7 +45,6 @@ export default defineComponent({
       number: "",
     };
   },
-  components: { IonItem, IonInput },
   methods: {
     async submit() {
       const classId = this.$route.params.id;

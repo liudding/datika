@@ -13,30 +13,34 @@
       <div style="margin-top: 40px">
         <ion-item lines="none">
           <ion-icon :icon="personOutline" color="primary"></ion-icon>
-          <ion-input :value="username" @ionChange="username = $event.target.value" autofocus required placeholder="手机号/邮箱"></ion-input>
+          <ion-input
+            :value="username"
+            @ionChange="username = $event.target.value"
+            autofocus
+            required
+            placeholder="手机号/邮箱"
+          ></ion-input>
         </ion-item>
         <ion-item lines="none">
           <ion-icon :icon="lockClosedOutline" color="primary"></ion-icon>
-          <ion-input :value="password" @ionChange="password = $event.target.value" type="password" required placeholder="密码"></ion-input>
+          <ion-input
+            :value="password"
+            @ionChange="password = $event.target.value"
+            type="password"
+            required
+            placeholder="密码"
+          ></ion-input>
         </ion-item>
 
-        <ion-button @click="login" expand="block" style="margin-top: 32px;">登录</ion-button>
+        <ion-button @click="login" expand="block" style="margin-top: 32px"
+          >登录</ion-button
+        >
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonPage,
-  IonToolbar,
-} from "@ionic/vue";
 import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
@@ -47,29 +51,20 @@ export default defineComponent({
       personOutline,
       lockClosedOutline,
 
-      username: 'ding',
-      password: 'aaa',
+      username: "ding",
+      password: "aaa",
     };
   },
   setup() {
-    return { };
+    return {};
   },
-  components: {
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonItem,
-    IonPage,
-    IonToolbar,
-  },
+  components: {},
   methods: {
     login() {
       //
-      console.log(this.username)
-    }
-  }
+      console.log(this.username);
+    },
+  },
 });
 </script>
 
@@ -81,8 +76,6 @@ ion-item {
 
   border-radius: 100px;
   margin-bottom: 8px;
-
-
 }
 
 ion-content {
@@ -101,5 +94,4 @@ ion-button {
 ion-item ion-icon {
   margin-right: 16px;
 }
-
 </style>

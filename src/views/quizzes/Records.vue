@@ -32,15 +32,6 @@
 </template>
 
 <script lang="ts">
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonNote,
-} from "@ionic/vue";
-
 import { scanOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { defineComponent } from "vue";
@@ -50,12 +41,6 @@ import RecordItem from "./RecordItem.vue";
 export default defineComponent({
   name: "Records",
   components: {
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonNote,
-    IonContent,
-    IonPage,
     RecordItem,
   },
   setup() {

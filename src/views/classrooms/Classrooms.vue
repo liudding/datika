@@ -39,14 +39,6 @@
 
 <script lang="ts">
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-} from "@ionic/vue";
-
-import {
   ellipsisHorizontal,
   ellipsisVertical,
   addOutline,
@@ -61,11 +53,6 @@ import Api from "@/api";
 export default defineComponent({
   name: "Classrooms",
   components: {
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonPage,
     ClassroomItem,
     CreateClassroom,
   },
