@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>Quizzes</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="showCreatePopup">
+          <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
