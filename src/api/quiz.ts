@@ -43,9 +43,18 @@ function records(id: number) {
   })
 }
 
-function creteRecord(id: number) {
+function creteRecord(id: number, data: any) {
   return request({
     url: `/quizzes/${id}/records`,
+    data,
+    method: 'post'
+  })
+}
+
+function submit(id: number, data: any) {
+  return request({
+    url: `/quizzes/${id}/records`,
+    data,
     method: 'post'
   })
 }
@@ -72,6 +81,7 @@ export default {
   destroy,
   records,
   creteRecord,
+  submit,
   questions,
   updateQuestion
 }

@@ -42,6 +42,30 @@
         <ion-item button>设置测验</ion-item>
       </ion-list>
     </ion-popover>
+
+    <van-popup
+      v-model:show="showClassroomPicker"
+      position="bottom"
+      round
+      closeable
+    >
+    <div>
+      <ion-label>
+        <ion-list>
+          <ion-item v-for="classroom in classrooms" :key="classroom.id">
+            <ion-label>{{ classroom.name }}</ion-label>
+            <ion-checkbox
+              slot="end"
+              @update:modelValue="classroom.isChecked = $event"
+              :modelValue="classroom.isChecked"
+            >
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+        <ion-button>确定</ion-button>
+      </ion-label>
+      </div>
+    </van-popup>
   </ion-page>
 </template>
 
@@ -71,12 +95,18 @@ export default defineComponent({
       quiz: {
         id: 0,
         name: "",
-        classrooms: [],
       },
+      attachedClassrooms: [1],
+      classrooms: []
     };
   },
   setup() {
     const router = useRouter();
+
+    const showClassroomPicker = ref(false);
+    const showClassroomPickerPopup = (status = true) => {
+      showClassroomPicker.value = status;
+    };
 
     const isOpenRef = ref(false);
     const refEvent = ref();
@@ -89,15 +119,14 @@ export default defineComponent({
       isOpenRef,
       setOpen,
       refEvent,
+      showClassroomPicker,
+      showClassroomPickerPopup,
       add,
       create,
       documentTextOutline,
     };
   },
   components: {
-    IonBackButton,
-    IonButtons,
-    IonHeader,
     IonToolbar,
     IonPopover,
     IonFab,
@@ -111,13 +140,24 @@ export default defineComponent({
       const resp = await Api.quiz.show(this.id);
       this.quiz = resp.data;
     },
+    async getClassrooms() {
+      const resp = await Api.classroom.list();
+      this.classrooms = resp.data.data;
+    },
     gotoScan() {
-      if (this.quiz.classrooms && this.quiz.classrooms.length > 0) {
-        this.router.push("/scan");
+      if (this.attachedClassrooms.length > 0) {
+        this.router.push({
+          name: "Scan",
+          params: {
+            id: this.quiz.id,
+          },
+        });
         return;
       }
 
       // 选择班级
+      this.showClassroomPickerPopup();
+      this.getClassrooms();
     },
     gotoQuestions() {
       this.router.push(`/quizzes/${this.quiz.id}/questions`);

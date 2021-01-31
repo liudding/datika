@@ -18,7 +18,7 @@ export default class GradeCam {
 
   private container: HTMLElement | string;
   private examLength: Number;
-  private autoLength: Number;
+  private autoLength: boolean;
 
   private events: EventsBag = {};
   // private events: Array<Object> = [];
@@ -31,7 +31,7 @@ export default class GradeCam {
 
   private CAMERA_RENDERED_ID = 'gcplugin0';
 
-  constructor(container: HTMLElement | string, examLength: Number, autoLength: Number) {
+  constructor(container: HTMLElement | string, examLength: Number, autoLength: boolean = true) {
     this.container = container;
     this.examLength = examLength;
     this.autoLength = autoLength;

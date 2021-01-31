@@ -16,13 +16,13 @@ export default class Scanner {
 
   private container: HTMLElement|string;
   private examLength: number;
-  private autoLength: number;
+  private autoLength: boolean;
 
   private events: object = {};
 
   private currentDriver: ScanDriver|null = null;
 
-  constructor(container: HTMLElement|string, examLength: number, autoLength: number) {
+  constructor(container: HTMLElement|string, examLength: number, autoLength: boolean) {
     this.container = container;
     this.examLength = examLength;
     this.autoLength = autoLength;

@@ -195,6 +195,8 @@ export default defineComponent({
       } else if (count < this.questions.length) {
         this.trimQuestions(this.questions.length - count);
       }
+
+      this.showQuestionCountInput = false;
     },
 
     async getQuestions() {

@@ -19,9 +19,9 @@
         :overlay-style="{ background: 'rgba(0,0,0,0.1)' }"
       >
         <div class="record-panel">
-          <div>张无忌</div>
+          <div>{{ currentRecord.name }}</div>
           <div style="margin-top: 8px">
-            <span style="font-size: 36px">20</span>
+            <span style="font-size: 36px">{{ currentRecord.score }}</span>
             <span style="font-size: 10px; margin-left: 3px; color: dark"
               >分</span
             >
@@ -55,19 +55,12 @@
 </template>
 
 <script lang="ts">
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonToolbar,
-} from "@ionic/vue";
 import { appsOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 
 import Scanner from "@/services/gradecam/Scanner";
 import Records from "./Records.vue";
+import Api from "@/api";
 
 let scanner: Scanner;
 
@@ -75,6 +68,14 @@ export default defineComponent({
   name: "Scan",
   data() {
     return {
+      quiz: {
+        name: "",
+        questionCount: 0,
+      },
+      currentRecord: {
+        name: "",
+        score: 0,
+      },
       appsOutline,
     };
   },
@@ -98,23 +99,26 @@ export default defineComponent({
     };
   },
   components: {
-    IonBackButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonPage,
-    IonToolbar,
     Records,
   },
-  mounted() {
+  async mounted() {
+    this.getQuiz();
     this.initScanner();
   },
   ionViewWillLeave() {
     scanner.stop();
   },
   methods: {
+    async getQuiz() {
+      const resp = await Api.quiz.show(+this.$route.params.id);
+      this.quiz = resp.data;
+    },
+    async submit(data: any) {
+      const resp = await Api.quiz.submit(+this.$route.params.id, data);
+      this.currentRecord = resp.data;
+    },
     initScanner() {
-      scanner = new Scanner("camera-container", 10, 10);
+      scanner = new Scanner("camera-container", this.quiz.questionCount, true);
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
@@ -137,9 +141,8 @@ export default defineComponent({
       // scanner.pause();
 
       this.showPopup(false);
-      this.showPopup(true);
 
-      return scanObj;
+      this.submit(scanObj);
     },
     onIssue(issue: object) {
       return issue;

@@ -66,7 +66,7 @@ const routes: Array<RouteRecordRaw> = [
     },
 
     {
-        path: '/scan',
+        path: '/quizzes/:id/scan',
         name: 'Scan',
         component: () => import('@/views/scan/Scan.vue')
     },
