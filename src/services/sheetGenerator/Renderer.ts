@@ -8,7 +8,6 @@ import NumberSection from './NumberSection';
 export default class Renderer {
     protected form: Form;
 
-
     protected canvas: HTMLElement;
 
     constructor(form: Form) {
@@ -35,8 +34,8 @@ export default class Renderer {
 
     makeGroup(group: BubbleGroup) {
         let ele = `<div class="group" style="grid-column-gap:${group.gap}px;"><div class="label" style="width:${group.labelWidth}px;">${group.label}</div>`
-        for (let index = 0; index < group.choices.length; index++) {
-            ele += this.makeBubble(group.choices[index], group.bubbleRadius);
+        for (let index = 0; index < group.bubbles.length; index++) {
+            ele += this.makeBubble(group.bubbles[index].text, group.bubbleRadius);
         }
 
         ele += ' </div>'

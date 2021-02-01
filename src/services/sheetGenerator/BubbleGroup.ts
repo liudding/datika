@@ -8,7 +8,7 @@ export default class BubbleGroup extends Section {
 
     public label: string;
 
-    protected bubbles: Bubble[] = [];
+    public bubbles: Bubble[] = [];
 
 
     constructor(label: string, choices: string) {

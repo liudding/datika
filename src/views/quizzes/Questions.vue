@@ -5,8 +5,10 @@
         <ion-buttons>
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title>Quiz</ion-title>
-        <ion-buttons slot="end"><ion-button @click="download">下载答题卡</ion-button></ion-buttons>
+        <ion-title>{{ $route.query.name }}</ion-title>
+        <ion-buttons slot="end"
+          ><ion-button @click="download">下载答题卡</ion-button></ion-buttons
+        >
       </ion-toolbar>
     </ion-header>
 
@@ -19,39 +21,30 @@
           </div>
         </div>
         <div class="questions-stats">
-          <ion-label
-            v-if="!showQuestionCountInput"
-            @click="
-              () => {
-                showQuestionCountInput = true;
-              }
-            "
-          >
-            <h1>
+          <div v-if="!showQuestionCountInput" @click="onEditQuestionCount">
+            <h3>
               {{ questions.length }} 题
               <span>
                 <ion-icon :icon="createOutline"></ion-icon>
               </span>
-            </h1>
-          </ion-label>
-          <ion-label v-if="showQuestionCountInput">
-            <div>
-              <div class="question-count-input-wrapper">
-                <ion-input
-                  :value="questions.length"
-                  @ionBlur="onQuestionCountChange($event)"
-                  type="number"
-                  max="120"
-                  min="3"
-                  step="1"
-                  enterkeyhint="enter"
-                  class="question-count-input"
-                  autofocus
-                />
-              </div>
-              <span> 题</span>
+            </h3>
+          </div>
+          <div v-if="showQuestionCountInput">
+            <div class="question-count-input-wrapper">
+              <ion-input
+                :value="questions.length"
+                @ionBlur="onQuestionCountChange($event)"
+                type="number"
+                max="120"
+                min="3"
+                step="1"
+                enterkeyhint="enter"
+                class="question-count-input"
+                autofocus
+              />
             </div>
-          </ion-label>
+            <span> 题</span>
+          </div>
           <div class="stats">
             <ion-note
               >单选题:<span class="stats-number">{{
@@ -74,6 +67,10 @@
         <ion-icon :icon="scanOutline" color="primary"></ion-icon>
       </ion-item>
 
+      <BubbleSheet :questions="questions"></BubbleSheet>
+
+      <div id="bubble-sheet"></div>
+
       <ion-list>
         <QuestionItem
           v-for="question in questions"
@@ -93,10 +90,13 @@ import { add, createOutline } from "ionicons/icons";
 import { scanOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
+import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
+import Form from "@/services/sheetGenerator/Form";
+import Renderer from "@/services/sheetGenerator/Renderer";
+import domtoimage from 'dom-to-image';
 
 export default defineComponent({
-  name: "Home",
   data() {
     const questions: any[] = [];
     return {
@@ -148,8 +148,11 @@ export default defineComponent({
   },
   components: {
     QuestionItem,
+    BubbleSheet,
   },
   created() {
+    // this.;
+
     this.getQuestions();
   },
   methods: {
@@ -177,25 +180,55 @@ export default defineComponent({
 
       this.showQuestionCountInput = false;
     },
+    onEditQuestionCount() {
+      this.showQuestionCountInput = true;
+    },
 
     download() {
       // 检查所有题目是否都设置了正确答案
 
-      const noAnswer = this.questions.findIndex(item => !item.answer || item.answer.length === 0)
+      const noAnswer = this.questions.findIndex(
+        (item) => !item.answer || item.answer.length === 0
+      );
 
       if (noAnswer) {
         // alert
       }
 
-      
+      const form = Form.make(this.questions, 6);
+      form.findBestLayout();
 
+      const renderer = new Renderer(form);
+      const node = renderer.render();
+
+      document.getElementById('bubble-sheet')?.append(node)
+
+      const node2 = document.getElementById('bubble-sheet')
+
+      domtoimage
+        .toPng(node2 as Node)
+        .then(function (dataUrl: string) {
+
+          // const a = document.createElement('a');
+          // a.setAttribute('download', '答题卡');
+          // a.setAttribute('href', dataUrl);
+          // a.click()
+
+          const img = new Image();
+          img.src = dataUrl;
+          img.width = 400;
+          img.height = 500;
+
+          document.body.appendChild(img);
+        })
+        .catch(function (error: Error) {
+          console.error("oops, something went wrong!", error);
+        });
     },
 
     async getQuestions() {
       const quiz = this.$route.params.id;
       const resp = await Api.quiz.questions(+quiz);
-
-      // this.quiz = resp.data;
 
       this.questions = resp.data || [];
     },
@@ -243,12 +276,14 @@ export default defineComponent({
 ion-content {
   /* --background: #eee; */
   --padding-top: 8px;
+  --padding-bottom: 16px;
   --padding-start: 8px;
   --padding-end: 8px;
 }
 
 ion-list {
   margin-top: 16px;
+  border-radius: 8px;
   /* background: #eee; */
 }
 
@@ -295,5 +330,12 @@ ion-item {
   --background: rgb(246, 246, 246);
   display: inline-block;
   border-radius: 8px;
+}
+
+#bubble-sheet {
+  /* position: absolute;
+  top: -1000000px;
+  left: -10000px;
+  z-index: -100; */
 }
 </style>

@@ -153,7 +153,15 @@ export default defineComponent({
       this.getClassrooms();
     },
     gotoQuestions() {
-      this.router.push(`/quizzes/${this.quiz.id}/questions`);
+      this.router.push({
+        name: 'QuizQuestions',
+        params: {
+          id: this.quiz.id
+        },
+        query: {
+          name: this.quiz.name
+        }
+      });
     },
 
     gotoRecords() {

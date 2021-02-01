@@ -16,12 +16,27 @@ export default class Form extends Section {
     maxHeight = 3600;
 
     protected groups: BubbleGroup[] = []
-    // protected sections: Section[] = [];
 
     public numberSection: NumberSection | null = null;
 
     public bubbleSections: BubbleSection[] = [];
     public subBubbleSections: BubbleSection[]|null = null;
+
+    public static make(data: any, digits=0) {
+        const groups: BubbleGroup[] = [];
+        for (const group of data) {
+            groups.push(new BubbleGroup(group.label, group.choices));
+        }
+
+        const form = new Form();
+        form.setGroups(groups);
+
+        if (digits > 0) {
+            form.setNumber(new NumberSection(digits));
+        }
+
+        return form;
+    }
 
     findBestLayout() {
         const layouts = this.findPossibleLayouts(this.groups)
@@ -54,7 +69,10 @@ export default class Form extends Section {
             const chunks: any[] = [];
 
             arr.forEach((item: any) => {
-                const lastChunk = chunks[chunks.length -1] || [];
+                if (chunks.length === 0) {
+                    chunks.push([])
+                }
+                const lastChunk = chunks[chunks.length -1];
 
                 if (lastChunk.length === size) {
                     chunks.push([item]);
