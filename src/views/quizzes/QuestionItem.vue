@@ -92,6 +92,7 @@ export default defineComponent({
           answer: answer,
           choices: this.question.choices,
           type: this.detectQuestionType(answer, this.question.choices),
+          score: this.question.score
         },
         "answer"
       );

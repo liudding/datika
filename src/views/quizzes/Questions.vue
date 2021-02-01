@@ -6,11 +6,7 @@
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
         <ion-title>Quiz</ion-title>
-        <ion-buttons slot="primary">
-          <ion-button @click="setOpen(true, $event)" color="danger">
-            <ion-icon slot="end" :icon="createOutline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+        <ion-buttons slot="end"><ion-button @click="download">下载答题卡</ion-button></ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -88,19 +84,6 @@
         </QuestionItem>
       </ion-list>
     </ion-content>
-
-    <ion-popover
-      :is-open="isOpenRef"
-      css-class="my-custom-class"
-      :event="refEvent"
-      :translucent="true"
-      @onDidDismiss="setOpen(false)"
-    >
-      <ion-list>
-        <ion-item button>编辑题目</ion-item>
-        <ion-item button>设置测验</ion-item>
-      </ion-list>
-    </ion-popover>
   </ion-page>
 </template>
 
@@ -133,11 +116,11 @@ export default defineComponent({
       let score = 0;
 
       this.questions.forEach((item: any) => {
-        if (item.type === "single_choice") {
+        if (item.type === 1) {
           singleCount++;
-        } else if (item.type === "multi_choice") {
+        } else if (item.type === 2) {
           multiCount++;
-        } else if (item.type === "boolean") {
+        } else if (item.type === 3) {
           booleanCount++;
         }
 
@@ -195,6 +178,19 @@ export default defineComponent({
       this.showQuestionCountInput = false;
     },
 
+    download() {
+      // 检查所有题目是否都设置了正确答案
+
+      const noAnswer = this.questions.findIndex(item => !item.answer || item.answer.length === 0)
+
+      if (noAnswer) {
+        // alert
+      }
+
+      
+
+    },
+
     async getQuestions() {
       const quiz = this.$route.params.id;
       const resp = await Api.quiz.questions(+quiz);
@@ -245,7 +241,7 @@ export default defineComponent({
 
 <style scoped>
 ion-content {
-  --background: #eee;
+  /* --background: #eee; */
   --padding-top: 8px;
   --padding-start: 8px;
   --padding-end: 8px;
@@ -253,7 +249,7 @@ ion-content {
 
 ion-list {
   margin-top: 16px;
-  background: #eee;
+  /* background: #eee; */
 }
 
 ion-item {
