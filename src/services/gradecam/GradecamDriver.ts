@@ -72,18 +72,20 @@ export default class GradeCam {
   stop() {
     this.unbindEvents()
     this.gradecam.stopCamera()
-
-
   }
 
 
   pause() {
-    this.unbindEvents()
+    for (const event in this.events) {
+      this.events[event].bound = false;
+      this.gradecam.unbind(event, this.events[event].callback)
+    }
   }
 
   resume() {
     for (let event in this.events) {
-      const cb = this.events[event] as Function;
+      const cb = this.events[event].callback as Function;
+
       this.gradecam.bind(event, cb);
     }
   }
@@ -95,12 +97,20 @@ export default class GradeCam {
 
   bind(event: Event, callback: Function): void {
 
-    this.events[event] = callback;
+    this.events[event] = {
+      callback,
+      bound: false
+    };
 
-    this.gradecam && this.gradecam.bind(event, callback);
+    if (this.gradecam) {
+      this.gradecam.bind(event, callback);
+
+      this.events[event].bound = true;
+    }
   }
 
   unbind(event: Event): void {
+    delete this.events[event];
 
     this.gradecam && this.gradecam.unbind(event)
   }
@@ -122,7 +132,7 @@ export default class GradeCam {
 
   private unbindEvents() {
     for (let event in this.events) {
-      this.gradecam.unbind(event);
+      this.unbind(event as Event);
     }
   }
 
@@ -140,6 +150,8 @@ export default class GradeCam {
         this.gradecam = gradecam;
 
         this.sdkLoaded = true;
+
+        this.resume();
 
         this.gradecam.bind('pluginLoad', () => {
           this.pluginLoaded = true;
