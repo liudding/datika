@@ -2,7 +2,13 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>班级</ion-title>
+        <ion-buttons v-if="archived">
+          <ion-back-button
+            text="班级"
+            default-href="/"
+          ></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{archived ? '已归档班级' : '班级'}}</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
@@ -16,7 +22,7 @@
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
 
-      <ion-header collapse="condense">
+      <ion-header v-if="!archived" collapse="condense">
         <ion-toolbar>
           <ion-title size="large">班级</ion-title>
         </ion-toolbar>
@@ -29,6 +35,8 @@
           :classroom="classroom"
         />
       </ion-list>
+
+      <ion-item v-if="!archived" routerLink="/classrooms/type/archived" lines="none" class="archived-entry">已归档班级</ion-item>
 
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
         <CreateClassroom @created="onClassroomCreated"></CreateClassroom>
@@ -55,6 +63,9 @@ export default defineComponent({
   components: {
     ClassroomItem,
     CreateClassroom,
+  },
+  props: {
+    archived: Boolean,
   },
   setup() {
     const router = useRouter();
@@ -92,7 +103,9 @@ export default defineComponent({
     },
     async getClassrooms() {
       try {
-        const resp = await Api.classroom.list();
+        const resp = await Api.classroom.list({
+          archived: !!this.archived
+        });
         this.classrooms = resp.data.data;
       } catch (e) {
         console.error(e);
@@ -106,3 +119,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.archived-entry {
+  margin: 16px;
+  --background: transparent;
+  font-size: 12px;
+  text-align: center;
+}
+</style>

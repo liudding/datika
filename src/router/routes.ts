@@ -41,6 +41,12 @@ const routes: Array<RouteRecordRaw> = [
     },
 
     {
+        path: '/classrooms/type/:archived',
+        component: () => import('@/views/classrooms/Classrooms.vue'),
+        props: true,
+    },
+
+    {
         path: '/classrooms/edit',
         name: 'EditClassroom',
         component: () => import('@/views/classrooms/Edit.vue'),
@@ -82,7 +88,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/login/LoginWithPassword.vue')
     },
 
-  
+
     {
         path: '/subscriptions',
         name: 'Subscription',

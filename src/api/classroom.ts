@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
-function list() {
+function list(query?: object) {
   return request({
     url: '/classrooms',
-    method: 'get'
+    params: query
   })
 }
 
