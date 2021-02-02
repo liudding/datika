@@ -8,9 +8,9 @@
             default-href="/"
           ></ion-back-button>
         </ion-buttons>
-        <ion-title>{{ classroom.name }}</ion-title>
+        <ion-title>{{ classroom.name }}（{{ studentCount }}人）</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="showCreatePopup(true)">
+          <ion-button v-if="!classroom.archivedAt"  @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
           <ion-button @click="setPopoverOpen(true, $event)">
@@ -21,8 +21,7 @@
     </ion-header>
 
     <ion-content :fullscreen="true" v-if="classroom">
-      <div class="d-flex">共 {{ studentCount }} 学生</div>
-
+      <ion-item v-if="classroom.archivedAt"  class="archived" lines="none">该班级已经归档</ion-item>
       <ion-list>
         <ion-item v-for="student in students" :key="student.id" detail>
           <div>{{ student.name }}</div>
@@ -41,8 +40,10 @@
         @onDidDismiss="setPopoverOpen(false)"
       >
         <ion-list>
-          <ion-item button>编辑班级</ion-item>
-          <ion-item button>删除班级</ion-item>
+          <ion-item @click="editClassroom">编辑班级</ion-item>
+          <ion-item v-if="!classroom.archivedAt" @click="archiveClassroom">归档班级</ion-item>
+          <ion-item v-else @click="unarchiveClassroom">解档班级</ion-item>
+          <ion-item @click="deleteClassroom">删除班级</ion-item>
         </ion-list>
       </ion-popover>
     </ion-content>
@@ -53,6 +54,7 @@
 import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
+import { alertController } from "@ionic/vue";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 
@@ -60,10 +62,12 @@ export default defineComponent({
   name: "Classroom",
   data() {
     const students: any[] = [];
+    const classroom: any = null;
+
     return {
       settingsOutline,
       addOutline,
-      classroom: {},
+      classroom,
       students,
       studentCount: 0,
       getBackButtonText: () => {
@@ -76,7 +80,7 @@ export default defineComponent({
   setup() {
     const popoverOpenRef = ref(false);
     const popoverRefEvent = ref();
-    const setPopoverOpen = (state: boolean, event: Event) => {
+    const setPopoverOpen = (state: boolean, event?: Event) => {
       popoverRefEvent.value = event;
       popoverOpenRef.value = state;
     };
@@ -109,8 +113,9 @@ export default defineComponent({
     });
 
     this.classroom = {
-      id: classId,
-      name: this.$route.query.name,
+      id: +classId,
+      name: this.$route.query.name as string,
+      archivedAt: null
     };
   },
   methods: {
@@ -121,9 +126,86 @@ export default defineComponent({
 
       this.showCreatePopup(false);
     },
+
+    async doArchive() {
+      const classId = this.$route.params.id;
+      await Api.classroom.archive(+classId);
+
+      this.classroom.archivedAt = Date.now()/1000;
+    },
+
+    async doDelete() {
+      const classId = this.$route.params.id;
+      await Api.classroom.destroy(+classId);
+
+      this.router.back();
+    },
+
+    editClassroom() {
+      this.setPopoverOpen(false);
+    },
+    async unarchiveClassroom() {
+      const classId = this.$route.params.id;
+      await Api.classroom.unarchive(+classId);
+
+      this.classroom.archivedAt = null;
+    },
+    async archiveClassroom() {
+      this.setPopoverOpen(false);
+
+      const alert = await alertController.create({
+        cssClass: "my-custom-class",
+        header: "确定归档吗",
+        message: "归档之后，不会再展示此班级。",
+        buttons: [
+          {
+            text: "取消",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "归档",
+            handler: () => {
+              this.doArchive();
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
+
+    async deleteClassroom() {
+      this.setPopoverOpen(false);
+
+      const alert = await alertController.create({
+        cssClass: "my-custom-class",
+        header: "确定删除吗",
+        message: "删除之后，该班级的所有相关数据将一并删除。",
+        buttons: [
+          {
+            text: "取消",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "删除",
+            cssClass: "danger",
+            handler: () => {
+              this.doDelete();
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
   },
 });
 </script>
 
 <style scoped>
+.archived {
+  margin: 16px;
+
+  border-radius: 8px;
+}
 </style>

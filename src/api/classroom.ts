@@ -28,6 +28,20 @@ function update(id: number) {
   })
 }
 
+function archive(id: number) {
+  return request({
+    url: `/classrooms/${id}/archive`,
+    method: 'post'
+  })
+}
+
+function unarchive(id: number) {
+  return request({
+    url: `/classrooms/${id}/unarchive`,
+    method: 'post'
+  })
+}
+
 function destroy(id: number) {
   return request({
     url: `/classrooms/${id}`,
@@ -55,6 +69,8 @@ export default {
   show,
   create,
   update,
+  archive,
+  unarchive,
   destroy,
   students,
   createStudent
