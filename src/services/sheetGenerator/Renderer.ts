@@ -45,7 +45,7 @@ export default class Renderer {
 
     makeBubble(text: string, radius: number, border = 8) {
         const lineHeight = this.form.bubbleRadius - border * 2;
-        return `<div class="bubble" style="height:${radius}px;width: ${radius}px;border: ${border}px solid black;box-sizing: border-box; line-height:${lineHeight};">${text}</div>`
+        return `<div class="bubble" style="height:${radius}px;width: ${radius}px;border: ${border}px solid black;box-sizing: border-box; line-height:${lineHeight}px;">${text}</div>`
     }
 
     makeSection(section: BubbleSection, x: number, y = 0) {
