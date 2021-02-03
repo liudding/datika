@@ -13,7 +13,7 @@
         <Plans @subscribed="subscribed"></Plans>
       </div>
       <div v-else>
-        <ion-label>{{ subscription.plan.name }}</ion-label>
+        <ion-label>{{ subscription && subscription.plan.name }}</ion-label>
       </div>
     </ion-content>
   </ion-page>
@@ -28,8 +28,9 @@ export default defineComponent({
   name: "Subscription",
   components: { Plans },
   data() {
+    const subscription: any = null;
     return {
-      subscription: {},
+      subscription,
       plans: [],
       showPlans: false,
     };
@@ -48,6 +49,7 @@ export default defineComponent({
       } else {
         this.showPlans = true;
       }
+       this.showPlans = true;
     },
     subscribed(subscription: any) {
       this.subscription = subscription;

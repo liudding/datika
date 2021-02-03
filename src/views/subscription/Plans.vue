@@ -2,19 +2,29 @@
   <div>
     <ion-grid>
       <ion-row>
-        <div
+        <ion-col
           v-for="plan in plans"
           :key="plan.id"
           @click="pickPlan(plan)"
-          lines="none"
           class="plan"
           :class="{
-            selected: plan.selected
+            selected: plan.selected,
           }"
+          style="padding: 8px;"
         >
-          <ion-label>{{ plan.name }}</ion-label>
-          <div slot="end">{{ plan.price }}¥</div>
-        </div>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+              <ion-card-title>{{plan.name}}</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+              Keep close to Nature's heart... and break clear away, once in
+              awhile, and climb a mountain or spend a week in the woods. Wash
+              your spirit clean.
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
       </ion-row>
     </ion-grid>
 
@@ -24,11 +34,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import {
+  IonCard,
+  IonCardContent,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonCol, IonGrid, IonRow
+} from "@ionic/vue";
 import Api from "@/api";
 
 export default defineComponent({
-  name: "Subscription",
-  components: {},
+  components: { IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonCol, IonGrid, IonRow },
   data() {
     const plans: any[] = [];
     return {
@@ -57,11 +73,11 @@ export default defineComponent({
     },
 
     async subscribe() {
-      const plan = this.plans.find(i => i.selected)
+      const plan = this.plans.find((i) => i.selected);
 
       const resp = await Api.subscription.subscribe(plan.id);
 
-      this.$emit('subscribed', resp.data)
+      this.$emit("subscribed", resp.data);
     },
   },
 });
@@ -79,11 +95,10 @@ ion-item {
 
 .plan {
   border-radius: 8px;
-  border: 2px solid gray;
 }
 
-.selected {
-  background: rgb(231, 229, 112);
-   border: 2px solid rgb(255, 251, 0);
+.selected ion-card {
+  --background: rgb(245, 200, 1);
+  --color: white;
 }
 </style>
