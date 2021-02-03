@@ -21,8 +21,6 @@ function update(id: number) {
   })
 }
 
-
-
 function create(data: any) {
   return request({
     url: `/quizzes`,
@@ -73,6 +71,17 @@ function updateQuestion(question: number) {
   })
 }
 
+function attachClassrooms(id: number, classrooms: number[]) {
+  return request({
+    url: `/quizzes/${id}/attach_classrooms`,
+    data: {
+      classrooms
+    },
+    method: 'post'
+  })
+}
+
+
 
 export default {
   list,
@@ -84,5 +93,6 @@ export default {
   creteRecord,
   submit,
   questions,
-  updateQuestion
+  updateQuestion,
+  attachClassrooms
 }

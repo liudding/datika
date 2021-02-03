@@ -143,11 +143,17 @@ export default defineComponent({
     },
     async showClassroomPicker() {
       await this.getClassrooms();
-       this.showClassroomPickerPopup();
+      this.showClassroomPickerPopup();
     },
-    attachClassrooms() {
-      const checked = this.classrooms.filter((i: any )=> i.isChecked);
-      const ids = checked.map(i=> i.id)
+    async attachClassrooms() {
+      const classrooms = this.classrooms.filter((i: any )=> i.isChecked);
+      const classroomIds = classrooms.map((i: any)=> i.id)
+
+      await Api.quiz.attachClassrooms(this.id, classroomIds)
+
+      this.attachedClassrooms = classrooms;
+
+       this.showClassroomPickerPopup(false);
     },
     gotoScan() {
       if (this.attachedClassrooms.length > 0) {
