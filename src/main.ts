@@ -29,14 +29,14 @@ import '@/styles/index.css';
 import { Popup, Stepper } from 'vant';
 import {
   IonItem, IonPage, IonContent, IonHeader, IonList,
-  IonButton, IonButtons, IonBackButton, 
-  IonInput,
+  IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
+  IonInput, IonCheckbox,
   IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel, IonNote,
   IonToolbar,
   IonAlert, IonPopover
 } from '@ionic/vue';
 
-import '@/styles/index.scss'
+// import '@/styles/index.scss'
 
 const app = createApp(App)
   .use(IonicVue)
@@ -48,14 +48,18 @@ router.isReady().then(() => {
 
 app.use(Stepper).use(Popup);
 
+
 app.component('IonPage', IonPage)
   .component('IonContent', IonContent)
   .component('IonHeader', IonHeader)
   .component('IonList', IonList)
   .component('IonItem', IonItem)
   .component('IonInput', IonInput)
+  .component('IonCheckbox', IonCheckbox)
   .component('IonButton', IonButton)
   .component('IonButtons', IonButtons)
+  .component('IonFab', IonFab)
+  .component('IonFabButton', IonFabButton)
   .component('IonBackButton', IonBackButton)
   .component('IonRefresher', IonRefresher)
   .component('IonRefresherContent', IonRefresherContent)

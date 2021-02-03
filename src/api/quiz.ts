@@ -7,9 +7,10 @@ function list() {
   })
 }
 
-function show(id: number) {
+function show(id: number, query?: any) {
   return request({
     url: `/quizzes/${id}`,
+    params: query
   })
 }
 

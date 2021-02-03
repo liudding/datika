@@ -17,9 +17,15 @@
     <ion-content :fullscreen="true">
       <ion-item lines="none">
         <div class="brief-infos">
-          <div @click="gotoRecords" class="brief-item">班级</div>
-          <div class="brief-item">学生</div>
-          <div class="brief-item">题目</div>
+          <div class="brief-item">班级{{ quiz.classroomCount }}</div>
+          <div @click="gotoRecords" class="brief-item">
+            学生
+            <div>{{ quiz.studentCount }}</div>
+          </div>
+          <div class="brief-item">
+            题目
+            <div>{{ quiz.questionCount }}</div>
+          </div>
         </div>
       </ion-item>
 
@@ -44,37 +50,33 @@
     </ion-popover>
 
     <van-popup
-      v-model:show="showClassroomPicker"
+      v-model:show="classroomPickerRef"
       position="bottom"
       round
       closeable
     >
-    <div>
-      <ion-label>
-        <ion-list>
-          <ion-item v-for="classroom in classrooms" :key="classroom.id">
-            <ion-label>{{ classroom.name }}</ion-label>
-            <ion-checkbox
-              slot="end"
-              @update:modelValue="classroom.isChecked = $event"
-              :modelValue="classroom.isChecked"
-            >
-            </ion-checkbox>
-          </ion-item>
-        </ion-list>
-        <ion-button>确定</ion-button>
-      </ion-label>
-      </div>
+     
+        <ion-label>
+          <ion-list>
+            <ion-item v-for="classroom in classrooms" :key="classroom.id">
+              <ion-label>{{ classroom.name }}</ion-label>
+              <ion-checkbox
+                slot="end"
+                @update:modelValue="classroom.isChecked = $event"
+                :modelValue="classroom.isChecked"
+              >
+              </ion-checkbox>
+            </ion-item>
+          </ion-list>
+          <ion-button @click="attachClassrooms">确定</ion-button>
+        </ion-label>
     </van-popup>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { useRouter } from "vue-router";
-import {
-  IonFab,
-  IonFabButton,
-} from "@ionic/vue";
+import { IonFab, IonFabButton } from "@ionic/vue";
 import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
@@ -91,16 +93,17 @@ export default defineComponent({
         id: 0,
         name: "",
       },
-      attachedClassrooms: [1],
-      classrooms: []
+      attachedClassrooms: [],
+
+      classrooms: [],
     };
   },
   setup() {
     const router = useRouter();
 
-    const showClassroomPicker = ref(false);
+    const classroomPickerRef = ref(false);
     const showClassroomPickerPopup = (status = true) => {
-      showClassroomPicker.value = status;
+      classroomPickerRef.value = status;
     };
 
     const isOpenRef = ref(false);
@@ -114,7 +117,7 @@ export default defineComponent({
       isOpenRef,
       setOpen,
       refEvent,
-      showClassroomPicker,
+      classroomPickerRef,
       showClassroomPickerPopup,
       add,
       create,
@@ -130,12 +133,21 @@ export default defineComponent({
   },
   methods: {
     async getDetail() {
-      const resp = await Api.quiz.show(this.id);
+      const resp = await Api.quiz.show(this.id, { with: ["classrooms"] });
       this.quiz = resp.data;
+      this.attachedClassrooms = resp.data.classrooms;
     },
     async getClassrooms() {
       const resp = await Api.classroom.list();
       this.classrooms = resp.data.data;
+    },
+    async showClassroomPicker() {
+      await this.getClassrooms();
+       this.showClassroomPickerPopup();
+    },
+    attachClassrooms() {
+      const checked = this.classrooms.filter((i: any )=> i.isChecked);
+      const ids = checked.map(i=> i.id)
     },
     gotoScan() {
       if (this.attachedClassrooms.length > 0) {
@@ -149,18 +161,17 @@ export default defineComponent({
       }
 
       // 选择班级
-      this.showClassroomPickerPopup();
-      this.getClassrooms();
+      this.showClassroomPicker();
     },
     gotoQuestions() {
       this.router.push({
-        name: 'QuizQuestions',
+        name: "QuizQuestions",
         params: {
-          id: this.quiz.id
+          id: this.quiz.id,
         },
         query: {
-          name: this.quiz.name
-        }
+          name: this.quiz.name,
+        },
       });
     },
 

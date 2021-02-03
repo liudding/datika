@@ -67,11 +67,13 @@ let scanner: Scanner;
 export default defineComponent({
   name: "Scan",
   data() {
+    const students: any[] = [];
     return {
       quiz: {
         name: "",
         questionCount: 0,
       },
+      students,
       currentRecord: {
         name: "",
         score: 0,
@@ -102,7 +104,7 @@ export default defineComponent({
     Records,
   },
   async mounted() {
-    this.getQuiz();
+    await this.getQuiz();
     this.initScanner();
   },
   ionViewWillLeave() {
@@ -110,12 +112,30 @@ export default defineComponent({
   },
   methods: {
     async getQuiz() {
-      const resp = await Api.quiz.show(+this.$route.params.id);
+      const resp = await Api.quiz.show(+this.$route.params.id, { detail: true });
       this.quiz = resp.data;
     },
+    async getStudents() {
+      const resp = await Api.student.list();
+      this.students = resp.data;
+    },
     async submit(data: any) {
-      const resp = await Api.quiz.submit(+this.$route.params.id, data);
-      this.currentRecord = resp.data;
+      const studentNumber = data["gradecam_id"];
+
+      const student = this.students.find((s) => s.number == studentNumber);
+
+      const answers = data.answers.map((item: any) => {
+        return item.value;
+      });
+
+      const params = {
+        student:  0,
+        answers: answers,
+      };
+
+      const resp = await Api.quiz.submit(+this.$route.params.id, params);
+
+      return resp.data;
     },
     initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
@@ -136,15 +156,32 @@ export default defineComponent({
     gcInitCallback(suc: boolean) {
       return suc;
     },
-    onScan(scanObj: object) {
+    onScan(scanObj: any) {
       // const scanner = this.scanner as Scanner;
       // scanner.pause();
+      console.log("SCAN: ", scanObj);
 
       this.showPopup(false);
 
-      this.submit(scanObj);
+      // const studentNumber = scanObj["gradecam_id"];
+
+      // const student = this.students.find((s) => s.number == studentNumber);
+      // if (!student) {
+      //   // show alert;
+      //   console.log("no student found");
+      //   return;
+      // }
+
+      this.submit(scanObj).then((res) => {
+        this.currentRecord = res;
+         this.showPopup(true);
+
+        console.log(res);
+      });
     },
     onIssue(issue: object) {
+      console.log("ISSUE: ", issue);
+
       return issue;
     },
 

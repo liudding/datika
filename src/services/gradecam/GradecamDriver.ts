@@ -153,6 +153,8 @@ export default class GradeCam {
 
         this.resume();
 
+        this.gradecam.setShowMessages(true)
+
         this.gradecam.bind('pluginLoad', () => {
           this.pluginLoaded = true;
           resolve(true)
