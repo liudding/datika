@@ -68,12 +68,14 @@ export default defineComponent({
   name: "Scan",
   data() {
     const students: any[] = [];
+    const records: any[] = [];
     return {
       quiz: {
         name: "",
         questionCount: 0,
       },
       students,
+      records,
       currentRecord: {
         name: "",
         score: 0,
@@ -82,7 +84,7 @@ export default defineComponent({
     };
   },
   setup() {
-    const popupStatus = ref(false);
+    const popupStatus = ref(true);
     const showPopup = (show = true) => {
       popupStatus.value = show;
     };
@@ -112,12 +114,16 @@ export default defineComponent({
   },
   methods: {
     async getQuiz() {
-      const resp = await Api.quiz.show(+this.$route.params.id, { detail: true });
+      const resp = await Api.quiz.show(+this.$route.params.id, { with: ['classrooms', 'questions'] });
       this.quiz = resp.data;
     },
     async getStudents() {
       const resp = await Api.student.list();
       this.students = resp.data;
+    },
+     async getRecords() {
+      const resp = await Api.quiz.records(+this.$route.params.id);
+      this.records = resp.data;
     },
     async submit(data: any) {
       const studentNumber = data["gradecam_id"];
@@ -221,6 +227,7 @@ ion-toolbar {
   --ion-color-base: transparent !important;
   --border-width: 0px;
   --border-color: transparent;
+  --box-shadow: none;
 }
 
 ion-fab-button {

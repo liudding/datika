@@ -1,5 +1,5 @@
 <template>
-  <ion-item v-if="classroom" @click="gotoDetail" :detail="true">
+  <ion-item v-if="classroom" @click="gotoDetail" :detail="true" lines="none">
     <ion-label class="ion-text-wrap">
       <h2>
         {{ classroom.name }}
@@ -45,4 +45,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-item {
+  --min-height: 80px;
+
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+
 </style>

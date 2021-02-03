@@ -22,12 +22,6 @@
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
 
-      <ion-header v-if="!archived" collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">班级</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
       <ion-list>
         <ClassroomItem
           v-for="classroom in classrooms"
@@ -126,5 +120,11 @@ export default defineComponent({
   --background: transparent;
   font-size: 12px;
   text-align: center;
+}
+
+ion-list {
+  padding: 8px;
+  background: transparent;
+  
 }
 </style>

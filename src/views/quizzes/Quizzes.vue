@@ -16,12 +16,6 @@
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
 
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Quizzes</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
       <ion-list>
         <QuizItem v-for="quiz in quizzes" :key="quiz.id" :quiz="quiz" />
       </ion-list>
@@ -102,29 +96,7 @@ export default defineComponent({
 <style scoped>
 ion-list {
   padding: 8px;
-  background: rgb(246, 246, 246);
-}
-
-ion-header {
-  background: white;
-}
-
-ion-content {
-  --background: rgb(246, 246, 246);
-}
-
-@media (prefers-color-scheme: dark) {
-  ion-header {
-    background: #000;
-  }
-
-  ion-list {
-    padding: 8px;
-    background: #111;
-  }
-
-  ion-content {
-    --background: #111;
-  }
+  background: transparent;
+  
 }
 </style>
