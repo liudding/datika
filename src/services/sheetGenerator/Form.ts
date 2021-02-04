@@ -1,4 +1,4 @@
-import { Size, SizZero } from './Size'
+import { Size } from './Size'
 import Section from './Section'
 import Config from './Config'
 import BubbleGroup from './BubbleGroup';
@@ -43,8 +43,6 @@ export default class Form extends Section {
 
         let theLayout;
         let minLayoutHeight = Number.MAX_VALUE;
-
-        console.log('possible layouts', layouts)
 
         for (const layout of layouts) {
 
@@ -275,9 +273,9 @@ export default class Form extends Section {
             acc.height = Math.max(acc.height, section.height)
             acc.width += section.width
             return acc
-        }, SizZero);
+        }, {width: 0, height: 0});
 
-        this._size = { height, width }
+        this._size = { height, width } as Size;
 
         return this._size
     }
