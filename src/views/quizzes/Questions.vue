@@ -67,9 +67,7 @@
         <ion-icon :icon="scanOutline" color="primary"></ion-icon>
       </ion-item>
 
-      <BubbleSheet :questions="questions"></BubbleSheet>
-
-      <div id="bubble-sheet"></div>
+      <BubbleSheet v-if="showDownload" :questions="questions" @backdrop="showDownload = false;" @downloaded="showDownload = false;"></BubbleSheet>
 
       <ion-list>
         <QuestionItem
@@ -92,9 +90,7 @@ import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
-import Form from "@/services/sheetGenerator/Form";
-import Renderer from "@/services/sheetGenerator/Renderer";
-import domtoimage from 'dom-to-image';
+
 
 export default defineComponent({
   data() {
@@ -106,6 +102,7 @@ export default defineComponent({
       },
       questions,
       showQuestionCountInput: false,
+      showDownload: false
     };
   },
   computed: {
@@ -195,35 +192,9 @@ export default defineComponent({
         // alert
       }
 
-      const form = Form.make(this.questions, 6);
-      form.findBestLayout();
+      this.showDownload = true;
 
-      const renderer = new Renderer(form);
-      const node = renderer.render();
-
-      document.getElementById('bubble-sheet')?.append(node)
-
-      const node2 = document.getElementById('bubble-sheet')
-
-      domtoimage
-        .toPng(node2 as Node)
-        .then(function (dataUrl: string) {
-
-          // const a = document.createElement('a');
-          // a.setAttribute('download', '答题卡');
-          // a.setAttribute('href', dataUrl);
-          // a.click()
-
-          const img = new Image();
-          img.src = dataUrl;
-          img.width = 400;
-          img.height = 500;
-
-          document.body.appendChild(img);
-        })
-        .catch(function (error: Error) {
-          console.error("oops, something went wrong!", error);
-        });
+   
     },
 
     async getQuestions() {
@@ -332,10 +303,4 @@ ion-item {
   border-radius: 8px;
 }
 
-#bubble-sheet {
-  /* position: absolute;
-  top: -1000000px;
-  left: -10000px;
-  z-index: -100; */
-}
 </style>
