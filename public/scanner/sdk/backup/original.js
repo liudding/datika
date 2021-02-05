@@ -1469,42 +1469,42 @@
                                         audio: !1,
                                         video: {
                                             facingMode: "environment",
-                                            // advanced: [{
-                                            //     width: {
-                                            //         min: 1600
-                                            //     },
-                                            //     height: {
-                                            //         min: 1200
-                                            //     }
-                                            // }, {
-                                            //     width: {
-                                            //         min: 1920
-                                            //     },
-                                            //     height: {
-                                            //         min: 1080
-                                            //     }
-                                            // }, {
-                                            //     width: {
-                                            //         min: 1280
-                                            //     },
-                                            //     height: {
-                                            //         min: 760
-                                            //     }
-                                            // }, {
-                                            //     width: {
-                                            //         min: 800
-                                            //     },
-                                            //     height: {
-                                            //         min: 600
-                                            //     }
-                                            // }, {
-                                            //     width: {
-                                            //         min: 640
-                                            //     },
-                                            //     height: {
-                                            //         min: 480
-                                            //     }
-                                            // }]
+                                            advanced: [{
+                                                width: {
+                                                    min: 1600
+                                                },
+                                                height: {
+                                                    min: 1200
+                                                }
+                                            }, {
+                                                width: {
+                                                    min: 1920
+                                                },
+                                                height: {
+                                                    min: 1080
+                                                }
+                                            }, {
+                                                width: {
+                                                    min: 1280
+                                                },
+                                                height: {
+                                                    min: 760
+                                                }
+                                            }, {
+                                                width: {
+                                                    min: 800
+                                                },
+                                                height: {
+                                                    min: 600
+                                                }
+                                            }, {
+                                                width: {
+                                                    min: 640
+                                                },
+                                                height: {
+                                                    min: 480
+                                                }
+                                            }]
                                         }
                                     }, t && "" !== e[t] ? (r = e[t], o = "string" == typeof r ? r : null, r && navigator.mediaDevices && navigator.mediaDevices.enumerateDevices ? [4, navigator.mediaDevices.enumerateDevices()] : [3, 2]) : [3, 3];
                                 case 1:
