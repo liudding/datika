@@ -34,6 +34,6 @@ npm-debug.log*
 .env.local
 .env.*.local
 
-android
-.gradle
-ios
+# android
+# .gradle
+# ios
