@@ -43,6 +43,12 @@ function records(id: number, query?: object) {
   })
 }
 
+function record(id: number) {
+  return request({
+    url: '/records/' + id + '/',
+  })
+}
+
 function creteRecord(id: number, data: any) {
   return request({
     url: `/quizzes/${id}/records`,
@@ -112,6 +118,7 @@ export default {
   update,
   destroy,
   records,
+  record,
   creteRecord,
   submit,
   questions,

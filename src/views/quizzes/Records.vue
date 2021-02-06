@@ -1,11 +1,4 @@
 <template>
-  <!-- <ion-item lines="none">
-    <ion-label>人数：{{ records.length }}</ion-label>
-    <ion-label> <ion-note>平均分</ion-note></ion-label>
-
-    <ion-label> <ion-note>最高分</ion-note></ion-label>
-    <ion-label> <ion-note>最低分</ion-note></ion-label>
-  </ion-item> -->
   <ion-list>
     <RecordItem v-for="record in records" :key="record.id" :record="record" />
   </ion-list>

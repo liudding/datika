@@ -8,27 +8,21 @@
         <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="primary">
           <ion-button @click="gotoQuestions" color="primary">
-            <ion-icon slot="end" :icon="documentTextOutline"></ion-icon>
+            题目
           </ion-button>
+          <ion-button @click="gotoQuestions" color="primary"> 班级 </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <ion-item lines="none">
-        <div class="brief-infos">
-          <div class="brief-item">班级{{ quiz.classroomCount }}</div>
-          <div @click="gotoRecords" class="brief-item">
-            学生
-            <div>{{ quiz.studentCount }}</div>
-          </div>
-          <div class="brief-item">
-            题目
-            <div>{{ quiz.questionCount }}</div>
-          </div>
-        </div>
-      </ion-item>
+        <ion-label>人数：{{ quiz.recordCount }}</ion-label>
+        <ion-label> <ion-note>平均分</ion-note></ion-label>
 
+        <ion-label> <ion-note>最高分</ion-note></ion-label>
+        <ion-label> <ion-note>最低分</ion-note></ion-label>
+      </ion-item>
       <Records v-if="quiz.recordCount" :quiz="quiz"></Records>
       <Emptyset v-else title="暂无成绩"></Emptyset>
 

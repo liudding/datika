@@ -1,13 +1,16 @@
 <template>
   <ion-item
     v-if="record"
-    :routerLink="'/records/' + record.id"
+    :routerLink="'/quizzes/' + record.quizId + '/records/' + record.id"
     :detail="false"
     lines="none"
   >
-    <div class="d-flex align-items-center">
-      <h4>{{ record.student.name }}</h4>
-      <span style="margin-left: 8px">{{ record.student.number }}</span>
+    <div class="" style="padding: 8px 0;">
+      <div style="font-size: 17px;">{{ record.student.name }}</div>
+      <div class="d-flex" style="font-size: 14px; margin-top: 4px; color: gray;">
+        <div>{{ record.classroom.name }}</div>
+        <div style="margin-left: 8px">{{ record.student.number }}</div>
+      </div>
     </div>
 
     <div slot="end">{{ record.score }}</div>

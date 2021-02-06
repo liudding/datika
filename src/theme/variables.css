@@ -234,4 +234,9 @@ ion-content {
 
     --ion-card-background: #1e1e1e;
   }
+
+  ion-content {
+    --background: rgb(0, 0, 0);
+  }
+  
 }
