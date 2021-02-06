@@ -17,7 +17,12 @@
       </ion-refresher>
 
       <ion-list>
-        <QuizItem v-for="quiz in quizzes" :key="quiz.id" :quiz="quiz" />
+        <QuizItem
+          v-for="quiz in quizzes"
+          :key="quiz.id"
+          :quiz="quiz"
+          @more="onShowMore"
+        />
       </ion-list>
 
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
@@ -31,6 +36,7 @@
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
+import { actionSheetController } from "@ionic/vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
@@ -75,7 +81,7 @@ export default defineComponent({
     },
 
     onQuizCreated(quiz: any) {
-      this.quizzes.push(quiz);
+      this.quizzes.unshift(quiz);
       this.showCreatePopup(false);
 
       this.router.push({
@@ -84,10 +90,61 @@ export default defineComponent({
       });
     },
 
+    async onShowMore(quiz: any) {
+      const actionSheet = await actionSheetController.create({
+        header: quiz.name,
+        cssClass: "my-custom-class",
+        buttons: [
+          {
+            text: "编辑",
+            handler: () => {
+              //
+            },
+          },
+          {
+            text: "复制",
+            handler: () => {
+              this.copy(quiz.id);
+            },
+          },
+          {
+            text: "归档",
+            handler: () => {
+              this.archive(quiz.id);
+            },
+          },
+
+          {
+            text: "删除",
+            role: "destructive",
+            handler: () => {
+              console.log("Delete clicked");
+            },
+          },
+          {
+            text: "取消",
+            role: "cancel"
+          },
+        ],
+      });
+      return actionSheet.present();
+    },
+
     async refresh($event: any) {
       await this.getQuizzes();
 
       $event.target.complete();
+    },
+
+    async copy(id: number) {
+      const quiz = await Api.quiz.copy(id);
+      this.quizzes.unshift(quiz);
+    },
+    async archive(id: number) {
+      await Api.quiz.archive(id);
+
+      const index = this.quizzes.findIndex((q: any) => q.id === id);
+      this.quizzes.splice(index, 1);
     },
   },
 });
@@ -97,6 +154,5 @@ export default defineComponent({
 ion-list {
   padding: 8px;
   background: transparent;
-  
 }
 </style>

@@ -14,13 +14,21 @@
         </div>
       </div>
 
-      <div>
-        <span class="">
-          <ion-note>题数：{{ quiz.questionCount }}</ion-note>
-        </span>
-        <span class="date">
-          <ion-note>{{ quiz.createdAt }}</ion-note>
-        </span>
+      <div class="d-flex justify-content-between" style="margin-top: 8px;">
+        <div>
+          <span class="date">
+            <ion-note>{{ quiz.createdAt }}</ion-note>
+          </span>
+          <span class="" style="margin-left: 16px">
+            <ion-note>题数：{{ quiz.questionCount }}</ion-note>
+          </span>
+        </div>
+
+        <div>
+          <div @click.stop="showMore">
+            更多
+          </div>
+        </div>
       </div>
     </ion-label>
   </ion-item>
@@ -36,10 +44,16 @@ export default defineComponent({
   props: {
     quiz: Object,
   },
-  methods: {},
+ 
   data() {
     return { chevronForward };
   },
+   methods: {
+     showMore() {
+       // copy archive
+       this.$emit('more', this.quiz);
+     }
+   },
 });
 </script>
 
@@ -54,5 +68,4 @@ ion-item {
 ion-note.md {
   margin-right: 14px;
 }
-
 </style>

@@ -81,6 +81,20 @@ function attachClassrooms(id: number, classrooms: number[]) {
   })
 }
 
+function copy(id: number) {
+  return request({
+    url: `/quizzes/${id}/copy`,
+    method: 'post'
+  })
+}
+
+function archive(id: number) {
+  return request({
+    url: `/quizzes/${id}/archive`,
+    method: 'post'
+  })
+}
+
 
 
 export default {
@@ -94,5 +108,7 @@ export default {
   submit,
   questions,
   updateQuestion,
-  attachClassrooms
+  attachClassrooms,
+  copy,
+  archive
 }

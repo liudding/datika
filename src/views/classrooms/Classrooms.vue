@@ -9,7 +9,7 @@
           ></ion-back-button>
         </ion-buttons>
         <ion-title>{{archived ? '已归档班级' : '班级'}}</ion-title>
-        <ion-buttons slot="end">
+        <ion-buttons slot="end" v-if="!archived">
           <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
