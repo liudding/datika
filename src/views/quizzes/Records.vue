@@ -1,34 +1,14 @@
 <template>
-  <ion-page>
-    <ion-header :translucent="false">
-      <ion-toolbar>
-        <ion-title>Records</ion-title>
-        <ion-buttons>
-          <ion-back-button default-href="/"></ion-back-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+  <!-- <ion-item lines="none">
+    <ion-label>人数：{{ records.length }}</ion-label>
+    <ion-label> <ion-note>平均分</ion-note></ion-label>
 
-    <ion-content :fullscreen="true">
-      <ion-refresher slot="fixed" @ionRefresh="refresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-      </ion-refresher>
-      <ion-item lines="none">
-        <ion-label>人数：{{ records.length }}</ion-label>
-        <ion-label> <ion-note>平均分</ion-note></ion-label>
-
-        <ion-label> <ion-note>最高分</ion-note></ion-label>
-        <ion-label> <ion-note>最低分</ion-note></ion-label>
-      </ion-item>
-      <ion-list>
-        <RecordItem
-          v-for="record in records"
-          :key="record.id"
-          :record="record"
-        />
-      </ion-list>
-    </ion-content>
-  </ion-page>
+    <ion-label> <ion-note>最高分</ion-note></ion-label>
+    <ion-label> <ion-note>最低分</ion-note></ion-label>
+  </ion-item> -->
+  <ion-list>
+    <RecordItem v-for="record in records" :key="record.id" :record="record" />
+  </ion-list>
 </template>
 
 <script lang="ts">
@@ -37,9 +17,11 @@ import { useRouter } from "vue-router";
 import { defineComponent } from "vue";
 
 import RecordItem from "./RecordItem.vue";
+import Api from "@/api";
 
 export default defineComponent({
   name: "Records",
+  props: ["quiz"],
   components: {
     RecordItem,
   },
@@ -50,49 +32,22 @@ export default defineComponent({
   },
   data: () => {
     return {
-      records: [
-        {
-          id: 1,
-          name: "Student 1",
-          studentId: 1,
-          score: 56,
-          date: "2020-09-09",
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Quiz 2",
-          score: 50,
-        },
-        {
-          name: "Quiz 2",
-          score: 50,
-        },
-      ],
+      records: [],
       showCreatePopup: false,
     };
   },
+  mounted() {
+    this.getRecords();
+  },
   methods: {
-    refresh() {
-      return true;
+    async getRecords() {
+      const query: any = { size: 20 };
+      if (this.quiz.studentCount <= 100) {
+        query.size = 100
+      }
+
+      const resp = await Api.quiz.records(+this.quiz.id, query);
+      this.records = resp.data.data;
     },
   },
 });

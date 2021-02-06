@@ -29,6 +29,9 @@
         </div>
       </ion-item>
 
+      <Records v-if="quiz.recordCount" :quiz="quiz"></Records>
+      <Emptyset v-else title="暂无成绩"></Emptyset>
+
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
         <ion-fab-button @click="gotoScan">
           <ion-icon :icon="scanOutline"></ion-icon>
@@ -55,36 +58,40 @@
       round
       closeable
     >
-     
-        <ion-label>
-          <ion-list>
-            <ion-item v-for="classroom in classrooms" :key="classroom.id">
-              <ion-label>{{ classroom.name }}</ion-label>
-              <ion-checkbox
-                slot="end"
-                @update:modelValue="classroom.isChecked = $event"
-                :modelValue="classroom.isChecked"
-              >
-              </ion-checkbox>
-            </ion-item>
-          </ion-list>
-          <ion-button @click="attachClassrooms">确定</ion-button>
-        </ion-label>
+      <ion-label>
+        <ion-list>
+          <ion-item v-for="classroom in classrooms" :key="classroom.id">
+            <ion-label>{{ classroom.name }}</ion-label>
+            <ion-checkbox
+              slot="end"
+              @update:modelValue="classroom.isChecked = $event"
+              :modelValue="classroom.isChecked"
+            >
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+        <ion-button @click="attachClassrooms">确定</ion-button>
+      </ion-label>
     </van-popup>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { useRouter } from "vue-router";
-import { IonFab, IonFabButton } from "@ionic/vue";
 import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import Api from "@/api";
+import Records from "./Records.vue";
+import Emptyset from "@/components/Emptyset.vue";
 
 export default defineComponent({
   name: "Home",
   props: ["id"],
+  components: {
+    Records,
+    Emptyset,
+  },
   data() {
     return {
       scanOutline,
@@ -98,6 +105,7 @@ export default defineComponent({
       classrooms: [],
     };
   },
+
   setup() {
     const router = useRouter();
 
@@ -124,10 +132,7 @@ export default defineComponent({
       documentTextOutline,
     };
   },
-  components: {
-    IonFab,
-    IonFabButton,
-  },
+
   created() {
     this.getDetail();
   },
@@ -146,14 +151,14 @@ export default defineComponent({
       this.showClassroomPickerPopup();
     },
     async attachClassrooms() {
-      const classrooms = this.classrooms.filter((i: any )=> i.isChecked);
-      const classroomIds = classrooms.map((i: any)=> i.id)
+      const classrooms = this.classrooms.filter((i: any) => i.isChecked);
+      const classroomIds = classrooms.map((i: any) => i.id);
 
-      await Api.quiz.attachClassrooms(this.id, classroomIds)
+      await Api.quiz.attachClassrooms(this.id, classroomIds);
 
       this.attachedClassrooms = classrooms;
 
-       this.showClassroomPickerPopup(false);
+      this.showClassroomPickerPopup(false);
     },
     gotoScan() {
       if (this.attachedClassrooms.length > 0) {

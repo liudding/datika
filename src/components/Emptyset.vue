@@ -1,7 +1,7 @@
 <template>
   <div class="emptyset-container">
     <div class="emptyset-title">
-      暂无数据
+      {{title}}
     </div>
   </div>
 </template>
@@ -12,7 +12,10 @@ import { defineComponent } from "vue";
 export default defineComponent({
   components: {},
   props: {
-    message: Object,
+    title: {
+      type: String,
+      default: "暂无数据"
+    },
   },
   methods: {},
   data() {

@@ -5,7 +5,11 @@
     :detail="false"
     lines="none"
   >
-    <h4>{{ record.name }}</h4>
+    <div class="d-flex align-items-center">
+      <h4>{{ record.student.name }}</h4>
+      <span style="margin-left: 8px">{{ record.student.number }}</span>
+    </div>
+
     <div slot="end">{{ record.score }}</div>
   </ion-item>
 </template>

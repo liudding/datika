@@ -36,9 +36,10 @@ function destroy(id: number) {
   })
 }
 
-function records(id: number) {
+function records(id: number, query?: object) {
   return request({
-    url: '/quizzes/' + id + '/records'
+    url: '/quizzes/' + id + '/records',
+    params: query
   })
 }
 
