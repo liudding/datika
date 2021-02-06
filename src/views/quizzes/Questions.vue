@@ -245,7 +245,6 @@ export default defineComponent({
 
 <style scoped>
 ion-content {
-  /* --background: #eee; */
   --padding-top: 8px;
   --padding-bottom: 16px;
   --padding-start: 8px;
@@ -255,7 +254,6 @@ ion-content {
 ion-list {
   margin-top: 16px;
   border-radius: 8px;
-  /* background: #eee; */
 }
 
 ion-item {

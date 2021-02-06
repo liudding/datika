@@ -95,6 +95,13 @@ function archive(id: number) {
   })
 }
 
+function unarchive(id: number) {
+  return request({
+    url: `/quizzes/${id}/unarchive`,
+    method: 'post'
+  })
+}
+
 
 
 export default {
@@ -110,5 +117,6 @@ export default {
   updateQuestion,
   attachClassrooms,
   copy,
-  archive
+  archive,
+  unarchive
 }

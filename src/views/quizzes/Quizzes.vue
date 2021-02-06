@@ -25,6 +25,9 @@
         />
       </ion-list>
 
+      <Emptyset v-if="quizzes.length === 0">
+      </Emptyset>
+
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
         <Create @created="onQuizCreated"></Create>
       </van-popup>
@@ -36,10 +39,11 @@
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
-import { actionSheetController } from "@ionic/vue";
+import { actionSheetController, alertController } from "@ionic/vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
+import Emptyset from "@/components/Emptyset.vue";
 import Api from "@/api";
 
 export default defineComponent({
@@ -47,6 +51,7 @@ export default defineComponent({
   components: {
     QuizItem,
     Create,
+    Emptyset
   },
   provide() {
     return {
@@ -110,7 +115,7 @@ export default defineComponent({
           {
             text: "归档",
             handler: () => {
-              this.archive(quiz.id);
+              this.archiveQuiz(quiz);
             },
           },
 
@@ -118,16 +123,64 @@ export default defineComponent({
             text: "删除",
             role: "destructive",
             handler: () => {
-              console.log("Delete clicked");
+              this.deleteQuiz(quiz);
             },
           },
           {
             text: "取消",
-            role: "cancel"
+            role: "cancel",
           },
         ],
       });
       return actionSheet.present();
+    },
+    async unarchiveQuiz(quiz: any) {
+      await Api.quiz.unarchive(quiz+quiz.id);
+
+      quiz.archivedAt = null;
+    },
+
+    async archiveQuiz(quiz: any) {
+      const alert = await alertController.create({
+        header: "确定归档吗",
+        message: "归档之后，不会再展示此测验。",
+        buttons: [
+          {
+            text: "取消",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "归档",
+            handler: () => {
+              this.archive(quiz.id);
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
+
+    async deleteQuiz(quiz: any) {
+      const alert = await alertController.create({
+        header: "确定删除吗",
+        message: "该测验的所有相关数据将一并删除。",
+        buttons: [
+          {
+            text: "取消",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "删除",
+            cssClass: "danger",
+            handler: () => {
+              this.delete(quiz.id);
+            },
+          },
+        ],
+      });
+      return alert.present();
     },
 
     async refresh($event: any) {
@@ -137,11 +190,17 @@ export default defineComponent({
     },
 
     async copy(id: number) {
-      const quiz = await Api.quiz.copy(id);
-      this.quizzes.unshift(quiz);
+      const resp = await Api.quiz.copy(id);
+      this.quizzes.unshift(resp.data);
     },
     async archive(id: number) {
       await Api.quiz.archive(id);
+
+      const index = this.quizzes.findIndex((q: any) => q.id === id);
+      this.quizzes.splice(index, 1);
+    },
+    async delete(id: number) {
+      await Api.quiz.destroy(id);
 
       const index = this.quizzes.findIndex((q: any) => q.id === id);
       this.quizzes.splice(index, 1);
