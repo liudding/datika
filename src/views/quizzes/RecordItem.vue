@@ -18,7 +18,6 @@
 </template>
 
 <script lang="ts">
-import { chevronForward } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -29,7 +28,7 @@ export default defineComponent({
   },
   methods: {},
   data() {
-    return { chevronForward };
+    return { };
   },
 });
 </script>

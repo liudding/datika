@@ -6,21 +6,33 @@
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
         <ion-title></ion-title>
-        <ion-buttons slot="end"> </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button>编辑</ion-button>
+          <ion-button @click="onClickDelete">删除</ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item>
-        成绩：{{record.score}}
-      </ion-item>
+      <ion-item> 成绩：{{ record.score }} </ion-item>
 
       <ion-list>
-        <QuestionItem
-          v-for="question in quiz.questions"
-          :key="question.id"
-          :question="question"
-        />
+        <ion-item v-for="answer in answers" :key="answer.questionId">
+          <div style="width: 30px; text-align: right">
+            {{ answer.question.label }}.
+
+            <div style="font-size: 10px; color: gray">
+              {{ questionType(answer.question.type) }}
+            </div>
+          </div>
+          <Bubbles :choices="answer.question.choices" :answer="answer.answer" />
+          <div>
+            <span style="font-size: 17px">{{ answer.score || 0 }}</span
+            ><span style="font-size: 14px; color: gray"
+              >/{{ answer.question.score }}</span
+            >
+          </div>
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-page>
@@ -28,31 +40,87 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { actionSheetController, alertController } from "@ionic/vue";
+import { useRouter } from "vue-router";
+import { alertController } from "@ionic/vue";
+import { questionType } from "@/utils/map";
 
-import QuestionItem from "./QuestionItem.vue";
+import Bubbles from "./Bubbles.vue";
 import Api from "@/api";
 
 export default defineComponent({
   props: ["recordId", "quizId"],
   components: {
-    QuestionItem,
+    Bubbles,
+  },
+  setup() {
+    const router = useRouter();
+
+    return { router };
   },
 
   data() {
     return {
-      record: {},
-      quiz: {},
+      record: {
+        answers: [],
+      },
+      quiz: {
+        questions: [],
+      },
+      questionType,
     };
   },
+  computed: {
+    answers() {
+      const questions: any[] = this.quiz.questions.concat([]);
+
+      const answers = questions.map((item) => {
+        let answer: any = this.record.answers.find(
+          (a: any) => a.questionId == item.id
+        );
+        answer = answer || {};
+
+        answer.question = item;
+
+        return answer;
+      });
+
+      return answers;
+    },
+  },
   async created() {
-    const resp = await Api.quiz.record(this.recordId);
+    const resp = await Api.quiz.record(+this.$route.params.recordId);
     this.record = resp.data;
 
-    const quizResp = await Api.quiz.show(this.quizId, { with: ["questions"] });
+    const quizResp = await Api.quiz.show(+this.$route.params.quizId, { with: ["questions"] });
     this.quiz = quizResp.data;
   },
-  methods: {},
+  methods: {
+    async delete() {
+      await Api.record.destroy(+this.$route.params.recordId);
+
+      this.router.back();
+    },
+    async onClickDelete() {
+      const alert = await alertController.create({
+        header: "确定删除吗",
+        message: "删除之后，不能恢复",
+        buttons: [
+          {
+            text: "取消",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "删除",
+            handler: () => {
+              this.delete();
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
+  },
 });
 </script>
 
