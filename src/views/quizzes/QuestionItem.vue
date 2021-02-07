@@ -7,15 +7,11 @@
         </div>
 
         <div class="choices">
-          <div
-            v-for="bubble in question.choices"
-            :key="bubble"
-            @click="onClickBubble(bubble)"
-            class="bubble"
-            :class="{ selected: isInAnswer(bubble) }"
-          >
-            {{ bubble }}
-          </div>
+          <Bubbles
+            :choices="question.choices"
+            :answer="question.answer"
+            @change="onAnswerChange"
+          ></Bubbles>
         </div>
       </div>
 
@@ -43,46 +39,28 @@
   </ion-item>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import Bubbles from "./Bubbles.vue";
+import { questionType } from "@/utils/map";
 
 export default defineComponent({
   name: "QuestionItem",
   props: {
     question: Object,
   },
+  components: { Bubbles },
   setup() {
-    const isOpenRef = ref(false);
-    const setOpen = (state) => (isOpenRef.value = state);
-    const data = { content: "New Content" };
-    return { isOpenRef, setOpen, data };
+    return { questionType};
   },
   data() {
     return {
       showPopup: false,
-      isInAnswer(opt) {
-        return (this.question.answer || "").indexOf(opt) >= 0;
-      },
-      questionType(val) {
-        return (
-          {
-            1: "单选题",
-            2: "多选题",
-            3: "判断题",
-          }[val] || "单选题"
-        );
-      },
     };
   },
   methods: {
-    onClickBubble(bubble) {
-      let answer = this.question.answer || "";
-
-      if (this.isInAnswer(bubble)) {
-        answer = answer.replace(bubble, "");
-      } else {
-        answer += bubble;
-      }
+    onAnswerChange(answer: string) {
+      if (!this.question) return;
 
       this.$emit(
         "change",
@@ -92,7 +70,7 @@ export default defineComponent({
           answer: answer,
           choices: this.question.choices,
           type: this.detectQuestionType(answer, this.question.choices),
-          score: this.question.score
+          score: this.question.score,
         },
         "answer"
       );
@@ -103,7 +81,9 @@ export default defineComponent({
       console.log("onClickLabel");
     },
 
-    onScoreChange(value, detail) {
+    onScoreChange(value: number) {
+      if (!this.question) return;
+
       this.$emit(
         "change",
         {
@@ -117,7 +97,7 @@ export default defineComponent({
       );
     },
 
-    detectQuestionType(answer, choices) {
+    detectQuestionType(answer: string, choices: string) {
       if (choices.length === 2) return 3;
       return answer.length > 1 ? 2 : 1;
     },
