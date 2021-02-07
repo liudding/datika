@@ -65,7 +65,7 @@ ion-item-divider {
 
 .profile ion-item {
   /* height: 80px; */
-  --padding-top: 16px;
+  --padding-top: 32px;
   --padding-bottom: 16px;
   margin-bottom: 8px;
 }

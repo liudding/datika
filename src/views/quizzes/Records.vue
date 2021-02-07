@@ -49,29 +49,6 @@ export default defineComponent({
 <style scoped>
 ion-list {
   padding: 8px;
-  background: rgb(246, 246, 246);
-}
-
-ion-header {
-  background: white;
-}
-
-ion-content {
-  --background: rgb(246, 246, 246);
-}
-
-@media (prefers-color-scheme: dark) {
-  ion-header {
-    background: #000;
-  }
-
-  ion-list {
-    padding: 8px;
-    background: #111;
-  }
-
-  ion-content {
-    --background: #111;
-  }
+  background: transparent;
 }
 </style>

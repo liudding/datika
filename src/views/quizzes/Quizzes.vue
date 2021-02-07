@@ -25,8 +25,7 @@
         />
       </ion-list>
 
-      <Emptyset v-if="quizzes.length === 0">
-      </Emptyset>
+      <Emptyset v-if="quizzes.length === 0"> </Emptyset>
 
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
         <Create @created="onQuizCreated"></Create>
@@ -45,18 +44,14 @@ import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
 import Emptyset from "@/components/Emptyset.vue";
 import Api from "@/api";
+import { useState } from "@/store/quiz";
 
 export default defineComponent({
   name: "Quizzes",
   components: {
     QuizItem,
     Create,
-    Emptyset
-  },
-  provide() {
-    return {
-      quizzes: this.quizzes,
-    };
+    Emptyset,
   },
   setup() {
     const router = useRouter();
@@ -64,12 +59,22 @@ export default defineComponent({
     const showCreatePopup = (status = true) => {
       showCreate.value = status;
     };
-    return { addOutline, router, showCreate, showCreatePopup };
+
+    const state = useState() as any;
+
+    return {
+      addOutline,
+      router,
+      showCreate,
+      showCreatePopup,
+      state,
+      quizzes: state.quizzes,
+    };
   },
   data: () => {
-    const quizzes: object[] = [];
+    // const quizzes: object[] = [];
     return {
-      quizzes,
+      // quizzes,
     };
   },
   async created() {
@@ -82,11 +87,11 @@ export default defineComponent({
 
     async getQuizzes() {
       const resp = await Api.quiz.list();
-      this.quizzes = resp.data.data;
+      (this.state as any).set(resp.data.data);
     },
 
     onQuizCreated(quiz: any) {
-      this.quizzes.unshift(quiz);
+      (this.state as any).unshift(quiz);
       this.showCreatePopup(false);
 
       this.router.push({
@@ -135,7 +140,7 @@ export default defineComponent({
       return actionSheet.present();
     },
     async unarchiveQuiz(quiz: any) {
-      await Api.quiz.unarchive(quiz+quiz.id);
+      await Api.quiz.unarchive(quiz + quiz.id);
 
       quiz.archivedAt = null;
     },
@@ -191,19 +196,17 @@ export default defineComponent({
 
     async copy(id: number) {
       const resp = await Api.quiz.copy(id);
-      this.quizzes.unshift(resp.data);
+      (this.state as any).unshift(resp.data);
     },
     async archive(id: number) {
       await Api.quiz.archive(id);
 
-      const index = this.quizzes.findIndex((q: any) => q.id === id);
-      this.quizzes.splice(index, 1);
+      (this.state as any).remove(id);
     },
     async delete(id: number) {
       await Api.quiz.destroy(id);
 
-      const index = this.quizzes.findIndex((q: any) => q.id === id);
-      this.quizzes.splice(index, 1);
+      (this.state as any).remove(id);
     },
   },
 });

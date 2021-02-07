@@ -193,8 +193,6 @@ export default defineComponent({
       }
 
       this.showDownload = true;
-
-   
     },
 
     async getQuestions() {

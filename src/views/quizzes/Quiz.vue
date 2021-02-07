@@ -78,6 +78,7 @@ import { defineComponent, ref } from "vue";
 import Api from "@/api";
 import Records from "./Records.vue";
 import Emptyset from "@/components/Emptyset.vue";
+import { useState } from "@/store/quiz";
 
 export default defineComponent({
   name: "Home",
@@ -114,6 +115,9 @@ export default defineComponent({
       refEvent.value = event;
       isOpenRef.value = state;
     };
+
+    const state = useState() as any;
+
     return {
       router,
       isOpenRef,
@@ -124,6 +128,7 @@ export default defineComponent({
       add,
       create,
       documentTextOutline,
+      state
     };
   },
 

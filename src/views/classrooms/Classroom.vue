@@ -10,7 +10,10 @@
         </ion-buttons>
         <ion-title>{{ classroom.name }}（{{ studentCount }}人）</ion-title>
         <ion-buttons slot="end">
-          <ion-button v-if="!classroom.archivedAt"  @click="showCreatePopup(true)">
+          <ion-button
+            v-if="!classroom.archivedAt"
+            @click="showCreatePopup(true)"
+          >
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
           <ion-button @click="setPopoverOpen(true, $event)">
@@ -21,7 +24,9 @@
     </ion-header>
 
     <ion-content :fullscreen="true" v-if="classroom">
-      <ion-item v-if="classroom.archivedAt"  class="archived" lines="none">该班级已经归档</ion-item>
+      <ion-item v-if="classroom.archivedAt" class="archived" lines="none"
+        >该班级已经归档</ion-item
+      >
       <ion-list>
         <ion-item v-for="student in students" :key="student.id" detail>
           <div>{{ student.name }}</div>
@@ -41,7 +46,9 @@
       >
         <ion-list>
           <ion-item @click="editClassroom">编辑班级</ion-item>
-          <ion-item v-if="!classroom.archivedAt" @click="archiveClassroom">归档班级</ion-item>
+          <ion-item v-if="!classroom.archivedAt" @click="archiveClassroom"
+            >归档班级</ion-item
+          >
           <ion-item v-else @click="unarchiveClassroom">解档班级</ion-item>
           <ion-item @click="deleteClassroom">删除班级</ion-item>
         </ion-list>
@@ -57,6 +64,7 @@ import { useRouter } from "vue-router";
 import { alertController } from "@ionic/vue";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
+import { useState } from "@/store/classroom";
 
 export default defineComponent({
   name: "Classroom",
@@ -92,6 +100,8 @@ export default defineComponent({
 
     const router = useRouter();
 
+    const state = useState();
+
     return {
       popoverOpenRef,
       setPopoverOpen,
@@ -99,6 +109,7 @@ export default defineComponent({
       showCreate,
       showCreatePopup,
       router,
+      state,
     };
   },
 
@@ -112,11 +123,7 @@ export default defineComponent({
       this.studentCount = res.data.total;
     });
 
-    this.classroom = {
-      id: +classId,
-      name: this.$route.query.name as string,
-      archivedAt: null
-    };
+    this.classroom = (this.state as any).find(+classId);
   },
   methods: {
     onStudentCreated(student: any) {
@@ -131,7 +138,7 @@ export default defineComponent({
       const classId = this.$route.params.id;
       await Api.classroom.archive(+classId);
 
-      this.classroom.archivedAt = Date.now()/1000;
+      this.classroom.archivedAt = Date.now() / 1000;
     },
 
     async doDelete() {

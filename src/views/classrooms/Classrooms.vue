@@ -3,12 +3,9 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons v-if="archived">
-          <ion-back-button
-            text="班级"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button text="班级" default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title>{{archived ? '已归档班级' : '班级'}}</ion-title>
+        <ion-title>{{ archived ? "已归档班级" : "班级" }}</ion-title>
         <ion-buttons slot="end" v-if="!archived">
           <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>
@@ -30,7 +27,13 @@
         />
       </ion-list>
 
-      <ion-item v-if="!archived" routerLink="/classrooms/type/archived" lines="none" class="archived-entry">已归档班级</ion-item>
+      <ion-item
+        v-if="!archived"
+        routerLink="/classrooms/type/archived"
+        lines="none"
+        class="archived-entry"
+        >已归档班级</ion-item
+      >
 
       <van-popup v-model:show="showCreate" position="bottom" round closeable>
         <CreateClassroom @created="onClassroomCreated"></CreateClassroom>
@@ -51,6 +54,7 @@ import { defineComponent, ref } from "vue";
 import ClassroomItem from "./ClassroomItem.vue";
 import CreateClassroom from "./CreateClassroom.vue";
 import Api from "@/api";
+import { useState } from "@/store/classroom";
 
 export default defineComponent({
   name: "Classrooms",
@@ -69,6 +73,8 @@ export default defineComponent({
       showCreate.value = show;
     };
 
+    const state = useState() as any;
+
     return {
       ellipsisHorizontal,
       ellipsisVertical,
@@ -76,38 +82,41 @@ export default defineComponent({
       router,
       showCreate,
       showCreatePopup,
+      state: state,
+      classrooms: state.classrooms,
     };
   },
   data: () => {
-    const classrooms: any[] = [];
-    return {
-      classrooms,
-    };
+    return {};
   },
   created() {
-    this.getClassrooms();  
+    this.getClassrooms();
   },
   methods: {
     gotoEdit() {
       //
     },
     onClassroomCreated(classroom: any) {
-      this.classrooms.push(classroom);
+      const state = this.state as any;
+      state.unshift(classroom);
+
       this.showCreatePopup(false);
     },
     async getClassrooms() {
       try {
         const resp = await Api.classroom.list({
-          archived: !!this.archived
+          archived: !!this.archived,
         });
-        this.classrooms = resp.data.data;
+
+        const state = this.state as any;
+        state.set(resp.data.data);
       } catch (e) {
         console.error(e);
       }
     },
     async refresh($event: any) {
       await this.getClassrooms();
-      
+
       $event.target.complete();
     },
   },
@@ -125,6 +134,5 @@ export default defineComponent({
 ion-list {
   padding: 8px;
   background: transparent;
-  
 }
 </style>
