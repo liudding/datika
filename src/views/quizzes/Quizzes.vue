@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="false">
       <ion-toolbar>
-        <ion-title>Quizzes</ion-title>
+        <ion-title>测验</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="showCreatePopup(true)">
             <ion-icon :icon="addOutline"></ion-icon>

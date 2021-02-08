@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-between" style="margin-top: 8px;">
+      <div class="d-flex justify-content-between" style="margin-top: 8px">
         <div>
           <span class="date">
             <ion-note>{{ quiz.createdAt }}</ion-note>
@@ -25,8 +25,8 @@
         </div>
 
         <div>
-          <div @click.stop="showMore">
-            更多
+          <div @click.stop="showMore" style="padding: 1px 4px 0 10px;">
+            <ion-icon :icon="ellipsisHorizontal"></ion-icon>
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { chevronForward } from "ionicons/icons";
+import { ellipsisHorizontal } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -44,16 +44,16 @@ export default defineComponent({
   props: {
     quiz: Object,
   },
- 
+
   data() {
-    return { chevronForward };
+    return { ellipsisHorizontal };
   },
-   methods: {
-     showMore() {
-       // copy archive
-       this.$emit('more', this.quiz);
-     }
-   },
+  methods: {
+    showMore() {
+      // copy archive
+      this.$emit("more", this.quiz);
+    },
+  },
 });
 </script>
 
