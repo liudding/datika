@@ -14,7 +14,7 @@ interface EventsBag {
 
 export default class GradeCam {
 
-  sdkUrl: string = '/gradecam/sdk/gcsdk_noui_6.5.1.3.js';
+  sdkUrl: string = '/scanner/sdk/gcsdk_noui_6.5.1.3.js';
 
   private container: HTMLElement | string;
   private examLength: Number;

@@ -109,6 +109,11 @@ function unarchive(id: number) {
   })
 }
 
+function students(id: number) {
+  return request({
+    url: `/quizzes/${id}/students`,
+  })
+}
 
 
 export default {
@@ -126,5 +131,6 @@ export default {
   attachClassrooms,
   copy,
   archive,
-  unarchive
+  unarchive,
+  students
 }

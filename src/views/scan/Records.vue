@@ -2,109 +2,27 @@
   <div class="container">
     <ion-list>
       <ion-item v-for="record in records" :key="record.id">
-        <div>sdsd</div>
+        <b>{{ record.student.name }}</b>
+        <span style="margin-left: 8px;color:gray;">{{ record.student.number }}</span>
+
+        <div slot="end">{{ record.score }}<span style="color:gray; font-size: 12px;">分</span></div>
       </ion-item>
     </ion-list>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'Records',
+  name: "Records",
   props: {
+    records: Array,
   },
   data() {
-    return {
-        records: [
-        {
-          id: 1,
-          name: "Student 1",
-          studentId: 1,
-          score: 56,
-          date: "2020-09-09",
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Quiz 2",
-          score: 50,
-        },
-        {
-          name: "Quiz 2",
-          score: 50,
-        },
-          {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-          {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-          {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-          {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-        {
-          name: "Student 2",
-          score: 50,
-        },
-      ],
-    }
+    return {};
   },
-  components: { }
+  components: {},
 });
 </script>
 

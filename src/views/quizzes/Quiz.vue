@@ -7,9 +7,7 @@
         </ion-buttons>
         <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="primary">
-          <ion-button @click="gotoQuestions" color="primary">
-            题目
-          </ion-button>
+          <ion-button @click="gotoQuestions" color="primary"> 题目 </ion-button>
           <ion-button @click="gotoQuestions" color="primary"> 班级 </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -128,7 +126,7 @@ export default defineComponent({
       add,
       create,
       documentTextOutline,
-      state
+      state,
     };
   },
 
@@ -137,7 +135,9 @@ export default defineComponent({
   },
   methods: {
     async getDetail() {
-      const resp = await Api.quiz.show(this.id, { with: ["classrooms"] });
+      const resp = await Api.quiz.show(+this.$route.params.id, {
+        with: ["classrooms"],
+      });
       this.quiz = resp.data;
       this.attachedClassrooms = resp.data.classrooms;
     },
@@ -153,7 +153,7 @@ export default defineComponent({
       const classrooms = this.classrooms.filter((i: any) => i.isChecked);
       const classroomIds = classrooms.map((i: any) => i.id);
 
-      await Api.quiz.attachClassrooms(this.id, classroomIds);
+      await Api.quiz.attachClassrooms(+this.$route.params.id, classroomIds);
 
       this.attachedClassrooms = classrooms;
 

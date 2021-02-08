@@ -19,7 +19,10 @@
         :overlay-style="{ background: 'rgba(0,0,0,0.1)' }"
       >
         <div class="record-panel">
-          <div>{{ currentRecord.name }}</div>
+          <div>
+            <b>{{ currentRecord.name }} </b
+            ><span style="margin-left: 8px">{{ currentRecord.number }}</span>
+          </div>
           <div style="margin-top: 8px">
             <span style="font-size: 36px">{{ currentRecord.score }}</span>
             <span style="font-size: 10px; margin-left: 3px; color: dark"
@@ -28,8 +31,8 @@
           </div>
 
           <div style="color: gray; margin-top: 16px">
-            <small>正确：</small>
-            <small>错误：</small>
+            <!-- <small>正确：</small>
+            <small>错误：</small> -->
           </div>
         </div>
       </van-popup>
@@ -40,9 +43,9 @@
         round
         closeable
         safe-area-inset-bottom
-        :style="{ height: '90%' }"
+        :style="{ height: '85%' }"
       >
-        <Records></Records>
+        <Records :records="records"></Records>
       </van-popup>
 
       <ion-fab vertical="bottom" horizontal="end">
@@ -78,13 +81,14 @@ export default defineComponent({
       records,
       currentRecord: {
         name: "",
+        number: "",
         score: 0,
       },
       appsOutline,
     };
   },
   setup() {
-    const popupStatus = ref(true);
+    const popupStatus = ref(false);
     const showPopup = (show = true) => {
       popupStatus.value = show;
     };
@@ -105,6 +109,10 @@ export default defineComponent({
   components: {
     Records,
   },
+  async created() {
+    this.getStudents();
+    this.getRecords();
+  },
   async mounted() {
     await this.getQuiz();
     this.initScanner();
@@ -114,34 +122,55 @@ export default defineComponent({
   },
   methods: {
     async getQuiz() {
-      const resp = await Api.quiz.show(+this.$route.params.id, { with: ['classrooms', 'questions'] });
+      const resp = await Api.quiz.show(+this.$route.params.id, {
+        with: ["classrooms", "questions"],
+      });
       this.quiz = resp.data;
     },
     async getStudents() {
-      const resp = await Api.student.list();
+      const resp = await Api.quiz.students(+this.$route.params.id);
       this.students = resp.data;
     },
-     async getRecords() {
+    async getRecords() {
       const resp = await Api.quiz.records(+this.$route.params.id);
-      this.records = resp.data;
+      this.records = resp.data.data;
     },
-    async submit(data: any) {
-      const studentNumber = data["gradecam_id"];
+    checkIsOldRecordData(answers: any, studentId: number) {
+      const record = this.records.find(
+        (record) => record.student.id === studentId
+      );
 
-      const student = this.students.find((s) => s.number == studentNumber);
+      if (!record) return false;
 
+      const newAnswer = answers.join("_");
+      const oldAnswer = record.answers.map((i: any) => i.answer).join("_");
+
+      return newAnswer == oldAnswer ? record : false;
+    },
+    async submit(data: any, student: any) {
       const answers = data.answers.map((item: any) => {
         return item.value;
       });
 
+      let record = this.checkIsOldRecordData(answers, student.id);
+      if (record) {
+
+        return record;
+      }
+
       const params = {
-        student:  0,
+        student: student.id,
         answers: answers,
       };
 
       const resp = await Api.quiz.submit(+this.$route.params.id, params);
 
-      return resp.data;
+      record = resp.data;
+      record.student = student;
+
+      this.records.unshift(record)
+
+      return record;
     },
     initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
@@ -163,24 +192,24 @@ export default defineComponent({
       return suc;
     },
     onScan(scanObj: any) {
-      // const scanner = this.scanner as Scanner;
-      // scanner.pause();
       console.log("SCAN: ", scanObj);
-
       this.showPopup(false);
 
-      // const studentNumber = scanObj["gradecam_id"];
+      const student = this.students.find(
+        (item) => item.number === scanObj.gradecam_id
+      );
 
-      // const student = this.students.find((s) => s.number == studentNumber);
-      // if (!student) {
-      //   // show alert;
-      //   console.log("no student found");
-      //   return;
-      // }
+      if (!student) {
+        alert(`学号：${scanObj.gradecam_id} 不存在`);
+        return;
+      }
 
-      this.submit(scanObj).then((res) => {
+      this.submit(scanObj, student).then((res) => {
         this.currentRecord = res;
-         this.showPopup(true);
+        this.currentRecord.name = student.name;
+        this.currentRecord.number = student.number;
+
+        this.showPopup(true);
 
         console.log(res);
       });
