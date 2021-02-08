@@ -23,7 +23,7 @@
         <div>
           <span class="mr-1">分值</span>
           <van-stepper
-            :value="question.score"
+            :default-value="question.score"
             :name="question.id"
             button-size="20"
             disable-input

@@ -169,18 +169,18 @@ export default defineComponent({
       const index = this.questions.findIndex((i: any) => i.id === question.id);
       this.questions.splice(index, 1, question);
 
+      let func;
       if (_.has(this.debouncedUpdates, question.id)) {
-        const func = this.debouncedUpdates[question.id] as Function;
-        func.call(this);
+        func = this.debouncedUpdates[question.id] as Function;
       } else {
-        const func = _.debounce(() => {
+        func = _.debounce((question: any) => {
           this.updateQuestion(question.id, question);
-        }, 250);
+        }, 500);
 
         this.debouncedUpdates[question.id] = func;
-
-        func.call(this);
       }
+
+      func.call(this, question);
     },
 
     /**
