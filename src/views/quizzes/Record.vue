@@ -14,10 +14,14 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item> 成绩：{{ record.score }} </ion-item>
+      <ion-item class="brief" lines="none"> 成绩：{{ record.score }} </ion-item>
 
       <ion-list>
-        <ion-item v-for="answer in answers" :key="answer.questionId">
+        <ion-item
+          v-for="answer in answers"
+          :key="answer.questionId"
+          lines="none"
+        >
           <div style="width: 30px; text-align: right">
             {{ answer.question.label }}.
 
@@ -75,7 +79,7 @@ export default defineComponent({
 
       const answers = questions.map((item) => {
         let answer: any = this.record.answers.find(
-          (a: any) => a.questionId == item.id
+          (a: any) => a.label == item.label
         );
         answer = answer || {};
 
@@ -91,7 +95,9 @@ export default defineComponent({
     const resp = await Api.quiz.record(+this.$route.params.recordId);
     this.record = resp.data;
 
-    const quizResp = await Api.quiz.show(+this.$route.params.quizId, { with: ["questions"] });
+    const quizResp = await Api.quiz.show(+this.$route.params.quizId, {
+      with: ["questions"],
+    });
     this.quiz = quizResp.data;
   },
   methods: {
@@ -125,8 +131,23 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-content {
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
 ion-list {
+  margin-top: 8px;
   padding: 8px;
-  background: transparent;
+  border-radius: 16px;
+}
+
+ion-item {
+  margin-bottom: 1px;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+}
+.brief {
+  margin-top: 8px;
+  --background: transparent;
 }
 </style>
