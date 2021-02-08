@@ -67,7 +67,12 @@
         <ion-icon :icon="scanOutline" color="primary"></ion-icon>
       </ion-item>
 
-      <BubbleSheet v-if="showDownload" :questions="questions" @backdrop="showDownload = false;" @downloaded="showDownload = false;"></BubbleSheet>
+      <BubbleSheet
+        v-if="showDownload"
+        :questions="questions"
+        @backdrop="showDownload = false"
+        @downloaded="showDownload = false"
+      ></BubbleSheet>
 
       <ion-list>
         <QuestionItem
@@ -90,11 +95,13 @@ import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
-
+import _ from "lodash";
 
 export default defineComponent({
   data() {
     const questions: any[] = [];
+
+    const debouncedUpdates: any = {};
     return {
       scanOutline,
       quiz: {
@@ -102,7 +109,8 @@ export default defineComponent({
       },
       questions,
       showQuestionCountInput: false,
-      showDownload: false
+      showDownload: false,
+      debouncedUpdates,
     };
   },
   computed: {
@@ -148,21 +156,33 @@ export default defineComponent({
     BubbleSheet,
   },
   created() {
-    // this.;
-
     this.getQuestions();
   },
+  unmounted() {
+    for (const key in this.debouncedUpdates) {
+      const func = this.debouncedUpdates[key];
+      func.cancel();
+    }
+  },
   methods: {
-    onQuestionChange(question: any, type: string) {
-      const index = this.questions.findIndex(
-        (i: any) => i.label === question.label
-      );
+    onQuestionChange(question: any) {
+      const index = this.questions.findIndex((i: any) => i.id === question.id);
       this.questions.splice(index, 1, question);
 
-      this.updateQuestion(question.id, question);
+      if (_.has(this.debouncedUpdates, question.id)) {
+        const func = this.debouncedUpdates[question.id] as Function;
+        func.call(this);
+      } else {
+        const func = _.debounce(() => {
+          this.updateQuestion(question.id, question);
+        }, 250);
 
-      console.log(type, question);
+        this.debouncedUpdates[question.id] = func;
+
+        func.call(this);
+      }
     },
+
     /**
      * 改变了题目数量
      */
@@ -215,7 +235,7 @@ export default defineComponent({
 
       for (let i = 0; i < count; i++) {
         questions.push({
-          label: index + i + "",
+          label: index + i + 1 + "",
           choices: "ABCD",
         });
       }
@@ -298,5 +318,4 @@ ion-item {
   display: inline-block;
   border-radius: 8px;
 }
-
 </style>
