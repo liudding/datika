@@ -27,35 +27,16 @@
       css-class="my-custom-class"
       @onDidDismiss="setQuestionCountOpen(false)"
     >
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>设置默认题目数量</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="">
-        <ion-item>10</ion-item>
-        <ion-item>15</ion-item>
-        <ion-item>20</ion-item>
-      </ion-content>
+     <QuestionCount :count="settings.questionCount" @change="onQuestionCountChange"></QuestionCount>
+     
     </ion-modal>
 
     <ion-modal
       :is-open="autoArchiveRef"
-      css-class=""
+      css-class="my-custom-class"
       @onDidDismiss="setAutoArchiveOpen(false)"
     >
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>设置自动归档测验</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <div class="ion-padding">
-        <ion-item>30 天</ion-item>
-        <ion-item>60 天</ion-item>
-        <ion-item>120 天</ion-item>
-        <ion-item>180 天</ion-item>
-      </div>
+     <AutoArchive :days="settings.autoArchiveDays"></AutoArchive>
     </ion-modal>
   </ion-page>
 </template>
@@ -63,10 +44,12 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { IonModal, IonItemDivider, IonItemGroup } from "@ionic/vue";
+import QuestionCount from './QuestionCount.vue'
+import AutoArchive from './AutoArchive.vue'
 
 export default defineComponent({
   name: "Settings",
-  components: { IonModal, IonItemDivider, IonItemGroup },
+  components: { IonModal, IonItemDivider, IonItemGroup , QuestionCount, AutoArchive},
   setup() {
     const questionCountRef = ref(false);
     const setQuestionCountOpen = (state: boolean) =>
@@ -84,10 +67,34 @@ export default defineComponent({
     };
   },
   data() {
-    return {};
+    return {
+      settings: {
+        questionCount: 15,
+        autoArchiveDays: 30,
+      }
+    };
   },
+  methods: {
+    onQuestionCountChange(count: number) {
+      this.settings.questionCount = count;
+    }
+  }
 });
 </script>
+
+<style>
+.my-custom-class .modal-wrapper {
+  position: absolute;
+  bottom: 0;
+  height: 80%;
+}
+
+.my-custom-class .modal-shadow {
+  position: absolute;
+  bottom: 0;
+  height: 80%;
+}
+</style>
 
 <style scoped>
 ion-item-divider {
