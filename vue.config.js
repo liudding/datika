@@ -6,11 +6,10 @@ module.exports = {
 
     pwa: {
         name: "Quiz",
-      
         themeColor: "#ffffff",
-       
         msTileColor: "#000000",
         appleMobileWebAppStatusBarStyle: "default",
+        assetsVersion: "1",
         manifestOptions: {
             "start_url": "./?source=pwa",
             "description": "答题卡扫描",
