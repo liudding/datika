@@ -39,7 +39,10 @@ export default class GradeCam {
 
 
   async load() {
-    if (this.checkFullyLoaded()) return this;
+    if (this.checkFullyLoaded()) {
+      this.loadEntity()
+      return this
+    };
 
     const loaded = await this.loadSdk();
 
@@ -51,9 +54,7 @@ export default class GradeCam {
   }
 
   async start() {
-    if (!this.checkFullyLoaded()) {
-      await this.load();
-    }
+    await this.load();
 
     if (!this.checkCameraRendered()) {
       this.renderCamera();
@@ -87,6 +88,7 @@ export default class GradeCam {
       const cb = this.events[event].callback as Function;
 
       this.gradecam.bind(event, cb);
+      console.log('bind ====')
     }
   }
 
@@ -103,6 +105,7 @@ export default class GradeCam {
     };
 
     if (this.gradecam) {
+      console.log('bind ====')
       this.gradecam.bind(event, callback);
 
       this.events[event].bound = true;
@@ -181,16 +184,20 @@ export default class GradeCam {
     return false;
   }
 
+  private loadEntity(): void {
+    this.gradecam = window.gradecam;
+    this.sdkLoaded = true;
+    this.resume();
+  }
+
   private checkFullyLoaded(): boolean {
-    return this.checkSdkLoaded() ;//&& this.pluginLoaded;
+    return this.checkSdkLoaded();//&& this.pluginLoaded;
   }
 
   private checkSdkLoaded() {
     if (this.sdkLoaded) return this.sdkLoaded;
 
     if (window.gradecam) {
-      this.gradecam = window.gradecam;
-      this.sdkLoaded = true;
       return true;
     }
 
@@ -225,7 +232,7 @@ export default class GradeCam {
     container.appendChild(this.gradecam.getElement())
     const gc = (document.getElementById(this.CAMERA_RENDERED_ID)) as HTMLElement;
     gc.style.backgroundImage = '';
- 
+
     this.cameraRendered = true;
   }
 
