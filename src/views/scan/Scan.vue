@@ -24,7 +24,7 @@
 import { appsOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
-import Scanner from "@/services/gradecam/Scanner";
+import Scanner from "@/services/scanner/Scanner";
 import Records from "./Records.vue";
 import Result from "./Result.vue";
 import Api from "@/api";

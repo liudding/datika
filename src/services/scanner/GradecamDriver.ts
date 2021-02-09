@@ -88,7 +88,6 @@ export default class GradeCam {
       const cb = this.events[event].callback as Function;
 
       this.gradecam.bind(event, cb);
-      console.log('bind ====')
     }
   }
 
@@ -105,7 +104,6 @@ export default class GradeCam {
     };
 
     if (this.gradecam) {
-      console.log('bind ====')
       this.gradecam.bind(event, callback);
 
       this.events[event].bound = true;
