@@ -2,14 +2,14 @@
   <ion-item lines="none">
     <div style="width: 100%">
       <div class="d-flex align-items-center choices-wrapper">
-        <div @click="onClickLabel" class="question-label">
+        <div class="question-label">
           {{ question.label }}.
         </div>
 
         <div class="choices">
           <Bubbles
             :choices="question.choices"
-            :answer="question.answer"
+            :correct="question.answer"
             @change="onAnswerChange"
           ></Bubbles>
         </div>
@@ -21,7 +21,7 @@
         </div>
 
         <div>
-          <span class="mr-1">分值</span>
+          <span class="mr-1" style="margin-right: 4px; color: gray;">分值</span>
           <van-stepper
             :default-value="question.score"
             :name="question.id"
@@ -32,10 +32,6 @@
         </div>
       </div>
     </div>
-
-    <van-popup v-model="showPopup" position="top" :style="{ height: '30%' }"
-      >内容</van-popup
-    >
   </ion-item>
 </template>
 
@@ -55,7 +51,6 @@ export default defineComponent({
   },
   data() {
     return {
-      showPopup: false,
     };
   },
   methods: {
@@ -74,11 +69,6 @@ export default defineComponent({
         },
         "answer"
       );
-    },
-
-    onClickLabel() {
-      this.showPopup = true;
-      console.log("onClickLabel");
     },
 
     onScoreChange(value: number) {
@@ -101,36 +91,10 @@ export default defineComponent({
     detectQuestionType(answer: string, choices: string) {
       if (choices.length === 2) return 3;
       return answer.length > 1 ? 2 : 1;
-    },
-
-    showLabelPopup() {
-      this.showPopup = true;
-    },
+    }
   },
 });
 </script>
-
-<style>
-.my-custom-class {
-  /* height: 300px;
-  position: absolute;
-  bottom: 0;
-  left: 0; */
-  background: transparent;
-}
-ion-page {
-  height: 300px;
-  --background: transparent;
-}
-
-.my-custom-class .modal-wrapper {
-  height: 300px;
-  --background: transparent;
-  background: transparent;
-}
-.sc-ion-modal-md {
-}
-</style>
 
 <style scoped>
 .content {
@@ -186,9 +150,5 @@ ion-item {
 
 .question-type {
   color: rgb(235, 82, 108);
-}
-
-.question-label {
-  border-bottom: 1px solid rgb(126, 126, 126);
 }
 </style>

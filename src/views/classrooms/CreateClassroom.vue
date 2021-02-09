@@ -1,5 +1,8 @@
 <template>
-  <ion-content class="content">
+  <ion-header>
+    <div class="header"></div>
+  </ion-header>
+  <div class="content">
     <ion-item lines="none">
       <ion-input
         :value="name"
@@ -11,7 +14,7 @@
     </ion-item>
 
     <ion-button @click="submit" expand="block">保存</ion-button>
-  </ion-content>
+  </div>
 </template>
 
 <script>
@@ -27,8 +30,11 @@ export default defineComponent({
     };
   },
   components: {},
+  emits: ['created'],
   methods: {
     async submit() {
+      if (!this.name) return;
+
       try {
         const resp = await Api.classroom.create({
           name: this.name,
@@ -50,29 +56,19 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  margin-top: 32px;
-  height: 70vh;
-}
-ion-content {
-  --padding-top: 44px;
-  --padding-start: 16px;
-  --padding-end: 16px;
+  background: white;
+  height: 100%;
+  padding: 32px 16px 0 16px;
 }
 
 ion-item {
-  --inner-padding-end: 0;
-  border-radius: 100px;
-  border-top-left-radius: 100px;
-  margin-bottom: 8px;
+  --background: #eee;
+  border-radius: 10px;
 }
 
 ion-button {
   margin-top: 32px;
+  --border-radius: 100px;
 }
 
-@media (prefers-color-scheme: dark) {
-  ion-content {
-    --background: rgb(31, 31, 31);
-  }
-}
 </style>

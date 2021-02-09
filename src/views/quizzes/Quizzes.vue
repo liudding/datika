@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>测验</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="showCreatePopup(true)">
+          <ion-button @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -26,10 +26,6 @@
       </ion-list>
 
       <Emptyset v-if="quizzes.length === 0"> </Emptyset>
-
-      <van-popup v-model:show="showCreate" position="bottom" round closeable>
-        <Create @created="onQuizCreated"></Create>
-      </van-popup>
     </ion-content>
   </ion-page>
 </template>
@@ -38,43 +34,41 @@
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
-import { actionSheetController, alertController } from "@ionic/vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
 import Emptyset from "@/components/Emptyset.vue";
 import Api from "@/api";
 import { useState } from "@/store/quiz";
+import Alert from "@/mixins/Alert";
+import ActionSheet from "@/mixins/ActionSheet";
+import Modal from "@/mixins/Modal";
 
 export default defineComponent({
   name: "Quizzes",
   components: {
     QuizItem,
-    Create,
+    // Create,
     Emptyset,
   },
+  mixins: [Alert, ActionSheet, Modal],
   setup() {
     const router = useRouter();
-    const showCreate = ref(false);
-    const showCreatePopup = (status = true) => {
-      showCreate.value = status;
-    };
 
     const state = useState() as any;
 
     return {
       addOutline,
       router,
-      showCreate,
-      showCreatePopup,
       state,
       quizzes: state.quizzes,
     };
   },
   data: () => {
-    // const quizzes: object[] = [];
+    const createModal: any = null; // HTMLIonModalElement|null = null;
+
     return {
-      // quizzes,
+      createModal: createModal,
     };
   },
   async created() {
@@ -85,6 +79,12 @@ export default defineComponent({
       //
     },
 
+    async showCreate() {
+      this.createModal = await this.modal(Create, {
+        onCreated: this.onQuizCreated,
+      });
+    },
+
     async getQuizzes() {
       const resp = await Api.quiz.list();
       (this.state as any).set(resp.data.data);
@@ -92,7 +92,8 @@ export default defineComponent({
 
     onQuizCreated(quiz: any) {
       (this.state as any).unshift(quiz);
-      this.showCreatePopup(false);
+
+      this.createModal.dismiss();
 
       this.router.push({
         path: `/quizzes/${quiz.id}/questions`,
@@ -101,9 +102,7 @@ export default defineComponent({
     },
 
     async onShowMore(quiz: any) {
-      const actionSheet = await actionSheetController.create({
-        header: quiz.name,
-        cssClass: "my-custom-class",
+      this.showActionSheet({
         buttons: [
           {
             text: "编辑",
@@ -137,7 +136,6 @@ export default defineComponent({
           },
         ],
       });
-      return actionSheet.present();
     },
     async unarchiveQuiz(quiz: any) {
       await Api.quiz.unarchive(quiz + quiz.id);
@@ -146,46 +144,25 @@ export default defineComponent({
     },
 
     async archiveQuiz(quiz: any) {
-      const alert = await alertController.create({
+      this.alert({
         header: "确定归档吗",
         message: "归档之后，不会再展示此测验。",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "归档",
-            handler: () => {
-              this.archive(quiz.id);
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "归档",
+      }).then(() => {
+        this.archive(quiz.id);
       });
-      return alert.present();
     },
 
     async deleteQuiz(quiz: any) {
-      const alert = await alertController.create({
+      this.alert({
         header: "确定删除吗",
         message: "该测验的所有相关数据将一并删除。",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "删除",
-            cssClass: "danger",
-            handler: () => {
-              this.delete(quiz.id);
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "删除",
+      }).then(() => {
+        this.delete(quiz.id);
       });
-      return alert.present();
     },
 
     async refresh($event: any) {

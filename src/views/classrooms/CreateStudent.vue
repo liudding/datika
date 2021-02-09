@@ -1,5 +1,8 @@
 <template>
-  <ion-content class="content">
+  <ion-header>
+    <div class="header"></div>
+  </ion-header>
+  <div class="content">
     <ion-item lines="none">
       <ion-input
         :value="name"
@@ -30,7 +33,7 @@
         </p>
       </div>
     </div>
-  </ion-content>
+  </div>
 </template>
 
 <script>
@@ -39,6 +42,7 @@ import Api from "@/api";
 
 export default defineComponent({
   props: {},
+  emits: ['created'],
   data() {
     return {
       name: "",
@@ -48,6 +52,10 @@ export default defineComponent({
   methods: {
     async submit() {
       const classId = this.$route.params.id;
+
+      if (!this.name || !this.number) {
+        return;
+      }
 
       try {
         const resp = await Api.classroom.createStudent(+classId, {
@@ -72,9 +80,16 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  margin-top: 32px;
-  height: 70vh;
+  background: white;
+  height: 100%;
+  padding: 32px 16px 0 16px;
 }
+
+ion-item {
+  --background: #eee;
+  border-radius: 8px;
+}
+
 ion-content {
   --padding-top: 44px;
   --padding-start: 16px;
@@ -98,9 +113,10 @@ ion-item {
   margin-top: 32px;
   width: 70%;
   border-radius: 8px;
-  border: 0.5px solid rgb(122, 122, 122);
+  border: 0.5px solid rgb(192, 192, 192);
   padding: 4px 16px;
   font-size: 12px;
+  color: gray;
 }
 
 @media (prefers-color-scheme: dark) {

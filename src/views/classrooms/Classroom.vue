@@ -10,10 +10,7 @@
         </ion-buttons>
         <ion-title>{{ classroom.name }}（{{ studentCount }}人）</ion-title>
         <ion-buttons slot="end">
-          <ion-button
-            v-if="!classroom.archivedAt"
-            @click="showCreatePopup(true)"
-          >
+          <ion-button v-if="!classroom.archivedAt" @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
           <ion-button @click="setPopoverOpen(true, $event)">
@@ -33,10 +30,6 @@
           <div slot="end">{{ student.number }}</div>
         </ion-item>
       </ion-list>
-
-      <van-popup v-model:show="showCreate" position="bottom" round closeable>
-        <CreateStudent @created="onStudentCreated"></CreateStudent>
-      </van-popup>
 
       <ion-popover
         :is-open="popoverOpenRef"
@@ -61,16 +54,20 @@
 import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { alertController } from "@ionic/vue";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 import { useState } from "@/store/classroom";
+import Alert from "@/mixins/Alert";
+import Modal from "@/mixins/Modal";
 
 export default defineComponent({
   name: "Classroom",
+  mixins: [Alert, Modal],
   data() {
     const students: any[] = [];
     const classroom: any = null;
+
+    const createModal: any = null;
 
     return {
       settingsOutline,
@@ -83,6 +80,8 @@ export default defineComponent({
         const mode = win && win.Ionic && win.Ionic.mode;
         return mode === "ios" ? "班级" : "";
       },
+      createModal,
+      title: "",
     };
   },
   setup() {
@@ -93,11 +92,6 @@ export default defineComponent({
       popoverOpenRef.value = state;
     };
 
-    const showCreate = ref(false);
-    const showCreatePopup = (status = true) => {
-      showCreate.value = status;
-    };
-
     const router = useRouter();
 
     const state = useState();
@@ -106,17 +100,18 @@ export default defineComponent({
       popoverOpenRef,
       setPopoverOpen,
       popoverRefEvent,
-      showCreate,
-      showCreatePopup,
       router,
       state,
     };
   },
 
-  components: {
-    CreateStudent,
-  },
+  components: {},
   created() {
+    this.classroom = {
+      name: this.$route.query.name,
+      archivedAt: null,
+    };
+
     const classId = this.$route.params.id;
     Api.classroom.students(+classId, { size: 50 }).then((res) => {
       this.students = res.data.data;
@@ -126,12 +121,16 @@ export default defineComponent({
     this.classroom = (this.state as any).find(+classId);
   },
   methods: {
+    async showCreate() {
+      this.createModal = await this.modal(CreateStudent, {
+        onCreated: this.onStudentCreated,
+      });
+    },
     onStudentCreated(student: any) {
       this.students.push(student);
       this.studentCount++;
-      console.log(student);
 
-      this.showCreatePopup(false);
+      this.createModal.dismiss();
     },
 
     async doArchive() {
@@ -160,50 +159,27 @@ export default defineComponent({
     async archiveClassroom() {
       this.setPopoverOpen(false);
 
-      const alert = await alertController.create({
-        cssClass: "my-custom-class",
+      this.alert({
         header: "确定归档吗",
         message: "归档之后，不会再展示此班级。",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "归档",
-            handler: () => {
-              this.doArchive();
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "归档",
+      }).then(() => {
+        this.doArchive();
       });
-      return alert.present();
     },
 
     async deleteClassroom() {
       this.setPopoverOpen(false);
 
-      const alert = await alertController.create({
-        cssClass: "my-custom-class",
+      this.alert({
         header: "确定删除吗",
         message: "删除之后，该班级的所有相关数据将一并删除。",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "删除",
-            cssClass: "danger",
-            handler: () => {
-              this.doDelete();
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "删除",
+      }).then(() => {
+        this.doDelete();
       });
-      return alert.present();
     },
   },
 });

@@ -48,15 +48,22 @@ export default defineComponent({
 
 <style scoped>
 .header {
-  background: #252525;
   height: 40px;
   width: 100%;
+  background: white;
 
   border-top-left-radius: 16px;
 
   border-top-right-radius: 16px;
 }
-ion-content {
-  --background: #252525;
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: #252525;
+  }
+
+  ion-content {
+    --background: #252525;
+  }
 }
 </style>

@@ -21,29 +21,13 @@
           </div>
         </div>
         <div class="questions-stats">
-          <div v-if="!showQuestionCountInput" @click="onEditQuestionCount">
+          <div @click="onEditQuestionCount">
             <h3>
               {{ questions.length }} 题
               <span>
                 <ion-icon :icon="createOutline"></ion-icon>
               </span>
             </h3>
-          </div>
-          <div v-if="showQuestionCountInput">
-            <div class="question-count-input-wrapper">
-              <ion-input
-                :value="questions.length"
-                @ionBlur="onQuestionCountChange($event)"
-                type="number"
-                max="120"
-                min="3"
-                step="1"
-                enterkeyhint="enter"
-                class="question-count-input"
-                autofocus
-              />
-            </div>
-            <span> 题</span>
           </div>
           <div class="stats">
             <ion-note
@@ -63,8 +47,6 @@
             >
           </div>
         </div>
-
-        <ion-icon :icon="scanOutline" color="primary"></ion-icon>
       </ion-item>
 
       <BubbleSheet
@@ -90,20 +72,24 @@
 <script lang="ts">
 import { useRouter } from "vue-router";
 import { add, createOutline } from "ionicons/icons";
-import { scanOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
 import _ from "lodash";
+import Alert from "@/mixins/Alert.ts";
+import Modal from "@/mixins/Modal.ts";
+import QuestionDefines from "./QuestionDefines.vue";
 
 export default defineComponent({
+  mixins: [Alert, Modal],
   data() {
     const questions: any[] = [];
 
     const debouncedUpdates: any = {};
+
+    const definesModal: any = null;
     return {
-      scanOutline,
       quiz: {
         questions: [],
       },
@@ -111,6 +97,7 @@ export default defineComponent({
       showQuestionCountInput: false,
       showDownload: false,
       debouncedUpdates,
+      definesModal,
     };
   },
   computed: {
@@ -166,6 +153,11 @@ export default defineComponent({
   },
   methods: {
     onQuestionChange(question: any) {
+      const recordCount = this.$route.query.recordCount || 0;
+      if (recordCount > 0) {
+        this.showAlert();
+        return;
+      }
       const index = this.questions.findIndex((i: any) => i.id === question.id);
       this.questions.splice(index, 1, question);
 
@@ -182,6 +174,16 @@ export default defineComponent({
 
       func.call(this, question);
     },
+    async showAlert() {
+      this.alert({
+        title: "已经存在作答",
+        message: "修改题目，将影响已存在的作答结果。",
+        confirmText: "重新计分",
+        cancel: true,
+      }).then(() => {
+        alert(11);
+      });
+    },
 
     /**
      * 改变了题目数量
@@ -195,10 +197,11 @@ export default defineComponent({
         this.trimQuestions(this.questions.length - count);
       }
 
-      this.showQuestionCountInput = false;
+      this.definesModal.dismiss();
     },
-    onEditQuestionCount() {
-      this.showQuestionCountInput = true;
+    async onEditQuestionCount() {
+
+      this.definesModal = await this.modal(QuestionDefines, {});
     },
 
     download() {

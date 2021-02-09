@@ -1,7 +1,7 @@
 <template>
   <ion-item
     v-if="record"
-    :routerLink="'/quizzes/' + record.quizId + '/records/' + record.id"
+    @click="gotoRecord"
     :detail="false"
     lines="none"
   >
@@ -18,7 +18,9 @@
 </template>
 
 <script lang="ts">
+import record from "@/api/record";
 import { defineComponent } from "vue";
+import { useRouter} from "vue-router";
 
 export default defineComponent({
   name: "recordListItem",
@@ -26,7 +28,25 @@ export default defineComponent({
   props: {
     record: Object,
   },
-  methods: {},
+  setup() {
+    const router = useRouter();
+    return {router}
+  },
+  methods: {
+    gotoRecord() {
+      this.router.push({
+        name: 'QuizRecord',
+        params: {
+          quizId: this.record?.quizId,
+          recordId: this.record?.id
+        },
+        query: {
+          studentName: this.record?.student.name,
+          studentNumber: this.record?.student.number
+        }
+      })
+    }
+  },
   data() {
     return { };
   },
