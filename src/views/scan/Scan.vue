@@ -11,43 +11,6 @@
     <div id="camera-container"></div>
 
     <ion-content :fullscreen="false">
-      <van-popup
-        v-model:show="popupStatus"
-        position="bottom"
-        round
-        safe-area-inset-bottom
-        :overlay-style="{ background: 'rgba(0,0,0,0.1)' }"
-      >
-        <div class="record-panel">
-          <div>
-            <b>{{ currentRecord.name }} </b
-            ><span style="margin-left: 8px">{{ currentRecord.number }}</span>
-          </div>
-          <div style="margin-top: 8px">
-            <span style="font-size: 36px">{{ currentRecord.score }}</span>
-            <span style="font-size: 10px; margin-left: 3px; color: dark"
-              >分</span
-            >
-          </div>
-
-          <div style="color: gray; margin-top: 16px">
-            <!-- <small>正确：</small>
-            <small>错误：</small> -->
-          </div>
-        </div>
-      </van-popup>
-
-      <van-popup
-        v-model:show="recordsPopupStatus"
-        position="bottom"
-        round
-        closeable
-        safe-area-inset-bottom
-        :style="{ height: '85%' }"
-      >
-        <Records :records="records"></Records>
-      </van-popup>
-
       <ion-fab vertical="bottom" horizontal="end">
         <ion-fab-button @click="onClickFab" translucent>
           <ion-icon :icon="appsOutline"></ion-icon>
@@ -59,19 +22,24 @@
 
 <script lang="ts">
 import { appsOutline } from "ionicons/icons";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 import Scanner from "@/services/gradecam/Scanner";
 import Records from "./Records.vue";
+import Result from "./Result.vue";
 import Api from "@/api";
+import Modal from "@/mixins/Modal";
 
 let scanner: Scanner;
 
 export default defineComponent({
   name: "Scan",
+  mixins: [Modal],
   data() {
     const students: any[] = [];
     const records: any[] = [];
+    const recordsModal: any = null;
+    const resultModal: any = null;
     return {
       quiz: {
         name: "",
@@ -85,30 +53,12 @@ export default defineComponent({
         score: 0,
       },
       appsOutline,
+      recordsModal,
+      resultModal,
     };
   },
-  setup() {
-    const popupStatus = ref(false);
-    const showPopup = (show = true) => {
-      popupStatus.value = show;
-    };
 
-    const recordsPopupStatus = ref(false);
-    const showRecords = (show = true) => {
-      recordsPopupStatus.value = show;
-    };
-
-    return {
-      popupStatus,
-      showPopup,
-
-      recordsPopupStatus,
-      showRecords,
-    };
-  },
-  components: {
-    Records,
-  },
+  components: {},
   async created() {
     this.getStudents();
     this.getRecords();
@@ -154,7 +104,6 @@ export default defineComponent({
 
       let record = this.checkIsOldRecordData(answers, student.id);
       if (record) {
-
         return record;
       }
 
@@ -168,7 +117,7 @@ export default defineComponent({
       record = resp.data;
       record.student = student;
 
-      this.records.unshift(record)
+      this.records.unshift(record);
 
       return record;
     },
@@ -191,9 +140,10 @@ export default defineComponent({
     gcInitCallback(suc: boolean) {
       return suc;
     },
-    onScan(scanObj: any) {
+    async onScan(scanObj: any) {
       console.log("SCAN: ", scanObj);
-      this.showPopup(false);
+
+      await this.hideResult();
 
       const student = this.students.find(
         (item) => item.number === scanObj.gradecam_id
@@ -209,7 +159,7 @@ export default defineComponent({
         this.currentRecord.name = student.name;
         this.currentRecord.number = student.number;
 
-        this.showPopup(true);
+        this.showResult(this.currentRecord);
 
         console.log(res);
       });
@@ -223,6 +173,26 @@ export default defineComponent({
     gcValidateCallback(validateObj: object, finish: boolean) {
       console.log(finish);
       return validateObj;
+    },
+
+    async showRecords() {
+      this.recordsModal = await this.modal(Records, {
+        records: this.records,
+      });
+    },
+
+    async hideResult() {
+      this.resultModal && (await this.resultModal.dismiss());
+    },
+
+    async showResult(result: any) {
+      this.resultModal = await this.modal(
+        Result,
+        {
+          result: result,
+        },
+        "scan-result-modal"
+      );
     },
 
     onClickFab() {
@@ -268,35 +238,5 @@ ion-fab-button {
 #camera-container {
   height: 100%;
   width: 100%;
-}
-
-.panel {
-  position: fixed;
-  z-index: 1000000000000;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  height: 150px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-
-  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
-
-  padding: 8px;
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-}
-
-.panel.show {
-  /* bottom: -100px; */
-}
-
-.record-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px;
 }
 </style>
