@@ -21,8 +21,9 @@
 
 <script lang="ts">
 import Api from "@/api";
+import { defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   data() {
     const classrooms: any[] = [];
     return {
@@ -30,7 +31,7 @@ export default {
     };
   },
   created() {
-      this.getClassrooms();
+    this.getClassrooms();
   },
   methods: {
     async attachClassrooms() {
@@ -46,7 +47,7 @@ export default {
       this.classrooms = resp.data.data;
     },
   },
-};
+});
 </script>
 
 <style scoped>
@@ -56,12 +57,8 @@ export default {
   padding: 32px 16px 0 16px;
 }
 
-ion-item {
-}
-
 ion-button {
   margin-top: 32px;
   --border-radius: 100px;
 }
-
 </style>
