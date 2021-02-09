@@ -1,4 +1,3 @@
-
 .d-flex {
     display: flex;
 }
@@ -17,4 +16,21 @@
 
 .justify-content-between {
     justify-content: space-between;
+}
+
+.modal-custom-class .modal-wrapper {
+    position: absolute;
+    bottom: 0;
+    height: 80%;
+    background: transparent;
+}
+
+.modal-custom-class .modal-shadow {
+    position: absolute;
+    bottom: 0;
+    height: 80%;
+}
+
+.modal-custom-class .ion-page {
+    background: transparent;
 }

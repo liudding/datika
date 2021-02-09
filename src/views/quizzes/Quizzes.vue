@@ -81,7 +81,6 @@ export default defineComponent({
   },
   async created() {
     this.getQuizzes();
-    console.log(this.alert as any);
   },
   methods: {
     gotoEdit() {
