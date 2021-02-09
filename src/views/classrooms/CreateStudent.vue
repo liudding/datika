@@ -1,5 +1,8 @@
 <template>
-  <ion-content class="content">
+  <ion-header>
+    <div class="header"></div>
+  </ion-header>
+  <div class="content">
     <ion-item lines="none">
       <ion-input
         :value="name"
@@ -30,7 +33,7 @@
         </p>
       </div>
     </div>
-  </ion-content>
+  </div>
 </template>
 
 <script>
@@ -71,10 +74,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.content {
-  margin-top: 32px;
-  height: 70vh;
+
+.content {  
+  background: white;
+  height: 100%;
+  padding: 32px 16px 0 16px;
 }
+
+ion-item {
+  --background: #eee;
+  border-radius: 8px;
+}
+
 ion-content {
   --padding-top: 44px;
   --padding-start: 16px;

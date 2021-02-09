@@ -10,10 +10,7 @@
         </ion-buttons>
         <ion-title>{{ classroom.name }}（{{ studentCount }}人）</ion-title>
         <ion-buttons slot="end">
-          <ion-button
-            v-if="!classroom.archivedAt"
-            @click="showCreatePopup(true)"
-          >
+          <ion-button v-if="!classroom.archivedAt" @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
           <ion-button @click="setPopoverOpen(true, $event)">
@@ -33,10 +30,6 @@
           <div slot="end">{{ student.number }}</div>
         </ion-item>
       </ion-list>
-
-      <van-popup v-model:show="showCreate" position="bottom" round closeable>
-        <CreateStudent @created="onStudentCreated"></CreateStudent>
-      </van-popup>
 
       <ion-popover
         :is-open="popoverOpenRef"
@@ -65,13 +58,16 @@ import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 import { useState } from "@/store/classroom";
 import Alert from "@/mixins/Alert";
+import Modal from "@/mixins/Modal";
 
 export default defineComponent({
   name: "Classroom",
-  mixins: [Alert],
+  mixins: [Alert, Modal],
   data() {
     const students: any[] = [];
     const classroom: any = null;
+
+    const createModal: any = null;
 
     return {
       settingsOutline,
@@ -84,6 +80,7 @@ export default defineComponent({
         const mode = win && win.Ionic && win.Ionic.mode;
         return mode === "ios" ? "班级" : "";
       },
+      createModal,
     };
   },
   setup() {
@@ -94,11 +91,6 @@ export default defineComponent({
       popoverOpenRef.value = state;
     };
 
-    const showCreate = ref(false);
-    const showCreatePopup = (status = true) => {
-      showCreate.value = status;
-    };
-
     const router = useRouter();
 
     const state = useState();
@@ -107,16 +99,12 @@ export default defineComponent({
       popoverOpenRef,
       setPopoverOpen,
       popoverRefEvent,
-      showCreate,
-      showCreatePopup,
       router,
       state,
     };
   },
 
-  components: {
-    CreateStudent,
-  },
+  components: {},
   created() {
     const classId = this.$route.params.id;
     Api.classroom.students(+classId, { size: 50 }).then((res) => {
@@ -127,12 +115,16 @@ export default defineComponent({
     this.classroom = (this.state as any).find(+classId);
   },
   methods: {
+    async showCreate() {
+      this.createModal = await this.modal(CreateStudent, {
+        onCreated: this.onStudentCreated,
+      });
+    },
     onStudentCreated(student: any) {
       this.students.push(student);
       this.studentCount++;
-      console.log(student);
 
-      this.showCreatePopup(false);
+      this.createModal.dismiss();
     },
 
     async doArchive() {

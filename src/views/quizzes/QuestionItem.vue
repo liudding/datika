@@ -2,7 +2,7 @@
   <ion-item lines="none">
     <div style="width: 100%">
       <div class="d-flex align-items-center choices-wrapper">
-        <div @click="onClickLabel" class="question-label">
+        <div class="question-label">
           {{ question.label }}.
         </div>
 
@@ -32,10 +32,6 @@
         </div>
       </div>
     </div>
-
-    <van-popup v-model="showPopup" position="top" :style="{ height: '30%' }"
-      >内容</van-popup
-    >
   </ion-item>
 </template>
 
@@ -55,7 +51,6 @@ export default defineComponent({
   },
   data() {
     return {
-      showPopup: false,
     };
   },
   methods: {
@@ -74,11 +69,6 @@ export default defineComponent({
         },
         "answer"
       );
-    },
-
-    onClickLabel() {
-      this.showPopup = true;
-      console.log("onClickLabel");
     },
 
     onScoreChange(value: number) {
@@ -101,11 +91,7 @@ export default defineComponent({
     detectQuestionType(answer: string, choices: string) {
       if (choices.length === 2) return 3;
       return answer.length > 1 ? 2 : 1;
-    },
-
-    showLabelPopup() {
-      this.showPopup = true;
-    },
+    }
   },
 });
 </script>

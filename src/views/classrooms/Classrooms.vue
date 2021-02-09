@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-title>{{ archived ? "已归档班级" : "班级" }}</ion-title>
         <ion-buttons slot="end" v-if="!archived">
-          <ion-button @click="showCreatePopup(true)">
+          <ion-button @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -34,10 +34,6 @@
         class="archived-entry"
         >已归档班级</ion-item
       >
-
-      <van-popup v-model:show="showCreate" position="bottom" round closeable>
-        <CreateClassroom @created="onClassroomCreated"></CreateClassroom>
-      </van-popup>
     </ion-content>
   </ion-page>
 </template>
@@ -49,29 +45,25 @@ import {
   addOutline,
 } from "ionicons/icons";
 import { useRouter } from "vue-router";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 import ClassroomItem from "./ClassroomItem.vue";
 import CreateClassroom from "./CreateClassroom.vue";
 import Api from "@/api";
 import { useState } from "@/store/classroom";
+import Modal from "@/mixins/Modal";
 
 export default defineComponent({
   name: "Classrooms",
   components: {
     ClassroomItem,
-    CreateClassroom,
   },
   props: {
     archived: Boolean,
   },
+  mixins: [Modal],
   setup() {
     const router = useRouter();
-
-    const showCreate = ref(false);
-    const showCreatePopup = (show = true) => {
-      showCreate.value = show;
-    };
 
     const state = useState() as any;
 
@@ -80,14 +72,15 @@ export default defineComponent({
       ellipsisVertical,
       addOutline,
       router,
-      showCreate,
-      showCreatePopup,
       state: state,
       classrooms: state.classrooms,
     };
   },
   data: () => {
-    return {};
+    const createModal: any = null;
+    return {
+      createModal,
+    };
   },
   created() {
     this.getClassrooms();
@@ -96,11 +89,16 @@ export default defineComponent({
     gotoEdit() {
       //
     },
+    async showCreate() {
+      this.createModal = await this.modal(CreateClassroom, {
+        onCreated: this.onClassroomCreated,
+      });
+    },
     onClassroomCreated(classroom: any) {
       const state = this.state as any;
       state.unshift(classroom);
 
-      this.showCreatePopup(false);
+      this.createModal.dismiss();
     },
     async getClassrooms() {
       try {

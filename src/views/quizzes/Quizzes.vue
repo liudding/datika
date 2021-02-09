@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>测验</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="showCreatePopup(true)">
+          <ion-button @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -26,10 +26,6 @@
       </ion-list>
 
       <Emptyset v-if="quizzes.length === 0"> </Emptyset>
-
-      <van-popup v-model:show="showCreate" position="bottom" round closeable>
-        <Create @created="onQuizCreated"></Create>
-      </van-popup>
     </ion-content>
   </ion-page>
 </template>
@@ -46,37 +42,33 @@ import Api from "@/api";
 import { useState } from "@/store/quiz";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
+import Modal from "@/mixins/Modal";
 
 export default defineComponent({
   name: "Quizzes",
   components: {
     QuizItem,
-    Create,
+    // Create,
     Emptyset,
   },
-  mixins: [Alert, ActionSheet],
+  mixins: [Alert, ActionSheet, Modal],
   setup() {
     const router = useRouter();
-    const showCreate = ref(false);
-    const showCreatePopup = (status = true) => {
-      showCreate.value = status;
-    };
 
     const state = useState() as any;
 
     return {
       addOutline,
       router,
-      showCreate,
-      showCreatePopup,
       state,
       quizzes: state.quizzes,
     };
   },
   data: () => {
-    // const quizzes: object[] = [];
+    const createModal: any = null; // HTMLIonModalElement|null = null;
+
     return {
-      // quizzes,
+      createModal: createModal,
     };
   },
   async created() {
@@ -87,6 +79,12 @@ export default defineComponent({
       //
     },
 
+    async showCreate() {
+      this.createModal = await this.modal(Create, {
+        onCreated: this.onQuizCreated,
+      });
+    },
+
     async getQuizzes() {
       const resp = await Api.quiz.list();
       (this.state as any).set(resp.data.data);
@@ -94,7 +92,8 @@ export default defineComponent({
 
     onQuizCreated(quiz: any) {
       (this.state as any).unshift(quiz);
-      this.showCreatePopup(false);
+
+      this.createModal.dismiss();
 
       this.router.push({
         path: `/quizzes/${quiz.id}/questions`,

@@ -1,4 +1,7 @@
 <template>
+  <ion-header>
+    <div class="header"></div>
+  </ion-header>
   <div class="content">
     <ion-item lines="none">
       <ion-input
@@ -22,7 +25,7 @@ import Api from "@/api";
 
 export default defineComponent({
   name: "CreateModal",
-  props: {},
+  props: ['modal'],
   data() {
     return {
       name: "",
@@ -36,6 +39,7 @@ export default defineComponent({
           name: this.name,
           questions,
         });
+
         this.$emit("created", resp.data);
 
         this.resetData();
@@ -68,19 +72,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.content {
-  margin-top: 32px;
+.content {  
   background: white;
+  height: 100%;
   padding: 32px 16px 0 16px;
-  height: 70vh;
-
-  /* border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-
-  box-shadow: 0 -8px 5px rgba(0, 0, 0, 0.1); */
 }
 
 ion-item {
   --background: #eee;
+  border-radius: 8px;
 }
 </style>
