@@ -81,6 +81,7 @@ export default defineComponent({
         return mode === "ios" ? "班级" : "";
       },
       createModal,
+      title: "",
     };
   },
   setup() {
@@ -106,6 +107,11 @@ export default defineComponent({
 
   components: {},
   created() {
+    this.classroom = {
+      name: this.$route.query.name,
+      archivedAt: null,
+    };
+
     const classId = this.$route.params.id;
     Api.classroom.students(+classId, { size: 50 }).then((res) => {
       this.students = res.data.data;

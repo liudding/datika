@@ -33,6 +33,8 @@ export default defineComponent({
   emits: ['created'],
   methods: {
     async submit() {
+      if (!this.name) return;
+
       try {
         const resp = await Api.classroom.create({
           name: this.name,
@@ -61,7 +63,7 @@ export default defineComponent({
 
 ion-item {
   --background: #eee;
-  border-radius: 100px;
+  border-radius: 10px;
 }
 
 ion-button {

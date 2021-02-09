@@ -25,7 +25,8 @@ import Api from "@/api";
 
 export default defineComponent({
   name: "CreateModal",
-  props: ['modal'],
+  props: ["modal"],
+  emits: ["created"],
   data() {
     return {
       name: "",
@@ -33,6 +34,8 @@ export default defineComponent({
   },
   methods: {
     async submit() {
+      if (!this.name) return;
+
       const questions = this.makeQuestions();
       try {
         const resp = await Api.quiz.create({
@@ -72,7 +75,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.content {  
+.content {
   background: white;
   height: 100%;
   padding: 32px 16px 0 16px;
