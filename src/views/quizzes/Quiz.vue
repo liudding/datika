@@ -43,28 +43,6 @@
         <ion-item button>设置测验</ion-item>
       </ion-list>
     </ion-popover>
-
-    <van-popup
-      v-model:show="classroomPickerRef"
-      position="bottom"
-      round
-      closeable
-    >
-      <ion-label>
-        <ion-list>
-          <ion-item v-for="classroom in classrooms" :key="classroom.id">
-            <ion-label>{{ classroom.name }}</ion-label>
-            <ion-checkbox
-              slot="end"
-              @update:modelValue="classroom.isChecked = $event"
-              :modelValue="classroom.isChecked"
-            >
-            </ion-checkbox>
-          </ion-item>
-        </ion-list>
-        <ion-button @click="attachClassrooms">确定</ion-button>
-      </ion-label>
-    </van-popup>
   </ion-page>
 </template>
 
@@ -76,16 +54,18 @@ import { defineComponent, ref } from "vue";
 import Api from "@/api";
 import Records from "./Records.vue";
 import Emptyset from "@/components/Emptyset.vue";
+import AttachClassrooms from "./AttachClassrooms.vue";
 import { useState } from "@/store/quiz";
+import Modal from "@/mixins/Modal";
 
 export default defineComponent({
-  name: "Home",
-  props: ["id"],
   components: {
     Records,
     Emptyset,
   },
+  mixins: [Modal],
   data() {
+    const attachModal: any = null;
     return {
       scanOutline,
       showFab: true,
@@ -97,6 +77,7 @@ export default defineComponent({
       attachedClassrooms: [],
 
       classrooms: [],
+      attachModal,
     };
   },
 
@@ -135,6 +116,11 @@ export default defineComponent({
     this.getDetail();
   },
   methods: {
+    async showAttachClassrooms() {
+      this.attachModal = await this.modal(AttachClassrooms, {
+        onAttached: this.onClassroomsAttached,
+      });
+    },
     async getDetail() {
       const resp = await Api.quiz.show(+this.$route.params.id, {
         with: ["classrooms"],
@@ -142,24 +128,15 @@ export default defineComponent({
       this.quiz = resp.data;
       this.attachedClassrooms = resp.data.classrooms;
     },
-    async getClassrooms() {
-      const resp = await Api.classroom.list();
-      this.classrooms = resp.data.data;
-    },
-    async showClassroomPicker() {
-      await this.getClassrooms();
-      this.showClassroomPickerPopup();
-    },
-    async attachClassrooms() {
-      const classrooms = this.classrooms.filter((i: any) => i.isChecked);
-      const classroomIds = classrooms.map((i: any) => i.id);
 
-      await Api.quiz.attachClassrooms(+this.$route.params.id, classroomIds);
-
+    async onClassroomsAttached(classrooms: any) {
       this.attachedClassrooms = classrooms;
 
-      this.showClassroomPickerPopup(false);
+      await this.attachModal.dismiss();
+
+      this.gotoScan()
     },
+
     gotoScan() {
       if (this.attachedClassrooms.length > 0) {
         this.router.push({
@@ -172,7 +149,7 @@ export default defineComponent({
       }
 
       // 选择班级
-      this.showClassroomPicker();
+      this.showAttachClassrooms();
     },
     gotoQuestions() {
       this.router.push({
@@ -182,7 +159,7 @@ export default defineComponent({
         },
         query: {
           name: this.quiz.name,
-          recordCount: this.quiz.recordCount
+          recordCount: this.quiz.recordCount,
         },
       });
     },
