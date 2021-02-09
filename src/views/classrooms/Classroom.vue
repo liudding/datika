@@ -61,13 +61,14 @@
 import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { alertController } from "@ionic/vue";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 import { useState } from "@/store/classroom";
+import Alert from "@/mixins/Alert";
 
 export default defineComponent({
   name: "Classroom",
+  mixins: [Alert],
   data() {
     const students: any[] = [];
     const classroom: any = null;
@@ -160,50 +161,27 @@ export default defineComponent({
     async archiveClassroom() {
       this.setPopoverOpen(false);
 
-      const alert = await alertController.create({
-        cssClass: "my-custom-class",
+      this.alert({
         header: "确定归档吗",
         message: "归档之后，不会再展示此班级。",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "归档",
-            handler: () => {
-              this.doArchive();
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "归档",
+      }).then(() => {
+        this.doArchive();
       });
-      return alert.present();
     },
 
     async deleteClassroom() {
       this.setPopoverOpen(false);
 
-      const alert = await alertController.create({
-        cssClass: "my-custom-class",
+      this.alert({
         header: "确定删除吗",
         message: "删除之后，该班级的所有相关数据将一并删除。",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "删除",
-            cssClass: "danger",
-            handler: () => {
-              this.doDelete();
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "删除",
+      }).then(() => {
+        this.doDelete();
       });
-      return alert.present();
     },
   },
 });

@@ -5,7 +5,7 @@
         <ion-buttons>
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title>{{title}}</ion-title>
+        <ion-title>{{ title }}</ion-title>
         <ion-buttons slot="end">
           <ion-button>编辑</ion-button>
           <ion-button @click="onClickDelete">删除</ion-button>
@@ -53,8 +53,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { alertController } from "@ionic/vue";
 import { questionType } from "@/utils/map";
+import Alert from "@/mixins/Alert";
 
 import Bubbles from "./Bubbles.vue";
 import Api from "@/api";
@@ -64,6 +64,7 @@ export default defineComponent({
   components: {
     Bubbles,
   },
+  mixins: [Alert],
   setup() {
     const router = useRouter();
 
@@ -79,7 +80,7 @@ export default defineComponent({
         questions: [],
       },
       questionType,
-      title: ''
+      title: "",
     };
   },
   computed: {
@@ -121,24 +122,14 @@ export default defineComponent({
       this.router.back();
     },
     async onClickDelete() {
-      const alert = await alertController.create({
+      this.alert({
         header: "确定删除吗",
         message: "删除之后，不能恢复",
-        buttons: [
-          {
-            text: "取消",
-            role: "cancel",
-            cssClass: "secondary",
-          },
-          {
-            text: "删除",
-            handler: () => {
-              this.delete();
-            },
-          },
-        ],
+        cancel: true,
+        confirmText: "删除",
+      }).then(() => {
+        this.delete();
       });
-      return alert.present();
     },
   },
 });
