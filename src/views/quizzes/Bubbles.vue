@@ -99,7 +99,7 @@ export default defineComponent({
 }
 
 .mode-answer .correct {
-  border: 2px solid rgb(20, 42, 243);
+  border: 2px solid rgba(20, 42, 243, .7);
 
   line-height: 26px;
 }

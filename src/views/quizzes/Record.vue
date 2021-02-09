@@ -5,7 +5,7 @@
         <ion-buttons>
           <ion-back-button default-href="/"></ion-back-button>
         </ion-buttons>
-        <ion-title></ion-title>
+        <ion-title>{{title}}</ion-title>
         <ion-buttons slot="end">
           <ion-button>编辑</ion-button>
           <ion-button @click="onClickDelete">删除</ion-button>
@@ -14,7 +14,9 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item class="brief" lines="none"> 成绩：{{ record.score }} 分</ion-item>
+      <ion-item class="brief" lines="none">
+        成绩：{{ record.score }} 分</ion-item
+      >
 
       <ion-list>
         <ion-item
@@ -29,11 +31,17 @@
               {{ questionType(answer.question.type) }}
             </div>
           </div>
-          <Bubbles :choices="answer.question.choices" :answer="answer.answer" :correct="answer.question.answer" mode="answer"/>
-          <div style="margin-left: 16px;" slot="end">
+          <Bubbles
+            :choices="answer.question.choices"
+            :answer="answer.answer"
+            :correct="answer.question.answer"
+            @change="onBubbleChange"
+            mode="answer"
+          />
+          <div style="margin-left: 16px" slot="end">
             <span style="font-size: 17px">{{ answer.score || 0 }}</span
-            ><span style="font-size: 14px; color: gray"
-              > /{{ answer.question.score }} 分</span
+            ><span style="font-size: 14px; color: gray">
+              /{{ answer.question.score }} 分</span
             >
           </div>
         </ion-item>
@@ -71,6 +79,7 @@ export default defineComponent({
         questions: [],
       },
       questionType,
+      title: ''
     };
   },
   computed: {
@@ -92,6 +101,8 @@ export default defineComponent({
     },
   },
   async created() {
+    this.title = this.$route.query.studentName as string;
+
     const resp = await Api.quiz.record(+this.$route.params.recordId);
     this.record = resp.data;
 
@@ -101,6 +112,9 @@ export default defineComponent({
     this.quiz = quizResp.data;
   },
   methods: {
+    onBubbleChange(selected: string, name: string) {
+      //
+    },
     async delete() {
       await Api.record.destroy(+this.$route.params.recordId);
 
