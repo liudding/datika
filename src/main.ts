@@ -50,7 +50,7 @@ router.isReady().then(() => {
   app.mount('#app');
 });
 
-app.use(Stepper).use(Popup);
+app.use(Stepper);
 
 
 app.component('IonPage', IonPage)

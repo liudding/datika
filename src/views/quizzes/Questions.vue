@@ -47,8 +47,6 @@
             >
           </div>
         </div>
-
-        <ion-icon :icon="scanOutline" color="primary"></ion-icon>
       </ion-item>
 
       <BubbleSheet
@@ -74,7 +72,6 @@
 <script lang="ts">
 import { useRouter } from "vue-router";
 import { add, createOutline } from "ionicons/icons";
-import { scanOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
@@ -93,7 +90,6 @@ export default defineComponent({
 
     const definesModal: any = null;
     return {
-      scanOutline,
       quiz: {
         questions: [],
       },

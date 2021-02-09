@@ -21,7 +21,7 @@
         </div>
 
         <div>
-          <span class="mr-1">分值</span>
+          <span class="mr-1" style="margin-right: 4px; color: gray;">分值</span>
           <van-stepper
             :default-value="question.score"
             :name="question.id"
@@ -96,28 +96,6 @@ export default defineComponent({
 });
 </script>
 
-<style>
-.my-custom-class {
-  /* height: 300px;
-  position: absolute;
-  bottom: 0;
-  left: 0; */
-  background: transparent;
-}
-ion-page {
-  height: 300px;
-  --background: transparent;
-}
-
-.my-custom-class .modal-wrapper {
-  height: 300px;
-  --background: transparent;
-  background: transparent;
-}
-.sc-ion-modal-md {
-}
-</style>
-
 <style scoped>
 .content {
   background: white;
@@ -172,9 +150,5 @@ ion-item {
 
 .question-type {
   color: rgb(235, 82, 108);
-}
-
-.question-label {
-  border-bottom: 1px solid rgb(126, 126, 126);
 }
 </style>
