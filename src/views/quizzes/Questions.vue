@@ -96,8 +96,10 @@ import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
 import _ from "lodash";
+import Alert from "@/mixins/Alert.ts";
 
 export default defineComponent({
+  mixins: [Alert],
   data() {
     const questions: any[] = [];
 
@@ -166,6 +168,11 @@ export default defineComponent({
   },
   methods: {
     onQuestionChange(question: any) {
+      const recordCount = this.$route.query.recordCount || 0;
+      if (recordCount > 0) {
+        this.showAlert();
+        return;
+      }
       const index = this.questions.findIndex((i: any) => i.id === question.id);
       this.questions.splice(index, 1, question);
 
@@ -181,6 +188,16 @@ export default defineComponent({
       }
 
       func.call(this, question);
+    },
+    async showAlert() {
+      this.alert({
+        title: '已经存在作答',
+        message: '修改题目，将影响已存在的作答结果。',
+        confirmText: '重新计分',
+        cancel: true
+      }).then(() => {
+        alert(11);
+      });
     },
 
     /**

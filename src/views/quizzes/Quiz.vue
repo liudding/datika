@@ -92,6 +92,7 @@ export default defineComponent({
       quiz: {
         id: 0,
         name: "",
+        recordCount: 0,
       },
       attachedClassrooms: [],
 
@@ -181,6 +182,7 @@ export default defineComponent({
         },
         query: {
           name: this.quiz.name,
+          recordCount: this.quiz.recordCount
         },
       });
     },
