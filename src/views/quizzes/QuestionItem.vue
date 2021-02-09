@@ -9,7 +9,7 @@
         <div class="choices">
           <Bubbles
             :choices="question.choices"
-            :answer="question.answer"
+            :correct="question.answer"
             @change="onAnswerChange"
           ></Bubbles>
         </div>

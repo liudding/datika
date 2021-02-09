@@ -14,7 +14,7 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item class="brief" lines="none"> 成绩：{{ record.score }} </ion-item>
+      <ion-item class="brief" lines="none"> 成绩：{{ record.score }} 分</ion-item>
 
       <ion-list>
         <ion-item
@@ -29,11 +29,11 @@
               {{ questionType(answer.question.type) }}
             </div>
           </div>
-          <Bubbles :choices="answer.question.choices" :answer="answer.answer" />
-          <div>
+          <Bubbles :choices="answer.question.choices" :answer="answer.answer" :correct="answer.question.answer" mode="answer"/>
+          <div style="margin-left: 16px;" slot="end">
             <span style="font-size: 17px">{{ answer.score || 0 }}</span
             ><span style="font-size: 14px; color: gray"
-              >/{{ answer.question.score }}</span
+              > /{{ answer.question.score }} 分</span
             >
           </div>
         </ion-item>
