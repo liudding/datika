@@ -2,7 +2,7 @@
   <ion-header>
     <div class="header"></div>
   </ion-header>
-  <div class="content">
+  <ion-content class="content">
     <ion-item lines="none">
       <ion-input
         :value="name"
@@ -33,7 +33,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </ion-content>
 </template>
 
 <script>
@@ -91,7 +91,7 @@ ion-item {
 }
 
 ion-content {
-  --padding-top: 44px;
+  --padding-top: 32px;
   --padding-start: 16px;
   --padding-end: 16px;
 }
@@ -119,9 +119,19 @@ ion-item {
   color: gray;
 }
 
+
 @media (prefers-color-scheme: dark) {
+  ion-item {
+    --background: rgb(83, 83, 83);
+    border-radius: 8px;
+  }
+
+  .modal-custom-class .header {
+    background: rgb(34, 34, 34);
+  }
+
   ion-content {
-    --background: rgb(31, 31, 31);
+    --background: rgb(34, 34, 34);
   }
 }
 </style>

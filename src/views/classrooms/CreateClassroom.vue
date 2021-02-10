@@ -2,7 +2,7 @@
   <ion-header>
     <div class="header"></div>
   </ion-header>
-  <div class="content">
+  <ion-content class="content">
     <ion-item lines="none">
       <ion-input
         :value="name"
@@ -14,7 +14,7 @@
     </ion-item>
 
     <ion-button @click="submit" expand="block">保存</ion-button>
-  </div>
+  </ion-content>
 </template>
 
 <script>
@@ -30,7 +30,7 @@ export default defineComponent({
     };
   },
   components: {},
-  emits: ['created'],
+  emits: ["created"],
   methods: {
     async submit() {
       if (!this.name) return;
@@ -59,6 +59,9 @@ export default defineComponent({
   background: white;
   height: 100%;
   padding: 32px 16px 0 16px;
+  --padding-top: 32px;
+  --padding-start: 16px;
+  --padding-end: 16px;
 }
 
 ion-item {
@@ -71,4 +74,18 @@ ion-button {
   --border-radius: 100px;
 }
 
+@media (prefers-color-scheme: dark) {
+  ion-item {
+    --background: rgb(83, 83, 83);
+    border-radius: 8px;
+  }
+
+  .modal-custom-class .header {
+    background: rgb(34, 34, 34);
+  }
+
+  ion-content {
+    --background: rgb(34, 34, 34);
+  }
+}
 </style>
