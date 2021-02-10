@@ -9,12 +9,12 @@ module.exports = {
         themeColor: "#ffffff",
         msTileColor: "#000000",
         appleMobileWebAppStatusBarStyle: "default",
-        assetsVersion: "1",
+        assetsVersion: "2",
         manifestOptions: {
             "start_url": "./?source=pwa",
             "description": "答题卡扫描",
-            "background_color": "red",
-            "orientation": "portrait-primary",
+            "background_color": "#fff",
+            "orientation": "portrait",
         },
         iconPaths: {
             faviconSVG: 'img/icons/favicon.svg',
