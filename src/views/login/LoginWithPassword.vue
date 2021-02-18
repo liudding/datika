@@ -45,14 +45,13 @@ import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Home",
   data() {
     return {
       personOutline,
       lockClosedOutline,
 
       username: "ding",
-      password: "aaa",
+      password: "123456",
     };
   },
   setup() {
@@ -63,6 +62,22 @@ export default defineComponent({
     login() {
       //
       console.log(this.username);
+
+      this.$store
+        .dispatch("login", {
+          username: this.username,
+          password: this.password
+        })
+        .then((res: any) => {
+          return this.$store.dispatch("profile");
+        })
+        .then((res: any) => {
+
+          this.$router.replace({ path: '/'} )
+        })
+        .catch(() => {
+          //
+        });
     },
   },
 });

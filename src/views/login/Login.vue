@@ -6,10 +6,10 @@
       <div class="main">
         <div class="main-content">
           <div class="head">
-            <img src="/assets/icon/icon.png" class="logo" />
+            <img src="/img/icons/android-chrome-512x512.png" class="logo" />
           </div>
           <div class="body">
-            <h3 class="app-name">DTK</h3>
+            <h3 class="app-name">Quiz</h3>
             <div class="slogan">slogan</div>
           </div>
 
@@ -20,8 +20,8 @@
               expand="block"
               class="outline"
               style="margin-top: 16px"
-              >密码登录</ion-button
-            >
+              >密码登录
+            </ion-button>
 
             <ion-router-link href="/register" class="mt-1"
               >注册</ion-router-link
@@ -37,7 +37,6 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Home",
   data() {
     return {};
   },

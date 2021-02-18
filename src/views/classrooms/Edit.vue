@@ -40,7 +40,6 @@ import { personCircle } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Home",
   data() {
     return {
       personCircle,
