@@ -3,7 +3,7 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons v-if="archived">
-          <ion-back-button text="班级" default-href="/"></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ archived ? "已归档班级" : "班级" }}</ion-title>
         <ion-buttons slot="end" v-if="!archived">

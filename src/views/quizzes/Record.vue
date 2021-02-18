@@ -3,7 +3,7 @@
     <ion-header :translucent="false">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button default-href="/"></ion-back-button>
+          <ion-back-button default-href="/" text=""></ion-back-button>
         </ion-buttons>
         <ion-title>{{ title }}</ion-title>
         <ion-buttons slot="end">

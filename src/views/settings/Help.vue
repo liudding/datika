@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button default-href="/"></ion-back-button>
+          <ion-back-button default-href="/" text=""></ion-back-button>
         </ion-buttons>
         <ion-title>使用帮助</ion-title>
       </ion-toolbar>

@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-buttons>
           <ion-back-button
-            :text="getBackButtonText()"
+            text=""
             default-href="/"
           ></ion-back-button>
         </ion-buttons>
@@ -63,11 +63,6 @@ export default defineComponent({
       addOutline,
       classroom,
       students,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "班级" : "";
-      },
       createModal,
       title: "",
     };

@@ -3,10 +3,7 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            :text="getBackButtonText()"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -43,11 +40,6 @@ export default defineComponent({
   data() {
     return {
       personCircle,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "Inbox" : "";
-      },
     };
   },
   setup() {
