@@ -10,7 +10,7 @@ const router = createRouter({
 
 
 function isLoggedIn(): boolean {
-  return true;
+  return !!localStorage.getItem('token');
 }
 
 // permission judge function
@@ -22,7 +22,7 @@ function hasPermission(rolesRequired: string[]) {
   return roles.some(role => rolesRequired.indexOf(role) >= 0)
 }
 
-const whiteList = ['/login', '/login/password', '/auth-redirect'] // no redirect whitelist
+const whiteList = ['/login', '/login/password', '/register'] // no redirect whitelist
 
 function isInWhitelist(to: RouteLocationNormalized) {
   return whiteList.indexOf(to.path) !== -1;
@@ -37,12 +37,7 @@ function needLogin(to: RouteLocationNormalized) {
     return true;
   }
 
-  if (to.meta.login === undefined || to.meta.login === null) {
-    // 如果未设置 “需要登录”，则默认为必须登录
-    return true
-  }
-
-  return to.meta.login;
+  return to.meta.login !== false
 }
 
 router.beforeEach((to, from, next) => {
@@ -50,6 +45,7 @@ router.beforeEach((to, from, next) => {
     next()
     return
   }
+
   if (!isLoggedIn()) {
     next({ path: '/login', replace: true })
     return;
