@@ -24,6 +24,7 @@
           v-for="classroom in classrooms"
           :key="classroom.id"
           :classroom="classroom"
+          @more="onShowMore"
         />
       </ion-list>
 
@@ -52,6 +53,8 @@ import CreateClassroom from "./CreateClassroom.vue";
 import Api from "@/api";
 import { useState } from "@/store/classroom";
 import Modal from "@/mixins/Modal";
+import Alert from "@/mixins/Alert";
+import ActionSheet from "@/mixins/ActionSheet";
 
 export default defineComponent({
   name: "Classrooms",
@@ -61,7 +64,7 @@ export default defineComponent({
   props: {
     archived: Boolean,
   },
-  mixins: [Modal],
+  mixins: [Modal, Alert, ActionSheet],
   setup() {
     const router = useRouter();
 
@@ -91,12 +94,24 @@ export default defineComponent({
     },
     async showCreate() {
       this.createModal = await this.modal(CreateClassroom, {
-        onCreated: this.onClassroomCreated,
+        onCreated: this.onClassroomSaved,
       });
     },
-    onClassroomCreated(classroom: any) {
+    async showEdit(classroom: any) {
+      this.createModal = await this.modal(CreateClassroom, {
+        onSaved: this.onClassroomSaved,
+        classroom: classroom,
+      });
+    },
+
+    onClassroomSaved(classroom: any, isNew: boolean) {
       const state = this.state as any;
-      state.unshift(classroom);
+
+      if (isNew) {
+        state.unshift(classroom);
+      } else {
+        //
+      }
 
       this.createModal.dismiss();
     },
@@ -116,6 +131,74 @@ export default defineComponent({
       await this.getClassrooms();
 
       $event.target.complete();
+    },
+
+    async onShowMore(classroom: any) {
+      this.showActionSheet({
+        buttons: [
+          {
+            text: "编辑",
+            handler: () => {
+              this.showEdit(classroom);
+            },
+          },
+          {
+            text: "归档",
+            handler: () => {
+              this.archiveClassroom(classroom);
+            },
+          },
+
+          {
+            text: "删除",
+            role: "destructive",
+            handler: () => {
+              this.deleteClassroom(classroom);
+            },
+          },
+          {
+            text: "取消",
+            role: "cancel",
+          },
+        ],
+      });
+    },
+
+    async doArchive(classroom: any) {
+      await Api.classroom.archive(classroom.id);
+
+      classroom.archivedAt = Date.now() / 1000;
+    },
+    async doUnarchive(classroom: any) {
+      await Api.classroom.unarchive(classroom + classroom.id);
+
+      classroom.archivedAt = null;
+    },
+
+    async doDelete(classroom: any) {
+      await Api.classroom.destroy(classroom.id);
+    },
+
+    async archiveClassroom(classroom: any) {
+      this.alert({
+        header: "确定归档吗",
+        message: "归档之后，不会再展示此测验。",
+        cancel: true,
+        confirmText: "归档",
+      }).then(() => {
+        this.doArchive(classroom);
+      });
+    },
+
+    async deleteClassroom(classroom: any) {
+      this.alert({
+        header: "确定删除吗",
+        message: "该测验的所有相关数据将一并删除。",
+        cancel: true,
+        confirmText: "删除",
+      }).then(() => {
+        this.doDelete(classroom);
+      });
     },
   },
 });

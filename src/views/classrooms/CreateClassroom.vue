@@ -23,10 +23,10 @@ import Api from "@/api";
 
 export default defineComponent({
   name: "CreateModal",
-  props: {},
+  props: ["classroom"],
   data() {
     return {
-      name: "",
+      name: this.classroom ? this.classroom.name : "",
     };
   },
   components: {},
@@ -36,10 +36,18 @@ export default defineComponent({
       if (!this.name) return;
 
       try {
-        const resp = await Api.classroom.create({
-          name: this.name,
-        });
-        this.$emit("created", resp.data);
+        let resp = null;
+        if (this.classroom) {
+          resp = await Api.classroom.update(this.classroom.id, {
+            name: this.name,
+          });
+        } else {
+          resp = await Api.classroom.create({
+            name: this.name,
+          });
+        }
+
+        this.$emit("created", resp.data, !!this.classroom);
 
         this.resetData();
       } catch (e) {

@@ -13,9 +13,6 @@
           <ion-button v-if="!classroom.archivedAt" @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
           </ion-button>
-          <ion-button @click="setPopoverOpen(true, $event)">
-            <ion-icon slot="end" :icon="settingsOutline"></ion-icon>
-          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>

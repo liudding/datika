@@ -21,10 +21,11 @@ function create(data: any) {
   })
 }
 
-function update(id: number) {
+function update(id: number, data: any) {
   return request({
     url: `/classrooms/${id}`,
-    method: 'put'
+    method: 'put',
+    data
   })
 }
 
