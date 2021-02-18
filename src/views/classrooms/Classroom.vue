@@ -23,7 +23,7 @@
       <ion-item v-if="classroom.archivedAt" class="archived" lines="none"
         >该班级已经归档</ion-item
       >
-      <ion-list>
+      <ion-list v-if="students.length">
         <ion-item
           v-for="student in students"
           :key="student.id"
@@ -34,6 +34,7 @@
           <div slot="end">{{ student.number }}</div>
         </ion-item>
       </ion-list>
+      <Emptyset v-else title="尚无学生"></Emptyset>
     </ion-content>
   </ion-page>
 </template>
@@ -46,6 +47,7 @@ import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 import Alert from "@/mixins/Alert";
 import Modal from "@/mixins/Modal";
+import Emptyset from "@/components/Emptyset.vue";
 
 export default defineComponent({
   name: "Classroom",
@@ -88,7 +90,7 @@ export default defineComponent({
     };
   },
 
-  components: {},
+  components: {Emptyset},
   async created() {
     this.classroom = {
       name: this.$route.query.name,
