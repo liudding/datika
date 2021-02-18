@@ -37,7 +37,7 @@ export default defineComponent({
 
 .emptyset-title {
   font-size: 24px;
-  color: dark;
+  color: gray;
 }
 
 

@@ -19,7 +19,7 @@
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
 
-      <ion-list>
+      <ion-list v-if="classrooms && classrooms.length">
         <ClassroomItem
           v-for="classroom in classrooms"
           :key="classroom.id"
@@ -28,12 +28,16 @@
         />
       </ion-list>
 
+      <Emptyset v-else title="暂无班级"></Emptyset>
+
       <ion-item
         v-if="!archived"
         routerLink="/classrooms/type/archived"
         lines="none"
         class="archived-entry"
-        >已归档班级</ion-item
+        >
+        <ion-label >查看已归档班级</ion-label>
+        </ion-item
       >
     </ion-content>
   </ion-page>
@@ -55,11 +59,13 @@ import { useState } from "@/store/classroom";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
+import Emptyset from '@/components/Emptyset.vue'
 
 export default defineComponent({
   name: "Classrooms",
   components: {
     ClassroomItem,
+    Emptyset
   },
   props: {
     archived: Boolean,
