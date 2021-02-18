@@ -14,7 +14,7 @@
     </ion-item>
 
     <ion-button @click="submit" expand="block" style="margin-top: 32px"
-      >创建</ion-button
+      >保存</ion-button
     >
   </ion-content>
 </template>
@@ -25,17 +25,25 @@ import Api from "@/api";
 
 export default defineComponent({
   name: "CreateModal",
-  props: ["modal"],
-  emits: ["created"],
+  props: ["quiz"],
+  emits: ["saved"],
   data() {
     return {
-      name: "",
+      name: this.quiz ? this.quiz.name : "",
     };
   },
   methods: {
     async submit() {
       if (!this.name) return;
 
+      if (this.quiz) {
+        await this.update();
+      } else {
+        await this.create();
+      }
+    },
+
+    async create() {
       const questions = this.makeQuestions();
       try {
         const resp = await Api.quiz.create({
@@ -43,7 +51,21 @@ export default defineComponent({
           questions,
         });
 
-        this.$emit("created", resp.data);
+        this.$emit("saved", resp.data, true);
+
+        this.resetData();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async update() {
+      try {
+        const resp = await Api.quiz.update(this.quiz.id, {
+          name: this.name,
+        });
+
+        this.$emit("saved", resp.data, false);
 
         this.resetData();
       } catch (e) {
@@ -76,7 +98,7 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  background: white;
+  --background: white;
   height: 100%;
   padding: 32px 16px 0 16px;
   --padding-top: 32px;

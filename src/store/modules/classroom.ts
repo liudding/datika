@@ -26,6 +26,8 @@ export default {
         REMOVE_CLASSROOM(state: any, data: any) {
             const index = state.list.findIndex((i: any) => i.id === data.id);
             state.list.splice(index, 1);
+
+            state.total --;
         },
 
         SET_ARCHIVED_CLASSROOMS(state: any, data: any) {

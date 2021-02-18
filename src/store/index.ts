@@ -2,6 +2,7 @@ import Classroom from './classroom'
 import Quiz from './quiz'
 import { createStore } from 'vuex'
 import classroom from './modules/classroom'
+import quiz from './modules/quiz'
 import user from './modules/user'
 
 export function register(app: any) {
@@ -12,6 +13,7 @@ export function register(app: any) {
 export default createStore({
     modules: {
         classroom,
+        quiz,
         user
     },
     strict: process.env.NODE_ENV !== 'production'

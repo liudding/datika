@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
-function list() {
+function list(query?: any) {
   return request({
     url: '/quizzes',
-    method: 'get'
+    params: query
   })
 }
 
@@ -14,10 +14,11 @@ function show(id: number, query?: any) {
   })
 }
 
-function update(id: number) {
+function update(id: number, data: any) {
   return request({
     url: `/quizzes/${id}`,
-    method: 'put'
+    method: 'put',
+    data
   })
 }
 

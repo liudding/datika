@@ -41,6 +41,12 @@ const routes: Array<RouteRecordRaw> = [
     },
 
     {
+        path: '/quizzes/type/:archived',
+        component: () => import('@/views/quizzes/Quizzes.vue'),
+        props: true,
+    },
+
+    {
         path: '/classrooms/type/:archived',
         component: () => import('@/views/classrooms/Classrooms.vue'),
         props: true,
