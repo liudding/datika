@@ -14,6 +14,7 @@ export default {
 
             const actionSheet = await actionSheetController.create({
                 header: options.header || options.title,
+                subHeader: options.subHeader || options.message,
                 cssClass: options.cssClass,
                 buttons,
             });
