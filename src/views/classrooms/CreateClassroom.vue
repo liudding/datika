@@ -30,7 +30,7 @@ export default defineComponent({
     };
   },
   components: {},
-  emits: ["created"],
+  emits: ["saved"],
   methods: {
     async submit() {
       if (!this.name) return;
@@ -47,7 +47,7 @@ export default defineComponent({
           });
         }
 
-        this.$emit("created", resp.data, !!this.classroom);
+        this.$emit("saved", resp.data, !this.classroom);
 
         this.resetData();
       } catch (e) {

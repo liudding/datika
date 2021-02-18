@@ -35,10 +35,9 @@
         routerLink="/classrooms/type/archived"
         lines="none"
         class="archived-entry"
-        >
-        <ion-label >查看已归档班级</ion-label>
-        </ion-item
       >
+        <ion-label>查看已归档班级</ion-label>
+      </ion-item>
     </ion-content>
   </ion-page>
 </template>
@@ -59,13 +58,14 @@ import { useState } from "@/store/classroom";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
-import Emptyset from '@/components/Emptyset.vue'
+import Emptyset from "@/components/Emptyset.vue";
+import { useStore, mapState } from "vuex";
 
 export default defineComponent({
   name: "Classrooms",
   components: {
     ClassroomItem,
-    Emptyset
+    Emptyset,
   },
   props: {
     archived: Boolean,
@@ -74,16 +74,24 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    const state = useState() as any;
+    const store = useStore();
 
     return {
       ellipsisHorizontal,
       ellipsisVertical,
       addOutline,
       router,
-      state: state,
-      classrooms: state.classrooms,
+      store,
     };
+  },
+  computed: {
+    ...mapState({
+      list: (state: any) => state.classroom.list,
+      archivedClassrooms: (state: any) => state.classroom.archived
+    }),
+    classrooms(): any {
+      return this.archived ? this.archivedClassrooms : this.list;
+    }
   },
   data: () => {
     const createModal: any = null;
@@ -100,7 +108,7 @@ export default defineComponent({
     },
     async showCreate() {
       this.createModal = await this.modal(CreateClassroom, {
-        onCreated: this.onClassroomSaved,
+        onSaved: this.onClassroomSaved,
       });
     },
     async showEdit(classroom: any) {
@@ -111,24 +119,21 @@ export default defineComponent({
     },
 
     onClassroomSaved(classroom: any, isNew: boolean) {
-      const state = this.state as any;
-
       if (isNew) {
-        state.unshift(classroom);
+        this.store.dispatch("classroom/unshift", classroom);
       } else {
-        //
+        this.store.dispatch("classroom/replace", classroom, classroom);
       }
 
       this.createModal.dismiss();
     },
     async getClassrooms() {
       try {
-        const resp = await Api.classroom.list({
-          archived: !!this.archived,
-        });
-
-        const state = this.state as any;
-        state.set(resp.data.data);
+        if (this.archived) {
+          const resp = await this.store.dispatch("classroom/archived");
+        } else {
+          const resp = await this.store.dispatch("classroom/list");
+        }
       } catch (e) {
         console.error(e);
       }
@@ -174,15 +179,16 @@ export default defineComponent({
       await Api.classroom.archive(classroom.id);
 
       classroom.archivedAt = Date.now() / 1000;
+
+      await this.store.dispatch("classroom/archive", classroom);
     },
     async doUnarchive(classroom: any) {
       await Api.classroom.unarchive(classroom + classroom.id);
-
-      classroom.archivedAt = null;
     },
 
     async doDelete(classroom: any) {
       await Api.classroom.destroy(classroom.id);
+      this.store.commit('classroom/REMOVE_CLASSROOM', classroom);
     },
 
     async archiveClassroom(classroom: any) {
