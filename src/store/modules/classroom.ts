@@ -70,6 +70,15 @@ export default {
             return resp;
         },
 
+        async find(context: any, id: number) {
+            const classroom = context.state.list.find((i: any) => i.id === id)
+            if (classroom) return classroom;
+
+            const resp = await Api.classroom.show(id);
+
+            return resp.data;
+        },
+
         async unshift(context: any, classroom: any) {
             context.commit('UNSHIFT_CLASSROOM', classroom)
         },

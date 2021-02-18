@@ -18,6 +18,11 @@
     justify-content: space-between;
 }
 
+.justify-content-around {
+    justify-content: space-around;
+}
+
+
 .modal-custom-class .modal-wrapper {
     position: absolute;
     bottom: 0;
@@ -47,4 +52,5 @@
 .modal-custom-class .content {
     height: 100%;
     background: white;
+    --background: white;
 }

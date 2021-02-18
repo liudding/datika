@@ -24,7 +24,7 @@
       <ion-item-group>
         <ion-item-divider></ion-item-divider>
         <ion-item @click="logout" lines="none">
-          <ion-label color="danger">退出登录</ion-label>
+          <ion-label color="danger" style="text-align:center">退出登录</ion-label>
         </ion-item>
       </ion-item-group>
     </ion-content>
