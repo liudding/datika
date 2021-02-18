@@ -26,7 +26,7 @@ import 'vant/lib/index.css';
 
 import '@/styles/index.css';
 
-import { Popup, Stepper } from 'vant';
+import { Stepper } from 'vant';
 import {
   IonItem, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
@@ -39,10 +39,12 @@ import {
 // import '@/styles/index.scss'
 
 import { register } from './store';
+import store from '@/store'
 
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(store);
 
 register(app);
 
