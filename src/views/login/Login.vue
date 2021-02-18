@@ -14,13 +14,15 @@
           </div>
 
           <div class="bottom flex">
-            <ion-button expand="block">微信登录</ion-button>
+            <ion-button v-if="isApp" expand="block">微信登录</ion-button>
+            <ion-button v-if="isInWechat" expand="block">微信登录</ion-button>
+       
             <ion-button
               routerLink="/login/password"
               expand="block"
               class="outline"
               style="margin-top: 16px"
-              >密码登录
+              >账户登录
             </ion-button>
 
             <ion-router-link href="/register" class="mt-1"
@@ -35,13 +37,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { isApp, isInWechat } from "@/utils/env";
 
 export default defineComponent({
   data() {
     return {};
   },
   setup() {
-    return {};
+    return {
+      isApp: isApp(),
+      isInWechat: isInWechat(),
+    };
   },
   components: {},
   methods: {},

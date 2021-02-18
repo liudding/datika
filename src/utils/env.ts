@@ -13,3 +13,10 @@ export function env() {
     return env;
 }
 
+export function isApp() {
+    return false;
+}
+
+export function isInWechat() {
+    return true;
+}
