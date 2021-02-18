@@ -1,39 +1,50 @@
 import request from '@/utils/request'
+import { env } from '@/utils/env'
 
-export function loginByUsername(data) {
+type LoginParam = {
+  username: string;
+  password: string;
+  deviceName?: string;
+}
+
+function login(data: LoginParam) {
+
+  data.deviceName = data.deviceName || env();
+
   return request({
     url: '/login',
     method: 'post',
-    data
+    data: {
+      username: data.username,
+      password: data.password,
+      "device_name": data.deviceName
+    }
   })
 }
 
-export function refreshToken(data) {
+function refreshToken() {
   return request({
     url: '/refresh',
-    method: 'post',
-    data
+    method: 'post'
   })
 }
 
-export function logout() {
+function logout() {
   return request({
     url: '/logout',
     method: 'post'
   })
 }
 
-export function getUserProfile() {
+function profile() {
   return request({
     url: '/me',
     method: 'get'
   })
 }
 
-export function changePassword(params) {
-  return request({
-    url: '/password',
-    method: 'post',
-    data: params
-  })
+export default {
+  login,
+  logout,
+  profile,
 }
