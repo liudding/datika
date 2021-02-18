@@ -25,6 +25,18 @@
 
     <ion-button @click="submit" expand="block">保存</ion-button>
 
+    <div
+      style="width: 100%; margin-top: 32px"
+      class="d-flex align-items-center justify-content-around"
+    >
+      <ion-label
+        @click="onClickDelete"
+        color="danger"
+        style="text-align: center"
+        >删除</ion-label
+      >
+    </div>
+
     <div class="message-wrapper">
       <div class="message-box">
         <p>
@@ -39,14 +51,16 @@
 <script>
 import { defineComponent } from "vue";
 import Api from "@/api";
+import Alert from "@/mixins/Alert";
 
 export default defineComponent({
-  props: {},
-  emits: ['created'],
+  props: ["student"],
+  emits: ["created", "deleted"],
+  mixins: [Alert],
   data() {
     return {
-      name: "",
-      number: "",
+      name: this.student ? this.student.name : "",
+      number: this.student ? this.student.number : "",
     };
   },
   methods: {
@@ -58,16 +72,41 @@ export default defineComponent({
       }
 
       try {
-        const resp = await Api.classroom.createStudent(+classId, {
-          name: this.name,
-          number: this.number,
-        });
-        this.$emit("created", resp.data);
+        let resp = null;
+        if (this.student) {
+          resp = await Api.student.update(this.student.id, {
+            name: this.name,
+            number: this.number,
+          });
+        } else {
+          resp = await Api.classroom.createStudent(+classId, {
+            name: this.name,
+            number: this.number,
+          });
+        }
+
+        this.$emit("created", resp.data, !this.student);
 
         this.resetData();
       } catch (e) {
         console.log(e);
       }
+    },
+
+    onClickDelete() {
+      this.alert({
+        title: "确定删除该学生吗",
+        confirmText: "删除",
+        cancel: true,
+      }).then(() => {
+        this.delete(this.student);
+      });
+    },
+
+    async delete(student) {
+      await Api.student.destroy(student.id);
+
+      this.$emit("deleted", student);
     },
 
     resetData() {
@@ -110,15 +149,14 @@ ion-item {
 }
 
 .message-box {
-  margin-top: 32px;
-  width: 70%;
+  margin-top: 64px;
+  width: 80%;
   border-radius: 8px;
   border: 0.5px solid rgb(192, 192, 192);
   padding: 4px 16px;
   font-size: 12px;
   color: gray;
 }
-
 
 @media (prefers-color-scheme: dark) {
   ion-item {

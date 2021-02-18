@@ -8,7 +8,9 @@
             default-href="/"
           ></ion-back-button>
         </ion-buttons>
-        <ion-title>{{ classroom.name }}（{{ studentCount }}人）</ion-title>
+        <ion-title
+          >{{ classroom.name }}（{{ classroom.studentCount }}人）</ion-title
+        >
         <ion-buttons slot="end">
           <ion-button v-if="!classroom.archivedAt" @click="showCreate">
             <ion-icon :icon="addOutline"></ion-icon>
@@ -22,27 +24,16 @@
         >该班级已经归档</ion-item
       >
       <ion-list>
-        <ion-item v-for="student in students" :key="student.id" detail>
+        <ion-item
+          v-for="student in students"
+          :key="student.id"
+          detail
+          @click="onClickStudent(student)"
+        >
           <div>{{ student.name }}</div>
           <div slot="end">{{ student.number }}</div>
         </ion-item>
       </ion-list>
-
-      <ion-popover
-        :is-open="popoverOpenRef"
-        :event="popoverRefEvent"
-        :translucent="true"
-        @onDidDismiss="setPopoverOpen(false)"
-      >
-        <ion-list>
-          <ion-item @click="editClassroom">编辑班级</ion-item>
-          <ion-item v-if="!classroom.archivedAt" @click="archiveClassroom"
-            >归档班级</ion-item
-          >
-          <ion-item v-else @click="unarchiveClassroom">解档班级</ion-item>
-          <ion-item @click="deleteClassroom">删除班级</ion-item>
-        </ion-list>
-      </ion-popover>
     </ion-content>
   </ion-page>
 </template>
@@ -53,7 +44,6 @@ import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
-import { useState } from "@/store/classroom";
 import Alert from "@/mixins/Alert";
 import Modal from "@/mixins/Modal";
 
@@ -71,7 +61,6 @@ export default defineComponent({
       addOutline,
       classroom,
       students,
-      studentCount: 0,
       getBackButtonText: () => {
         const win = window as any;
         const mode = win && win.Ionic && win.Ionic.mode;
@@ -91,19 +80,16 @@ export default defineComponent({
 
     const router = useRouter();
 
-    const state = useState();
-
     return {
       popoverOpenRef,
       setPopoverOpen,
       popoverRefEvent,
       router,
-      state,
     };
   },
 
   components: {},
-  created() {
+  async created() {
     this.classroom = {
       name: this.$route.query.name,
       archivedAt: null,
@@ -112,20 +98,38 @@ export default defineComponent({
     const classId = this.$route.params.id;
     Api.classroom.students(+classId, { size: 50 }).then((res) => {
       this.students = res.data.data;
-      this.studentCount = res.data.total;
     });
 
-    this.classroom = (this.state as any).find(+classId);
+    this.classroom = await this.$store.dispatch("classroom/find", +classId);
   },
   methods: {
     async showCreate() {
       this.createModal = await this.modal(CreateStudent, {
-        onCreated: this.onStudentCreated,
+        onCreated: this.onStudentSaved,
       });
     },
-    onStudentCreated(student: any) {
-      this.students.push(student);
-      this.studentCount++;
+    async onClickStudent(student: any) {
+      this.createModal = await this.modal(CreateStudent, {
+        onCreated: this.onStudentSaved,
+        onDeleted: this.onStudentDeleted,
+        student: student,
+      });
+    },
+    onStudentSaved(student: any, isNew: boolean) {
+      if (isNew) {
+        this.students.push(student);
+      } else {
+        const index = this.students.findIndex((i: any) => i.id === student.id);
+
+        this.students.splice(index, 1, student);
+      }
+
+      this.createModal.dismiss();
+    },
+    onStudentDeleted(student: any) {
+      const index = this.students.findIndex((i: any) => i.id === student.id);
+
+      this.students.splice(index, 1);
 
       this.createModal.dismiss();
     },

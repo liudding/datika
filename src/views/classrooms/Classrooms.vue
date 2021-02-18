@@ -54,7 +54,6 @@ import { defineComponent } from "vue";
 import ClassroomItem from "./ClassroomItem.vue";
 import CreateClassroom from "./CreateClassroom.vue";
 import Api from "@/api";
-import { useState } from "@/store/classroom";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
