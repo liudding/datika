@@ -20,6 +20,13 @@
           <div slot="end">半年前的</div>
         </ion-item>
       </ion-item-group>
+
+      <ion-item-group>
+        <ion-item-divider></ion-item-divider>
+        <ion-item @click="logout" lines="none">
+          <ion-label color="danger">退出登录</ion-label>
+        </ion-item>
+      </ion-item-group>
     </ion-content>
   </ion-page>
 </template>
@@ -30,11 +37,12 @@ import { IonItemDivider, IonItemGroup } from "@ionic/vue";
 import QuestionCount from "./QuestionCount.vue";
 import AutoArchive from "./AutoArchive.vue";
 import Modal from "@/mixins/Modal";
+import ActionSheet from "@/mixins/ActionSheet";
 
 export default defineComponent({
   name: "Settings",
   components: { IonItemDivider, IonItemGroup },
-  mixins: [Modal],
+  mixins: [Modal, ActionSheet],
   setup() {
     return {};
   },
@@ -65,6 +73,28 @@ export default defineComponent({
     onAutoArchiveChange(days: number) {
       this.settings.autoArchiveDays = days;
     },
+
+    logout() {
+      this.showActionSheet({
+        title: "退出后不会删除任何历史数据",
+        cancel: true,
+        buttons: [
+          {
+            text: "退出登录",
+            role: "destructive",
+            handler: this.doLogout,
+          },
+        ],
+      });
+    },
+
+    async doLogout() {
+      await this.$store.dispatch("logout");
+
+      this.$router.replace({
+        name: "Login"
+      })
+    }
   },
 });
 </script>
