@@ -81,11 +81,14 @@ export default defineComponent({
 
   font-size: 17px;
   line-height: 28px;
+
+  cursor: pointer;
 }
 
 .mode-question .correct {
-  background: rgb(0, 60, 255);
-  border: 1px solid rgb(63, 49, 255);
+  background: var(--ion-color-primary);
+  border: 1px solid var(--ion-color-primary);
+  color: white;
 }
 
 

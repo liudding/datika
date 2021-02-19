@@ -188,20 +188,43 @@ export default defineComponent({
     /**
      * 改变了题目数量
      */
-    onQuestionCountChange($event: any) {
-      const count = +$event.target.value;
+    async onQuestionsChange(questions: any) {
+      const toCreate = questions.filter((item: any) => {
+        return !this.questions.find((q: any) => q.label === item.label);
+      });
 
-      if (count > this.questions.length) {
-        this.createQuestions(count - this.questions.length);
-      } else if (count < this.questions.length) {
-        this.trimQuestions(this.questions.length - count);
+      const toDelete = this.questions
+        .filter((item: any) => {
+          return !questions.find((q: any) => q.label === item.label);
+        })
+        .map((item: any) => item.id);
+
+      if (toDelete.length > 0) {
+        await Api.question.batchDestroy(+this.$route.params.id, toDelete);
+        this.questions = this.questions.filter(
+          (q: any) => toDelete.indexOf(q.id) < 0
+        );
+      }
+
+      if (toCreate.length > 0) {
+        const resp = await Api.question.batchCreate(+this.$route.params.id, {
+          questions: toCreate,
+        });
+
+        this.questions = this.questions
+          .concat(resp.data)
+          .sort((a: any, b: any) => {
+            return +a.label > +b.label ? 1 : -1;
+          });
       }
 
       this.definesModal.dismiss();
     },
     async onEditQuestionCount() {
-
-      this.definesModal = await this.modal(QuestionDefines, {});
+      this.definesModal = await this.modal(QuestionDefines, {
+        questions: this.questions,
+        onChange: this.onQuestionsChange,
+      });
     },
 
     download() {
@@ -227,38 +250,6 @@ export default defineComponent({
 
     async updateQuestion(id: number, data: any) {
       await Api.question.update(id, data);
-    },
-
-    async createQuestions(count: number) {
-      const questions = [];
-
-      const lastQuestion = this.questions[this.questions.length - 1];
-
-      const index = lastQuestion ? +lastQuestion.label : 1;
-
-      for (let i = 0; i < count; i++) {
-        questions.push({
-          label: index + i + 1 + "",
-          choices: "ABCD",
-        });
-      }
-
-      const quiz = this.$route.params.id;
-      const resp = await Api.question.batchCreate(+quiz, {
-        questions: questions,
-      });
-
-      this.questions = this.questions.concat(resp.data);
-    },
-
-    async trimQuestions(count: number) {
-      const quiz = this.$route.params.id;
-
-      const ids = this.questions.slice(-count).map((i) => i.id);
-
-      await Api.question.batchDestroy(+quiz, ids);
-
-      this.questions = this.questions.slice(0, -count);
     },
   },
 });
