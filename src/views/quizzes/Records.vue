@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import { scanOutline } from "ionicons/icons";
-import { useRouter } from "vue-router";
+
 import { defineComponent } from "vue";
 
 import RecordItem from "./RecordItem.vue";
 import Api from "@/api";
+import _ from "lodash";
 
 export default defineComponent({
   name: "Records",
@@ -19,14 +19,14 @@ export default defineComponent({
     RecordItem,
   },
   setup() {
-    const router = useRouter();
-
-    return { scanOutline, router };
+    //
   },
-  data: () => {
+  data() {
+    const studentRecords: any[] = [];
     return {
+      students: [],
       records: [],
-      showCreatePopup: false,
+      studentRecords,
     };
   },
   mounted() {
@@ -34,13 +34,15 @@ export default defineComponent({
   },
   methods: {
     async getRecords() {
+      
       const query: any = { size: 20 };
       if (this.quiz.studentCount <= 100) {
         query.size = 100
       }
 
-      const resp = await Api.quiz.records(+this.quiz.id, query);
-      this.records = resp.data.data;
+      const resp = await this.$store.dispatch('quiz/studentRecords', this.quiz);
+      this.records = resp.data;
+
     },
   },
 });

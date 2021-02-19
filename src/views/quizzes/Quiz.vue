@@ -8,20 +8,22 @@
         <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="primary">
           <ion-button @click="gotoQuestions" color="primary"> 题目 </ion-button>
-          <ion-button @click="gotoQuestions" color="primary"> 班级 </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <ion-item lines="none">
-        <ion-label>人数：{{ quiz.recordCount }}</ion-label>
+        <ion-label @click="showAttachClassrooms">班级：{{ quiz.classroomCount }}</ion-label>
+        <ion-label>总人数：{{ quiz.studentCount }}</ion-label>
+         <ion-label>已录入：{{ quiz.recordCount }}</ion-label>
+      </ion-item>
+      <ion-item lines="none">
         <ion-label> <ion-note>平均分</ion-note></ion-label>
-
         <ion-label> <ion-note>最高分</ion-note></ion-label>
         <ion-label> <ion-note>最低分</ion-note></ion-label>
       </ion-item>
-      <Records v-if="quiz.recordCount" :quiz="quiz"></Records>
+      <Records v-if="quiz.studentCount" :quiz="quiz"></Records>
       <Emptyset v-else title="暂无成绩"></Emptyset>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
@@ -72,10 +74,12 @@ export default defineComponent({
         id: 0,
         name: "",
         recordCount: 0,
+        classrooms: [],
       },
-      attachedClassrooms: [],
 
-      classrooms: [],
+      students: [],
+      records: [],
+
       attachModal,
     };
   },
@@ -110,31 +114,38 @@ export default defineComponent({
 
   created() {
     this.getDetail();
+    // this.getStudentRecords();
   },
   methods: {
     async showAttachClassrooms() {
       this.attachModal = await this.modal(AttachClassrooms, {
-        onAttached: this.onClassroomsAttached,
+        onAttached: (classrooms: any) => {
+          this.attachModal.dismiss();
+
+          this.quiz.classrooms = classrooms;
+
+          Promise.resolve(classrooms);
+        },
+        selected: this.quiz.classrooms.map((i: any) => i.id)
       });
     },
+
+    async getStudentRecords() {
+      Promise.all([this.$store.dispatch('quiz/students'), this.$store.dispatch('quiz/records')]).then((data: any) => {
+        this.students = data[0].data.data || data[0].data;
+        this.records = data[1].data.data || data[1].data;
+      })
+    },
+
     async getDetail() {
       const resp = await Api.quiz.show(+this.$route.params.id, {
         with: ["classrooms"],
       });
       this.quiz = resp.data;
-      this.attachedClassrooms = resp.data.classrooms;
-    },
-
-    async onClassroomsAttached(classrooms: any) {
-      this.attachedClassrooms = classrooms;
-
-      await this.attachModal.dismiss();
-
-      this.gotoScan()
     },
 
     gotoScan() {
-      if (this.attachedClassrooms.length > 0) {
+      if (this.quiz.classrooms.length > 0) {
         this.router.push({
           name: "Scan",
           params: {
@@ -145,7 +156,11 @@ export default defineComponent({
       }
 
       // 选择班级
-      this.showAttachClassrooms();
+      this.showAttachClassrooms().then((classrooms: any) => {
+        if (classrooms.length) {
+          this.gotoScan();
+        }
+      });
     },
     gotoQuestions() {
       this.router.push({
@@ -158,10 +173,6 @@ export default defineComponent({
           recordCount: this.quiz.recordCount,
         },
       });
-    },
-
-    gotoRecords() {
-      this.router.push("/quizzes/" + this.quiz.id + "/records");
     },
   },
   ionViewDidLeave() {
