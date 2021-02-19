@@ -28,9 +28,9 @@ import {
   IonTabs,
 } from "@ionic/vue";
 import { reader, person, square } from "ionicons/icons";
+import { defineComponent} from "vue";
 
-export default {
-  name: "Tabs",
+export default defineComponent({
   components: { IonTabs, IonTabBar, IonTabButton },
   setup() {
     return {
@@ -39,5 +39,8 @@ export default {
       square,
     };
   },
-};
+  created() {
+    this.$store.dispatch("classroom/list");
+  },
+});
 </script>
