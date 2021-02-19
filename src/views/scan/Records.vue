@@ -24,9 +24,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Records",
-  props: {
-    records: Array,
-  },
+  props: ["quiz", "records"],
   data() {
     return {};
   },

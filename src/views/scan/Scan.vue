@@ -12,15 +12,25 @@
 
     <ion-content :fullscreen="false">
       <ion-fab vertical="bottom" horizontal="end">
-        <ion-fab-button @click="onClickFab" translucent>
-          <ion-icon :icon="appsOutline"></ion-icon>
-        </ion-fab-button>
+        <radial-progress-bar
+          :diameter="65"
+          :completed-steps="completedCount"
+          :total-steps="totalCount"
+          :strokeWidth="4"
+          :innerStrokeWidth="4"
+          innerStrokeColor="rgba(255, 255, 255, 0.3);"
+        >
+          <ion-fab-button @click="onClickFab" translucent>
+            <!-- <ion-icon :icon="appsOutline"></ion-icon> -->
+            {{completedCount}}/{{quiz.studentCount}}
+          </ion-fab-button>
+        </radial-progress-bar>
       </ion-fab>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
+<script>
 import { appsOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
@@ -29,16 +39,17 @@ import Records from "./Records.vue";
 import Result from "./Result.vue";
 import Api from "@/api";
 import Modal from "@/mixins/Modal";
+import RadialProgressBar from "vue-radial-progress";
 
-let scanner: Scanner;
+let scanner;
 
 export default defineComponent({
   name: "Scan",
   mixins: [Modal],
   data() {
-    const records: any[] = [];
-    const recordsModal: any = null;
-    const resultModal: any = null;
+    const records = [];
+    const recordsModal = null;
+    const resultModal = null;
     return {
       quiz: {
         name: "",
@@ -53,10 +64,13 @@ export default defineComponent({
       appsOutline,
       recordsModal,
       resultModal,
+
+      totalCount: 100,
+      completedCount: 100,
     };
   },
 
-  components: {},
+  components: { RadialProgressBar },
   async created() {
     this.getRecords();
   },
@@ -73,6 +87,8 @@ export default defineComponent({
         with: ["classrooms", "questions"],
       });
       this.quiz = resp.data;
+      this.totalCount = this.quiz.studentCount ? 100 : this.quiz.studentCount;
+      this.completedCount = this.quiz.recordCount;
     },
     async getRecords() {
       const resp = await this.$store.dispatch(
@@ -81,7 +97,7 @@ export default defineComponent({
       );
       this.records = resp.data;
     },
-    checkIsOldRecordData(answers: any, studentId: number) {
+    checkIsOldRecordData(answers, studentId) {
       const record = this.records.find(
         (record) => record.student.id === studentId
       );
@@ -89,18 +105,18 @@ export default defineComponent({
       if (!record) return false;
 
       const newAnswer = answers.join("_");
-      const oldAnswer = record.answers.map((i: any) => i.answer).join("_");
+      const oldAnswer = record.answers.map((i) => i.answer).join("_");
 
       return newAnswer == oldAnswer ? record : false;
     },
-    async submit(data: any, student: any) {
-      const answers = data.answers.map((item: any) => {
+    async submit(data, student) {
+      const answers = data.answers.map((item) => {
         return item.value;
       });
 
       let record = this.checkIsOldRecordData(answers, student.id);
       if (record) {
-        return record;
+        return Promise.resolve(record, true);
       }
 
       const params = {
@@ -133,10 +149,10 @@ export default defineComponent({
         });
     },
 
-    gcInitCallback(suc: boolean) {
+    gcInitCallback(suc) {
       return suc;
     },
-    async onScan(scanObj: any) {
+    async onScan(scanObj) {
       console.log("SCAN: ", scanObj);
 
       await this.hideResult();
@@ -150,23 +166,27 @@ export default defineComponent({
         return;
       }
 
-      this.submit(scanObj, student).then((res) => {
+      this.submit(scanObj, student).then((res, isOld) => {
         this.currentRecord = res;
         this.currentRecord.name = student.studentName;
         this.currentRecord.number = student.studentNumber;
+
+        if (!isOld) {
+          this.completedCount++;
+        }
 
         this.showResult(this.currentRecord);
 
         console.log(res);
       });
     },
-    onIssue(issue: object) {
+    onIssue(issue) {
       console.log("ISSUE: ", issue);
 
       return issue;
     },
 
-    gcValidateCallback(validateObj: object, finish: boolean) {
+    gcValidateCallback(validateObj, finish) {
       console.log(finish);
       return validateObj;
     },
@@ -181,7 +201,7 @@ export default defineComponent({
       this.resultModal && (await this.resultModal.dismiss());
     },
 
-    async showResult(result: any) {
+    async showResult(result) {
       this.resultModal = await this.modal(
         Result,
         {
@@ -228,7 +248,7 @@ ion-toolbar {
 ion-fab-button {
   --color: white;
   --background: rgba(255, 255, 255, 0.3);
-  --background-activated: rgba(255, 255, 255, 0.5);
+  --background-activated: rgba(250, 250, 250, 0.5);
 }
 
 #camera-container {
