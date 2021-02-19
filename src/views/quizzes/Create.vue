@@ -98,7 +98,7 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  --background: white;
+  /* --background: white; */
   height: 100%;
   padding: 32px 16px 0 16px;
   --padding-top: 32px;
@@ -124,5 +124,6 @@ ion-item {
   ion-content {
     --background: rgb(34, 34, 34);
   }
+
 }
 </style>

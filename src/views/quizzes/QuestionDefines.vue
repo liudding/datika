@@ -9,12 +9,12 @@
       </ion-buttons>
     </div>
   </ion-header>
-  <div class="content">
+  <ion-content class="content">
     <ion-list :disabled="true" @ionItemReorder="doReorder($event)">
       <ion-item
         v-for="(definition, index) in definitions"
         :key="definition.from"
-        lines=""
+        lines="none"
       >
         <ion-note>从</ion-note>
         <div class="input-wrapper">
@@ -51,11 +51,10 @@
       </ion-item>
     </ion-list>
 
-    <div style="padding: 0 16px;">
+    <div style="padding: 0 16px">
       <ion-button @click="submit" expand="block">确定</ion-button>
     </div>
-    
-  </div>
+  </ion-content>
 </template>
 
 <script lang="ts">
@@ -92,7 +91,11 @@ export default defineComponent({
         .reduce(function (pre: any, item: any) {
           temp.push(pre);
 
-          if (!item || +item.label - +pre.label > 1 || item.score != +pre.score) {
+          if (
+            !item ||
+            +item.label - +pre.label > 1 ||
+            item.score != +pre.score
+          ) {
             result.push(temp);
             temp = [];
           }
@@ -161,15 +164,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.content {
+.header {
   background: white;
-  height: 100%;
-  overflow: auto;
-  padding: 32px 0px 0 0px;
+  padding: 8px 8px 0 8px;
 }
 
-.header {
-  padding: 8px 8px 0 8px;
+ion-list {
+  background: transparent;
 }
 
 ion-item {
@@ -199,5 +200,41 @@ ion-input {
 
 ion-button {
   --border-radius: 100px;
+}
+
+.content {
+  height: 100%;
+  padding: 32px 16px 0 16px;
+  --padding-top: 32px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+ion-item {
+  /* --background: #eee; */
+  border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-item {
+    --background: rgb(0, 0, 0);
+    border-radius: 8px;
+  }
+
+  .modal-custom-class .header {
+    background: rgb(34, 34, 34);
+  }
+
+  ion-content {
+    --background: rgb(34, 34, 34);
+  }
+
+  .input-wrapper {
+    background: transparent;
+  }
+
+  ion-input {
+    --background: transparent;
+  }
 }
 </style>
