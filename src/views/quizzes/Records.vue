@@ -5,12 +5,8 @@
 </template>
 
 <script lang="ts">
-
 import { defineComponent } from "vue";
-
 import RecordItem from "./RecordItem.vue";
-import Api from "@/api";
-import _ from "lodash";
 
 export default defineComponent({
   name: "Records",
@@ -34,15 +30,13 @@ export default defineComponent({
   },
   methods: {
     async getRecords() {
-      
       const query: any = { size: 20 };
       if (this.quiz.studentCount <= 100) {
-        query.size = 100
+        query.size = 100;
       }
 
-      const resp = await this.$store.dispatch('quiz/studentRecords', this.quiz);
+      const resp = await this.$store.dispatch("quiz/studentRecords", this.quiz);
       this.records = resp.data;
-
     },
   },
 });

@@ -129,18 +129,20 @@ export default {
          * @param quiz 
          */
         async studentRecords(context: any, quiz: any) {
-            if (context.state.quizId === quiz.id && context.state.records.length) {
+            const quizId = quiz.id || quiz;
+
+            if (context.state.quizId === quizId && context.state.records.length) {
                 return {
                     data: context.state.records
                 };
             }
 
-            const resp = await Api.quiz.studentRecords(quiz.id);
+            const resp = await Api.quiz.studentRecords(quizId);
 
             const records = resp.data.data || resp.data;
 
             context.commit('SET_RECORDS', {
-                quizId: quiz.id,
+                quizId: quizId,
                 records
             })
 
@@ -155,16 +157,18 @@ export default {
          * @param quiz 
          */
         async students(context: any, quiz: any) {
-            if (context.state.quizId === quiz.id && context.state.students.length) {
+            const quizId = quiz.id || quiz;
+
+            if (context.state.quizId === quizId && context.state.students.length) {
                 return context.state.students;
             }
 
-            const resp = await Api.quiz.students(quiz.id);
+            const resp = await Api.quiz.students(quizId);
 
             const students = resp.data.data || resp.data;
 
             context.commit('SET_STUDENTS', {
-                quizId: quiz.id,
+                quizId: quizId,
                 students
             })
 
@@ -177,16 +181,17 @@ export default {
          * @param quiz 
          */
         async records(context: any, quiz: any) {
-            if (context.state.quizId === quiz.id && context.state.records.length) {
+            const quizId = quiz.id || quiz;
+            if (context.state.quizId === quizId && context.state.records.length) {
                 return context.state.records;
             }
 
-            const resp = await Api.quiz.records(quiz.id);
+            const resp = await Api.quiz.records(quizId);
 
             const records = resp.data.data || resp.data;
 
             context.commit('SET_RECORDS', {
-                quizId: quiz.id,
+                quizId: quizId,
                 records
             })
 

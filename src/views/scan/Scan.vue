@@ -36,7 +36,6 @@ export default defineComponent({
   name: "Scan",
   mixins: [Modal],
   data() {
-    const students: any[] = [];
     const records: any[] = [];
     const recordsModal: any = null;
     const resultModal: any = null;
@@ -45,7 +44,6 @@ export default defineComponent({
         name: "",
         questionCount: 0,
       },
-      students,
       records,
       currentRecord: {
         name: "",
@@ -60,7 +58,6 @@ export default defineComponent({
 
   components: {},
   async created() {
-    this.getStudents();
     this.getRecords();
   },
   async mounted() {
@@ -77,13 +74,12 @@ export default defineComponent({
       });
       this.quiz = resp.data;
     },
-    async getStudents() {
-      const resp = await Api.quiz.students(+this.$route.params.id);
-      this.students = resp.data;
-    },
     async getRecords() {
-      const resp = await Api.quiz.records(+this.$route.params.id);
-      this.records = resp.data.data;
+      const resp = await this.$store.dispatch(
+        "quiz/studentRecords",
+        +this.$route.params.id
+      );
+      this.records = resp.data;
     },
     checkIsOldRecordData(answers: any, studentId: number) {
       const record = this.records.find(
@@ -145,8 +141,8 @@ export default defineComponent({
 
       await this.hideResult();
 
-      const student = this.students.find(
-        (item) => item.number === scanObj.gradecam_id
+      const student = this.records.find(
+        (item) => item.studentNumber === scanObj.gradecam_id
       );
 
       if (!student) {
@@ -156,8 +152,8 @@ export default defineComponent({
 
       this.submit(scanObj, student).then((res) => {
         this.currentRecord = res;
-        this.currentRecord.name = student.name;
-        this.currentRecord.number = student.number;
+        this.currentRecord.name = student.studentName;
+        this.currentRecord.number = student.studentNumber;
 
         this.showResult(this.currentRecord);
 

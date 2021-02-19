@@ -1,5 +1,5 @@
 <template>
-  <ion-item v-if="record" @click="gotoRecord" :detail="false" lines="none">
+  <ion-item v-if="record" @click="gotoRecord" :detail="record.id" lines="none">
     <div class="" style="padding: 8px 0">
       <div style="font-size: 17px">{{ record.studentName }}</div>
       <div class="d-flex" style="font-size: 14px; margin-top: 4px; color: gray">
@@ -9,7 +9,7 @@
     </div>
 
     <div slot="end">
-      <div v-if="record.score === 0 && record.score > 0">{{ record.score}}</div>
+      <div v-if="record.id">{{ record.score}}</div>
       <ion-note v-else>{{ record.score ? record.score : '未录入' }}</ion-note>
     </div>
   </ion-item>
@@ -47,6 +47,9 @@ export default defineComponent({
   },
   methods: {
     gotoRecord() {
+      if (!this.record?.id) {
+        return;
+      }
       this.router.push({
         name: "QuizRecord",
         params: {
