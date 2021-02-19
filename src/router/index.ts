@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteLocationNormalized } from 'vue-router';
 import routes from './routes'
+import store from '@/store'
 
 
 const router = createRouter({
@@ -10,7 +11,7 @@ const router = createRouter({
 
 
 function isLoggedIn(): boolean {
-  return !!localStorage.getItem('token');
+  return !!(store as any).state.user.token;
 }
 
 // permission judge function

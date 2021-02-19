@@ -3,10 +3,7 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            text=""
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
         <ion-title
           >{{ classroom.name }}（{{ classroom.studentCount }}人）</ion-title
@@ -85,19 +82,21 @@ export default defineComponent({
     };
   },
 
-  components: {Emptyset},
+  components: { Emptyset },
+  async beforeCreate() {
+    const classId = this.$route.params.id;
+    Api.classroom.students(+classId, { size: 50 }).then((res) => {
+      this.students = res.data.data;
+    });
+    
+  },
   async created() {
     this.classroom = {
       name: this.$route.query.name,
       archivedAt: null,
     };
 
-    const classId = this.$route.params.id;
-    Api.classroom.students(+classId, { size: 50 }).then((res) => {
-      this.students = res.data.data;
-    });
-
-    this.classroom = await this.$store.dispatch("classroom/find", +classId);
+    this.classroom = await this.$store.dispatch("classroom/find", +this.$route.params.id);
   },
   methods: {
     async showCreate() {

@@ -5,11 +5,11 @@
 
       <div class="profile">
         <ion-item lines="none" detail  routerLink="/my/profile">
-          <ion-avatar>
+          <!-- <ion-avatar>
             <img
               src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
-          </ion-avatar>
+          </ion-avatar> -->
 
           <div class="name">{{ user.name }}</div>
         </ion-item>
@@ -18,7 +18,7 @@
       <ion-item-group>
         <!-- <ion-item-divider></ion-item-divider> -->
 
-        <ion-item button routerLink="/subscriptions" lines="none">订阅</ion-item>
+        <!-- <ion-item button routerLink="/subscriptions" lines="none">订阅</ion-item> -->
         <ion-item-divider></ion-item-divider>
 
         <ion-item button routerLink="/settings">设置</ion-item>
@@ -33,14 +33,12 @@
 import {
   IonItemDivider,
   IonItemGroup,
-  IonAvatar,
 } from "@ionic/vue";
 import { mapState } from "vuex";
 
 export default {
   name: "My",
   components: {
-    IonAvatar,
     IonItemDivider,
     IonItemGroup
   },

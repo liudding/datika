@@ -18,7 +18,8 @@ const mutations: MutationTree<UserState> = {
 export default {
     state: () => ({
         name: '',
-        mobile: ''
+        mobile: '',
+        token: null
     }),
     mutations,
 
@@ -31,7 +32,6 @@ export default {
             const resp = await Api.auth.login(data)
 
             context.commit('SET_AUTH_TOKEN', resp.data.token);
-            localStorage.setItem('token', resp.data.token);
         },
 
         async profile(context: any) {
@@ -44,12 +44,10 @@ export default {
             await Api.auth.logout()
 
             context.commit('SET_AUTH_TOKEN', '');
-            localStorage.removeItem('token');
         },
 
         async feLogout(context: any) {
             context.commit('SET_AUTH_TOKEN', '');
-            localStorage.setItem('token', '');
         }
     }
 }
