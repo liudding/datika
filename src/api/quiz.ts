@@ -37,6 +37,13 @@ function destroy(id: number) {
   })
 }
 
+function studentRecords(id: number, query?: object) {
+  return request({
+    url: '/quizzes/' + id + '/student_records',
+    params: query
+  })
+}
+
 function records(id: number, query?: object) {
   return request({
     url: '/quizzes/' + id + '/records',
@@ -123,6 +130,7 @@ export default {
   create,
   update,
   destroy,
+  studentRecords,
   records,
   record,
   creteRecord,

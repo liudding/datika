@@ -19,7 +19,7 @@
         @ionChange="number = $event.target.value"
         autofocus
         required
-        placeholder="学号"
+        placeholder="学号，至少两位数字"
       ></ion-input>
     </ion-item>
 
@@ -68,6 +68,10 @@ export default defineComponent({
       const classId = this.$route.params.id;
 
       if (!this.name || !this.number) {
+        return;
+      }
+
+      if (this.number.length < 2) {
         return;
       }
 
