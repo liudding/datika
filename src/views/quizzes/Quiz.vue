@@ -14,9 +14,11 @@
 
     <ion-content :fullscreen="true">
       <ion-item lines="none">
-        <ion-label @click="showAttachClassrooms">班级：{{ quiz.classroomCount }}</ion-label>
+        <ion-label @click="showAttachClassrooms"
+          >班级：{{ quiz.classroomCount }}</ion-label
+        >
         <ion-label>总人数：{{ quiz.studentCount }}</ion-label>
-         <ion-label>已录入：{{ quiz.recordCount }}</ion-label>
+        <ion-label>已录入：{{ quiz.recordCount }}</ion-label>
       </ion-item>
       <ion-item lines="none">
         <ion-label> <ion-note>平均分</ion-note></ion-label>
@@ -118,23 +120,28 @@ export default defineComponent({
   },
   methods: {
     async showAttachClassrooms() {
-      this.attachModal = await this.modal(AttachClassrooms, {
-        onAttached: (classrooms: any) => {
-          this.attachModal.dismiss();
+      return new Promise((resolve, reject) => {
+        this.attachModal = this.modal(AttachClassrooms, {
+          onAttached: (classrooms: any) => {
+            this.attachModal.dismiss();
 
-          this.quiz.classrooms = classrooms;
+            this.quiz.classrooms = classrooms;
 
-          Promise.resolve(classrooms);
-        },
-        selected: this.quiz.classrooms.map((i: any) => i.id)
+            resolve(classrooms);
+          },
+          selected: this.quiz.classrooms.map((i: any) => i.id),
+        });
       });
     },
 
     async getStudentRecords() {
-      Promise.all([this.$store.dispatch('quiz/students'), this.$store.dispatch('quiz/records')]).then((data: any) => {
+      Promise.all([
+        this.$store.dispatch("quiz/students"),
+        this.$store.dispatch("quiz/records"),
+      ]).then((data: any) => {
         this.students = data[0].data.data || data[0].data;
         this.records = data[1].data.data || data[1].data;
-      })
+      });
     },
 
     async getDetail() {
