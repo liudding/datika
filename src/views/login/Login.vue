@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
-      <ion-img src="" class="background"></ion-img>
+      <!-- <ion-img src="" class="background"></ion-img> -->
 
       <div class="main">
         <div class="main-content">
@@ -25,9 +25,9 @@
               >账户登录
             </ion-button>
 
-            <ion-router-link href="/register" class="mt-1"
+            <!-- <ion-router-link href="/register" class="mt-1"
               >注册</ion-router-link
-            >
+            > -->
           </div>
         </div>
       </div>
@@ -58,6 +58,7 @@ export default defineComponent({
 ion-content {
   --padding-start: 16px;
   --padding-end: 16px;
+  --background: white;
 }
 
 .main {
@@ -66,7 +67,7 @@ ion-content {
   bottom: 0px;
   left: 0;
   right: 0;
-  padding: 0 16px;
+  padding: 0 32px;
 }
 
 .main .main-content {
@@ -77,6 +78,7 @@ ion-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 }
 
 .main .head {
@@ -84,7 +86,7 @@ ion-content {
 }
 
 .main .body {
-  margin-top: 20%;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,10 +94,10 @@ ion-content {
 
 .main .bottom {
   width: 100%;
-  /* margin-top: 50px; */
   position: absolute;
-  bottom: 30px;
+  bottom: calc(60px + env(safe-area-inset-top));
   left: 0;
+
 }
 
 .flex {
@@ -125,14 +127,12 @@ ion-button {
 }
 
 .outline {
-  border: 1px solid black;
+  border: 1px solid var(--ion-color-primary);
   border-radius: 100px;
-}
-
-.outline {
   --background: transparent;
   color: black;
 }
+
 
 .mt-1 {
   margin-top: 20px;

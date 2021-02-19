@@ -35,6 +35,7 @@ import {
   IonItemGroup,
   IonAvatar,
 } from "@ionic/vue";
+import { mapState } from "vuex";
 
 export default {
   name: "My",
@@ -43,11 +44,13 @@ export default {
     IonItemDivider,
     IonItemGroup
   },
+  computed: {
+    ...mapState({
+      user: (state: any) => state.user
+    })
+  },
   data() {
     return {
-      user: {
-        name: "Liu Ding",
-      },
     };
   },
 };
