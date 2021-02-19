@@ -1,9 +1,13 @@
 import request from '@/utils/request'
 
-export function updateProfile(data) {
+function updateProfile(data: any) {
   return request({
     url: '/user/profile',
     method: 'put',
     data: data
   })
+}
+
+export default {
+  updateProfile
 }

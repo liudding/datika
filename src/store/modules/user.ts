@@ -10,7 +10,7 @@ const mutations: MutationTree<UserState> = {
 
     SET_PROFILE(state: UserState, profile: any) {
         state.name = profile.name;
-        state.mobile = profile.mobile;
+        state.mobile = profile.mobile ? profile.mobile : state.mobile;
     }
 }
 

@@ -4,7 +4,7 @@
       <ion-item lines="none"></ion-item>
 
       <div class="profile">
-        <ion-item lines="none" detail>
+        <ion-item lines="none" detail  routerLink="/my/profile">
           <ion-avatar>
             <img
               src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"

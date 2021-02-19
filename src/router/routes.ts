@@ -100,6 +100,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/login/LoginWithPassword.vue')
     },
 
+    /**
+     * 我的
+     */
+    {
+        path: '/my/profile',
+        name: 'Profile',
+        component: () => import('@/views/my/Profile.vue')
+    },
+
 
     {
         path: '/subscriptions',
