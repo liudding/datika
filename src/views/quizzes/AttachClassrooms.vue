@@ -2,7 +2,7 @@
   <ion-header>
     <div class="header"></div>
   </ion-header>
-  <div class="content">
+  <ion-content class="content">
     <ion-list>
       <ion-item
         v-for="classroom in classrooms"
@@ -25,7 +25,7 @@
     </ion-list>
 
     <ion-button @click="attachClassrooms" expand="block">保存</ion-button>
-  </div>
+  </ion-content>
 </template>
 
 <script lang="ts">
@@ -51,8 +51,7 @@ export default defineComponent({
     async attachClassrooms() {
       const classrooms = this.classrooms.filter((i: any) => i.isChecked);
 
-      const classroomIds = classrooms
-        .map((i: any) => i.id);
+      const classroomIds = classrooms.map((i: any) => i.id);
 
       if (classroomIds.length == 0) {
         this.$emit("attached", classrooms);
@@ -80,6 +79,11 @@ export default defineComponent({
   background: #eee;
   height: 100%;
   padding: 32px 16px 0 16px;
+  height: 100%;
+  padding: 32px 16px 0 16px;
+  --padding-top: 32px;
+  --padding-start: 16px;
+  --padding-end: 16px;
 }
 
 ion-list {
@@ -95,5 +99,28 @@ ion-item {
 ion-button {
   margin-top: 32px;
   --border-radius: 100px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-item {
+    --background: rgb(0, 0, 0);
+    border-radius: 8px;
+  }
+
+  .modal-custom-class .header {
+    background: rgb(34, 34, 34);
+  }
+
+  ion-content {
+    --background: rgb(34, 34, 34);
+  }
+
+  .input-wrapper {
+    background: transparent;
+  }
+
+  ion-input {
+    --background: transparent;
+  }
 }
 </style>

@@ -76,6 +76,7 @@ export default defineComponent({
         id: 0,
         name: "",
         recordCount: 0,
+        classroomCount: 0,
         classrooms: [],
       },
 
@@ -119,17 +120,24 @@ export default defineComponent({
     // this.getStudentRecords();
   },
   methods: {
-    async showAttachClassrooms() {
+    showAttachClassrooms() {
+      const onAttached = (resolve: any) => {
+        return (classrooms: any) => {
+          this.attachModal.dismiss();
+
+          this.quiz.classrooms = classrooms;
+          this.quiz.classroomCount = classrooms.length;
+
+          resolve(classrooms);
+        };
+      };
+
       return new Promise((resolve, reject) => {
-        this.attachModal = this.modal(AttachClassrooms, {
-          onAttached: (classrooms: any) => {
-            this.attachModal.dismiss();
-
-            this.quiz.classrooms = classrooms;
-
-            resolve(classrooms);
-          },
+        this.modal(AttachClassrooms, {
+          onAttached: onAttached(resolve),
           selected: this.quiz.classrooms.map((i: any) => i.id),
+        }).then((modal: any) => {
+          this.attachModal = modal;
         });
       });
     },
