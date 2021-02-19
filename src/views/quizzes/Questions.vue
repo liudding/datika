@@ -24,7 +24,7 @@
           <div @click="onEditQuestionCount">
             <h3>
               {{ questions.length }} 题
-              <span>
+              <span v-if="quiz.recordCount === 0">
                 <ion-icon :icon="createOutline"></ion-icon>
               </span>
             </h3>
@@ -48,6 +48,10 @@
           </div>
         </div>
       </ion-item>
+
+      <div v-if="quiz.recordCount" style="font-size: 12px; margin-top: 16px">
+        <ion-note style="font-size: 12px;">当前测验已经录入成绩，仅支持修改题目正确答案和分值。修改之后，会进行重新计分。</ion-note>
+      </div>
 
       <BubbleSheet
         v-if="showDownload"
@@ -92,6 +96,7 @@ export default defineComponent({
     return {
       quiz: {
         questions: [],
+        recordCount: 0,
       },
       questions,
       showQuestionCountInput: false,
@@ -221,6 +226,8 @@ export default defineComponent({
       this.definesModal.dismiss();
     },
     async onEditQuestionCount() {
+      if (this.quiz.recordCount > 0) return;
+
       this.definesModal = await this.modal(QuestionDefines, {
         questions: this.questions,
         onChange: this.onQuestionsChange,
