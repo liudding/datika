@@ -65,6 +65,12 @@ const routes: Array<RouteRecordRaw> = [
         props: true,
     },
     {
+        path: '/quizzes/:id/report',
+        name: 'QuizReport',
+        component: () => import('@/views/quizzes/report/Report.vue'),
+        props: true,
+    },
+    {
         path: '/quizzes/:id/records',
         name: 'QuizRecords',
         component: () => import('@/views/quizzes/Records.vue'),

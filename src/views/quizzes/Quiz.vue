@@ -24,7 +24,13 @@
         <ion-label> <ion-note>平均分</ion-note></ion-label>
         <ion-label> <ion-note>最高分</ion-note></ion-label>
         <ion-label> <ion-note>最低分</ion-note></ion-label>
+        <ion-buttons slot="end">
+          <ion-button :routerLink="'/quizzes/' + quiz.id + '/report'" color="primary"
+            >查看报告</ion-button
+          >
+        </ion-buttons>
       </ion-item>
+
       <Records v-if="quiz.studentCount" :quiz="quiz"></Records>
       <Emptyset v-else title="暂无成绩"></Emptyset>
 
