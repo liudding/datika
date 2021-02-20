@@ -24,7 +24,7 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 import 'vant/lib/index.css';
 
-import '@/styles/index.css';
+import '@/styles/index.scss';
 
 import { Stepper } from 'vant';
 import {
