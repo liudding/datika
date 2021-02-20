@@ -82,6 +82,8 @@ export default defineComponent({
         return;
       }
 
+      const loading = await this.loading();
+
       try {
         let resp = null;
         if (this.student) {
@@ -101,6 +103,8 @@ export default defineComponent({
         this.resetData();
       } catch (e) {
         console.log(e);
+      } finally {
+        loading.dismiss();
       }
     },
 
@@ -115,9 +119,13 @@ export default defineComponent({
     },
 
     async delete(student) {
+      const loading = await this.loading();
+
       await Api.student.destroy(student.id);
 
       this.$emit("deleted", student);
+
+      loading.dismiss();
     },
 
     resetData() {
@@ -129,7 +137,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 ion-item {
   border-radius: 8px;
 }
@@ -162,5 +169,4 @@ ion-item {
   font-size: 12px;
   color: gray;
 }
-
 </style>

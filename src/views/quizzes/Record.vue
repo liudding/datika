@@ -56,6 +56,7 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { questionType } from "@/utils/map";
 import Alert from "@/mixins/Alert";
+import Loading from "@/mixins/Loading";
 
 import Bubbles from "./Bubbles.vue";
 import Api from "@/api";
@@ -65,7 +66,7 @@ export default defineComponent({
   components: {
     Bubbles,
   },
-  mixins: [Alert],
+  mixins: [Alert, Loading],
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -119,9 +120,13 @@ export default defineComponent({
       //
     },
     async delete() {
+      const loading = await this.loading();
+
       await Api.record.destroy(+this.$route.params.recordId);
 
-      this.store.commit('quiz/REMOVE_RECORD', this.record)
+      this.store.commit("quiz/REMOVE_RECORD", this.record);
+
+      loading.dismiss();
 
       this.router.back();
     },

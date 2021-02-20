@@ -51,12 +51,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/classrooms/Classrooms.vue'),
         props: true,
     },
-
-    {
-        path: '/classrooms/edit',
-        name: 'EditClassroom',
-        component: () => import('@/views/classrooms/Edit.vue'),
-    },
     {
         path: '/classrooms/:id',
         name: 'Classroom',

@@ -55,6 +55,7 @@ import Api from "@/api";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
 import Modal from "@/mixins/Modal";
+import Loading from "@/mixins/Loading";
 import { mapState } from "vuex";
 
 export default defineComponent({
@@ -64,7 +65,7 @@ export default defineComponent({
     Emptyset,
   },
   props: ["archived"],
-  mixins: [Alert, ActionSheet, Modal],
+  mixins: [Alert, ActionSheet, Modal, Loading],
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -113,14 +114,18 @@ export default defineComponent({
     },
 
     async getQuizzes() {
+      const loading = await this.loading();
+
       try {
         if (this.archived) {
-          const resp = await this.store.dispatch("quiz/archived");
+          await this.store.dispatch("quiz/archived");
         } else {
-          const resp = await this.store.dispatch("quiz/list");
+          await this.store.dispatch("quiz/list");
         }
       } catch (e) {
         console.error(e);
+      } finally {
+        loading.dismiss();
       }
     },
 
@@ -178,9 +183,13 @@ export default defineComponent({
       });
     },
     async unarchiveQuiz(quiz: any) {
+      const loading = await this.loading();
+
       await Api.quiz.unarchive(quiz.id);
 
       this.store.commit("quiz/UNARCHIVE_QUIZ", quiz);
+
+      loading.dismiss();
     },
 
     async archiveQuiz(quiz: any) {
@@ -212,18 +221,30 @@ export default defineComponent({
     },
 
     async copy(quiz: any) {
+      const loading = await this.loading();
+
       const resp = await Api.quiz.copy(quiz.id);
 
       this.store.commit("quiz/UNSHIFT_QUIZ", resp.data);
+
+      loading.dismiss();
     },
     async archive(quiz: any) {
+      const loading = await this.loading();
+
       await Api.quiz.archive(quiz.id);
 
       this.store.commit("quiz/ARCHIVE_QUIZ", quiz);
+
+      loading.dismiss();
     },
     async delete(quiz: any) {
+      const loading = await this.loading();
+
       await Api.quiz.destroy(quiz.id);
       this.store.commit("quiz/REMOVE_QUIZ", quiz);
+
+      loading.dismiss();
     },
   },
 });

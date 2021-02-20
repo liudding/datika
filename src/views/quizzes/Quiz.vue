@@ -61,13 +61,14 @@ import Records from "./Records.vue";
 import Emptyset from "@/components/Emptyset.vue";
 import AttachClassrooms from "./AttachClassrooms.vue";
 import Modal from "@/mixins/Modal";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   components: {
     Records,
     Emptyset,
   },
-  mixins: [Modal],
+  mixins: [Modal, Loading],
   data() {
     const attachModal: any = null;
     return {
@@ -120,7 +121,6 @@ export default defineComponent({
 
   created() {
     this.getDetail();
-    // this.getStudentRecords();
   },
   methods: {
     showAttachClassrooms() {
@@ -145,21 +145,15 @@ export default defineComponent({
       });
     },
 
-    async getStudentRecords() {
-      Promise.all([
-        this.store.dispatch("quiz/students"),
-        this.store.dispatch("quiz/records"),
-      ]).then((data: any) => {
-        this.students = data[0].data.data || data[0].data;
-        this.records = data[1].data.data || data[1].data;
-      });
-    },
-
     async getDetail() {
+      const loading = await this.loading();
+
       const resp = await Api.quiz.show(+this.$route.params.id, {
         with: ["classrooms"],
       });
       this.quiz = resp.data;
+
+      loading.dismiss();
     },
 
     gotoScan() {

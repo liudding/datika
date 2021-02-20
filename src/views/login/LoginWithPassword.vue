@@ -83,19 +83,20 @@
 import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
-import Api from '@/api'
+import Loading from "@/mixins/Loading";
+import Api from "@/api";
 
 export default defineComponent({
   data() {
     return {
       personOutline,
       lockClosedOutline,
-      segment: 'code',
+      segment: "code",
 
       username: "ding",
       password: "123456",
       mobile: "",
-      code: ""
+      code: "",
     };
   },
   setup() {
@@ -103,34 +104,31 @@ export default defineComponent({
     return { store };
   },
   components: {},
+  mixins: [Loading],
   methods: {
-    login() {
+    async login() {
       //
-      console.log(this.username);
+      const loading = await this.loading();
 
-      this.store
-        .dispatch("login", {
-          username: this.username,
-          password: this.password,
-          mobile: this.mobile,
-          code: this.code
-        })
-        .then((res: any) => {
-          return this.store.dispatch("profile");
-        })
-        .then((res: any) => {
-          this.$router.replace({ path: "/" });
-        })
-        .catch(() => {
-          //
-        });
+      await this.store.dispatch("login", {
+        username: this.username,
+        password: this.password,
+        mobile: this.mobile,
+        code: this.code,
+      });
+
+      await this.store.dispatch("profile");
+
+      this.$router.replace({ path: "/" });
+
+      loading.dismiss();
     },
     async getVerificationCode() {
-      await Api.auth.getVerificationCode(this.username)
+      await Api.auth.getVerificationCode(this.username);
     },
     segmentChanged($event: CustomEvent) {
-      this.segment = $event.detail.value
-    }
+      this.segment = $event.detail.value;
+    },
   },
 });
 </script>

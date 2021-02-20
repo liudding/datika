@@ -8,10 +8,12 @@
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import RecordItem from "./RecordItem.vue";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   name: "Records",
   props: ["quiz"],
+  mixins: [Loading],
   components: {
     RecordItem,
   },
@@ -36,8 +38,12 @@ export default defineComponent({
         query.size = 100;
       }
 
+      const loading = await this.loading();
+
       const resp = await this.store.dispatch("quiz/studentRecords", this.quiz);
       this.records = resp.data;
+
+      loading.dismiss();
     },
   },
 });

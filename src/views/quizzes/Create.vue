@@ -51,8 +51,11 @@ export default defineComponent({
     },
 
     async create() {
-      const questions = this.makeQuestions();
+      const loading = await this.loading();
+
       try {
+        const questions = this.makeQuestions();
+
         const resp = await Api.quiz.create({
           name: this.name,
           questions,
@@ -63,10 +66,13 @@ export default defineComponent({
         this.resetData();
       } catch (e) {
         console.log(e);
+      } finally {
+        loading.dismiss();
       }
     },
 
     async update() {
+      const loading = await this.loading();
       try {
         const resp = await Api.quiz.update(this.quiz.id, {
           name: this.name,
@@ -77,6 +83,8 @@ export default defineComponent({
         this.resetData();
       } catch (e) {
         console.log(e);
+      } finally {
+        loading.dismiss();
       }
     },
 

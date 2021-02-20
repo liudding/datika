@@ -43,6 +43,7 @@ export default defineComponent({
     async submit() {
       if (!this.name) return;
 
+      const loading = await this.loading();
       try {
         let resp = null;
         if (this.classroom) {
@@ -60,6 +61,8 @@ export default defineComponent({
         this.resetData();
       } catch (e) {
         console.log(e);
+      } finally {
+        loading.dismiss();
       }
     },
     resetData() {

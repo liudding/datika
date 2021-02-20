@@ -57,6 +57,7 @@ import Api from "@/api";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
+import Loading from "@/mixins/Loading";
 import Emptyset from "@/components/Emptyset.vue";
 import { useStore, mapState } from "vuex";
 
@@ -69,7 +70,7 @@ export default defineComponent({
   props: {
     archived: Boolean,
   },
-  mixins: [Modal, Alert, ActionSheet],
+  mixins: [Modal, Alert, ActionSheet, Loading],
   setup() {
     const router = useRouter();
 
@@ -86,11 +87,11 @@ export default defineComponent({
   computed: {
     ...mapState({
       list: (state: any) => state.classroom.list,
-      archivedClassrooms: (state: any) => state.classroom.archived
+      archivedClassrooms: (state: any) => state.classroom.archived,
     }),
     classrooms(): any {
       return this.archived ? this.archivedClassrooms : this.list;
-    }
+    },
   },
   data: () => {
     const createModal: any = null;
@@ -127,14 +128,17 @@ export default defineComponent({
       this.createModal.dismiss();
     },
     async getClassrooms() {
+      const loading = await this.loading({});
       try {
         if (this.archived) {
-          const resp = await this.store.dispatch("classroom/archived");
+          await this.store.dispatch("classroom/archived");
         } else {
-          const resp = await this.store.dispatch("classroom/list");
+          await this.store.dispatch("classroom/list");
         }
       } catch (e) {
         console.error(e);
+      } finally {
+        loading.dismiss();
       }
     },
     async refresh($event: any) {
@@ -175,19 +179,25 @@ export default defineComponent({
     },
 
     async doArchive(classroom: any) {
+      const loading = await this.loading();
       await Api.classroom.archive(classroom.id);
 
       classroom.archivedAt = Date.now() / 1000;
 
       await this.store.dispatch("classroom/archive", classroom);
+      loading.dismiss();
     },
     async doUnarchive(classroom: any) {
+      const loading = await this.loading();
       await Api.classroom.unarchive(classroom + classroom.id);
+      loading.dismiss();
     },
 
     async doDelete(classroom: any) {
+      const loading = await this.loading();
       await Api.classroom.destroy(classroom.id);
-      this.store.commit('classroom/REMOVE_CLASSROOM', classroom);
+      this.store.commit("classroom/REMOVE_CLASSROOM", classroom);
+      loading.dismiss();
     },
 
     async archiveClassroom(classroom: any) {

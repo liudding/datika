@@ -33,10 +33,12 @@
 <script lang="ts">
 import Api from "@/api";
 import { defineComponent } from "vue";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   props: ["selected"],
   emits: ["attached"],
+  mixins: [Loading],
   data() {
     const classrooms: any[] = [];
     return {
@@ -56,8 +58,8 @@ export default defineComponent({
       const classroomIds = classrooms.map((i: any) => i.id);
 
       if (classroomIds.length === 0) {
-        alert('请选择关联的班级');
-        return
+        alert("请选择关联的班级");
+        return;
       }
 
       const changed = this.classrooms.find((i: any) => i.isChecked !== i.isOld);
@@ -67,7 +69,11 @@ export default defineComponent({
         return;
       }
 
+      const loading = await this.loading();
+
       await Api.quiz.attachClassrooms(+this.$route.params.id, classroomIds);
+
+      loading.dismiss();
 
       this.$emit("attached", classrooms);
     },
