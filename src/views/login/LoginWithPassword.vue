@@ -82,6 +82,7 @@
 <script lang="ts">
 import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
 import Api from '@/api'
 
 export default defineComponent({
@@ -98,7 +99,8 @@ export default defineComponent({
     };
   },
   setup() {
-    return {};
+    const store = useStore();
+    return { store };
   },
   components: {},
   methods: {
@@ -106,7 +108,7 @@ export default defineComponent({
       //
       console.log(this.username);
 
-      this.$store
+      this.store
         .dispatch("login", {
           username: this.username,
           password: this.password,
@@ -114,7 +116,7 @@ export default defineComponent({
           code: this.code
         })
         .then((res: any) => {
-          return this.$store.dispatch("profile");
+          return this.store.dispatch("profile");
         })
         .then((res: any) => {
           this.$router.replace({ path: "/" });

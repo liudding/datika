@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
+import store from './store'
 
 import { IonicVue } from '@ionic/vue';
 
@@ -32,13 +33,10 @@ import {
   IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
   IonInput, IonCheckbox,
   IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel, IonNote,
-  IonToolbar,
+  IonToolbar, IonSegment, IonSegmentButton,
   IonAlert, IonPopover
 } from '@ionic/vue';
 
-// import '@/styles/index.scss'
-
-import store from '@/store'
 
 const app = createApp(App)
   .use(IonicVue)
@@ -68,6 +66,8 @@ app.component('IonPage', IonPage)
   .component('IonRefresherContent', IonRefresherContent)
   .component('IonIcon', IonIcon)
   .component('IonToolbar', IonToolbar)
+  .component('IonSegment', IonSegment)
+  .component('IonSegmentButton', IonSegmentButton)
   .component('IonTitle', IonTitle)
   .component('IonNote', IonNote)
   .component('IonLabel', IonLabel)

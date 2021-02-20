@@ -45,6 +45,7 @@
 <script lang="ts">
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { defineComponent, ref } from "vue";
 
 import QuizItem from "./QuizItem.vue";
@@ -66,10 +67,12 @@ export default defineComponent({
   mixins: [Alert, ActionSheet, Modal],
   setup() {
     const router = useRouter();
+    const store = useStore();
 
     return {
       addOutline,
       router,
+      store,
     };
   },
   computed: {
@@ -112,9 +115,9 @@ export default defineComponent({
     async getQuizzes() {
       try {
         if (this.archived) {
-          const resp = await this.$store.dispatch("quiz/archived");
+          const resp = await this.store.dispatch("quiz/archived");
         } else {
-          const resp = await this.$store.dispatch("quiz/list");
+          const resp = await this.store.dispatch("quiz/list");
         }
       } catch (e) {
         console.error(e);
@@ -123,9 +126,9 @@ export default defineComponent({
 
     onQuizSaved(quiz: any, isNew: boolean) {
       if (isNew) {
-        this.$store.dispatch("quiz/unshift", quiz);
+        this.store.dispatch("quiz/unshift", quiz);
       } else {
-        this.$store.dispatch("quiz/replace", quiz, quiz);
+        this.store.dispatch("quiz/replace", quiz, quiz);
       }
 
       this.createModal.dismiss();
@@ -177,7 +180,7 @@ export default defineComponent({
     async unarchiveQuiz(quiz: any) {
       await Api.quiz.unarchive(quiz.id);
 
-      this.$store.commit("quiz/UNARCHIVE_QUIZ", quiz);
+      this.store.commit("quiz/UNARCHIVE_QUIZ", quiz);
     },
 
     async archiveQuiz(quiz: any) {
@@ -211,16 +214,16 @@ export default defineComponent({
     async copy(quiz: any) {
       const resp = await Api.quiz.copy(quiz.id);
 
-      this.$store.commit("quiz/UNSHIFT_QUIZ", resp.data);
+      this.store.commit("quiz/UNSHIFT_QUIZ", resp.data);
     },
     async archive(quiz: any) {
       await Api.quiz.archive(quiz.id);
 
-      this.$store.commit("quiz/ARCHIVE_QUIZ", quiz);
+      this.store.commit("quiz/ARCHIVE_QUIZ", quiz);
     },
     async delete(quiz: any) {
       await Api.quiz.destroy(quiz.id);
-      this.$store.commit("quiz/REMOVE_QUIZ", quiz);
+      this.store.commit("quiz/REMOVE_QUIZ", quiz);
     },
   },
 });

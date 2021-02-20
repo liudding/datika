@@ -40,6 +40,7 @@
 import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 import Alert from "@/mixins/Alert";
@@ -73,12 +74,14 @@ export default defineComponent({
     };
 
     const router = useRouter();
+    const store = useStore();
 
     return {
       popoverOpenRef,
       setPopoverOpen,
       popoverRefEvent,
       router,
+      store
     };
   },
 
@@ -96,7 +99,7 @@ export default defineComponent({
       archivedAt: null,
     };
 
-    this.classroom = await this.$store.dispatch("classroom/find", +this.$route.params.id);
+    this.classroom = await this.store.dispatch("classroom/find", +this.$route.params.id);
   },
   methods: {
     async showCreate() {

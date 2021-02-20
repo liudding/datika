@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
 import { IonItemDivider, IonItemGroup } from "@ionic/vue";
 import QuestionCount from "./QuestionCount.vue";
 import AutoArchive from "./AutoArchive.vue";
@@ -44,7 +45,9 @@ export default defineComponent({
   components: { IonItemDivider, IonItemGroup },
   mixins: [Modal, ActionSheet],
   setup() {
-    return {};
+    return {
+      store: useStore()
+    };
   },
   data() {
     return {
@@ -89,7 +92,7 @@ export default defineComponent({
     },
 
     async doLogout() {
-      await this.$store.dispatch("logout");
+      await this.store.dispatch("logout");
 
       this.$router.replace({
         name: "Login"

@@ -53,6 +53,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { questionType } from "@/utils/map";
 import Alert from "@/mixins/Alert";
 
@@ -67,8 +68,9 @@ export default defineComponent({
   mixins: [Alert],
   setup() {
     const router = useRouter();
+    const store = useStore();
 
-    return { router };
+    return { router, store };
   },
 
   data() {
@@ -118,6 +120,8 @@ export default defineComponent({
     },
     async delete() {
       await Api.record.destroy(+this.$route.params.recordId);
+
+      this.store.commit('quiz/REMOVE_RECORD', this.record)
 
       this.router.back();
     },

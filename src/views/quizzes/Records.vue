@@ -1,11 +1,12 @@
 <template>
   <ion-list>
-    <RecordItem v-for="record in records" :key="record.id" :record="record" />
+    <RecordItem v-for="record in records" :key="record.id" :record="record" :quizId="quiz.id" />
   </ion-list>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
 import RecordItem from "./RecordItem.vue";
 
 export default defineComponent({
@@ -15,7 +16,7 @@ export default defineComponent({
     RecordItem,
   },
   setup() {
-    //
+    return { store: useStore(), }
   },
   data() {
     const studentRecords: any[] = [];
@@ -35,7 +36,7 @@ export default defineComponent({
         query.size = 100;
       }
 
-      const resp = await this.$store.dispatch("quiz/studentRecords", this.quiz);
+      const resp = await this.store.dispatch("quiz/studentRecords", this.quiz);
       this.records = resp.data;
     },
   },

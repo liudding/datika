@@ -52,6 +52,7 @@
 
 <script lang="ts">
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
@@ -89,6 +90,7 @@ export default defineComponent({
 
   setup() {
     const router = useRouter();
+    const store = useStore();
 
     const classroomPickerRef = ref(false);
     const showClassroomPickerPopup = (status = true) => {
@@ -104,6 +106,7 @@ export default defineComponent({
 
     return {
       router,
+      store,
       isOpenRef,
       setOpen,
       refEvent,
@@ -144,8 +147,8 @@ export default defineComponent({
 
     async getStudentRecords() {
       Promise.all([
-        this.$store.dispatch("quiz/students"),
-        this.$store.dispatch("quiz/records"),
+        this.store.dispatch("quiz/students"),
+        this.store.dispatch("quiz/records"),
       ]).then((data: any) => {
         this.students = data[0].data.data || data[0].data;
         this.records = data[1].data.data || data[1].data;

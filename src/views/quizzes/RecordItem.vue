@@ -25,6 +25,7 @@ export default defineComponent({
   components: {},
   props: {
     record: Object,
+    quizId: Number,
   },
   computed: {
     ...mapState({
@@ -53,12 +54,12 @@ export default defineComponent({
       this.router.push({
         name: "QuizRecord",
         params: {
-          quizId: this.record?.quizId,
+          quizId: this.record?.quizId || this.quizId,
           recordId: this.record?.id,
         },
         query: {
-          studentName: this.record?.student.name,
-          studentNumber: this.record?.student.number,
+          studentName: this.record?.studentName,
+          studentNumber: this.record?.studentNumber,
         },
       });
     },

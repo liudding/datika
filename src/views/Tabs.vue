@@ -29,6 +29,7 @@ import {
 } from "@ionic/vue";
 import { reader, person, square } from "ionicons/icons";
 import { defineComponent} from "vue";
+import { useStore } from "vuex"
 
 export default defineComponent({
   components: { IonTabs, IonTabBar, IonTabButton },
@@ -37,10 +38,11 @@ export default defineComponent({
       reader,
       person,
       square,
+      store: useStore()
     };
   },
   created() {
-    this.$store.dispatch("classroom/list");
+    this.store.dispatch("classroom/list");
   },
 });
 </script>

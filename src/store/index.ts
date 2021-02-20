@@ -5,7 +5,7 @@ import quiz from './modules/quiz'
 import user from './modules/user'
 
 
-export default createStore({
+const store = createStore({
     modules: {
         classroom,
         quiz,
@@ -16,3 +16,5 @@ export default createStore({
     })],
     strict: process.env.NODE_ENV !== 'production'
 })
+
+export default store;
