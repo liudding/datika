@@ -71,6 +71,23 @@ export default {
         SET_RECORDS(state: any, data: any) {
             state.records = data.records
             state.quizId = data.quizId;
+        },
+
+        ADD_RECORDS(state: any, data: any) {
+            const index = state.records.findIndex((i: any) => i.studentId === data.studentId);
+
+            if (index >= 0) {
+                state.records.splice(index, 1, data)
+            } else {
+                state.records.splice(index, 1)
+            }
+
+        },
+
+        REMOVE_RECORD(state: any, data: any) {
+            const index = state.records.findIndex((i: any) => i.studentId === data.studentId);
+            state.records[index].id = null;
+            state.records[index].score = null;
         }
     },
     getters: {
@@ -123,11 +140,11 @@ export default {
             context.commit('REMOVE_QUIZ', quiz)
         },
 
-         /**
-         * 获取指定 quiz 的 全部学生及其 reocrd
-         * @param context 
-         * @param quiz 
-         */
+        /**
+        * 获取指定 quiz 的 全部学生及其 reocrd
+        * @param context 
+        * @param quiz 
+        */
         async studentRecords(context: any, quiz: any) {
             const quizId = quiz.id || quiz;
 

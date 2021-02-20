@@ -33,6 +33,7 @@
 <script>
 import { appsOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
+import { useStore } from "vuex"
 
 import Scanner from "@/services/scanner/Scanner";
 import Records from "./Records.vue";
@@ -46,6 +47,11 @@ let scanner;
 export default defineComponent({
   name: "Scan",
   mixins: [Modal],
+  setup() {
+    return {
+      store: useStore()
+    }
+  },
   data() {
     const records = [];
     const recordsModal = null;
@@ -91,47 +97,41 @@ export default defineComponent({
       this.completedCount = this.quiz.recordCount;
     },
     async getRecords() {
-      const resp = await this.$store.dispatch(
+      const resp = await this.store.dispatch(
         "quiz/studentRecords",
         +this.$route.params.id
       );
       this.records = resp.data;
     },
-    checkIsOldRecordData(answers, studentId) {
-      const record = this.records.find(
-        (record) => record.student.id === studentId
-      );
-
-      if (!record) return false;
+    checkIsOldRecordData(answers, record) {
+      if (!record || !record.id || !record.answers) return false;
 
       const newAnswer = answers.join("_");
       const oldAnswer = record.answers.map((i) => i.answer).join("_");
 
       return newAnswer == oldAnswer ? record : false;
     },
-    async submit(data, student) {
+    async submit(data, record) {
       const answers = data.answers.map((item) => {
         return item.value;
       });
 
-      let record = this.checkIsOldRecordData(answers, student.id);
-      if (record) {
+      // const record = this.checkIsOldRecordData(answers, student);
+      if (this.checkIsOldRecordData(answers, record)) {
+        console.log(record, 'is old')
         return Promise.resolve(record, true);
       }
-
+  
       const params = {
-        student: student.id,
+        student: record.studentId,
         answers: answers,
       };
 
       const resp = await Api.quiz.submit(+this.$route.params.id, params);
 
-      record = resp.data;
-      record.student = student;
+      this.store.commit('quiz/ADD_RECORDS', Object.assign({}, record, resp.data))
 
-      this.records.unshift(record);
-
-      return record;
+      return resp.data;
     },
     initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
@@ -157,19 +157,20 @@ export default defineComponent({
 
       await this.hideResult();
 
-      const student = this.records.find(
+      const record = this.records.find(
         (item) => item.studentNumber === scanObj.gradecam_id
       );
 
-      if (!student) {
+      if (!record) {
         alert(`学号：${scanObj.gradecam_id} 不存在`);
         return;
       }
 
-      this.submit(scanObj, student).then((res, isOld) => {
-        this.currentRecord = res;
-        this.currentRecord.name = student.studentName;
-        this.currentRecord.number = student.studentNumber;
+      this.submit(scanObj, record).then((res, isOld) => {
+        console.log('on sunmited')
+        this.currentRecord = Object.assign({}, res);
+        this.currentRecord.name = record.studentName;
+        this.currentRecord.number = record.studentNumber;
 
         if (!isOld) {
           this.completedCount++;
