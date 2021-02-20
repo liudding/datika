@@ -50,7 +50,9 @@
       </ion-item>
 
       <div v-if="quiz.recordCount" style="font-size: 12px; margin-top: 16px">
-        <ion-note style="font-size: 12px;">当前测验已经录入成绩，仅支持修改题目正确答案和分值。修改之后，会进行重新计分。</ion-note>
+        <ion-note style="font-size: 12px"
+          >当前测验已经录入成绩，仅支持修改题目正确答案和分值。修改之后，会进行重新计分。</ion-note
+        >
       </div>
 
       <BubbleSheet
@@ -160,34 +162,18 @@ export default defineComponent({
     onQuestionChange(question: any) {
       const recordCount = this.$route.query.recordCount || 0;
       if (recordCount > 0) {
-        this.showAlert();
+        this.alert({
+          title: "已经录入成绩",
+          message: "修改题目，将影响已存在的作答结果。",
+          confirmText: "重新计分",
+          cancel: true,
+        }).then(() => {
+          this.updateQuestion(question);
+        });
         return;
       }
-      const index = this.questions.findIndex((i: any) => i.id === question.id);
-      this.questions.splice(index, 1, question);
 
-      let func;
-      if (_.has(this.debouncedUpdates, question.id)) {
-        func = this.debouncedUpdates[question.id] as Function;
-      } else {
-        func = _.debounce((question: any) => {
-          this.updateQuestion(question.id, question);
-        }, 500);
-
-        this.debouncedUpdates[question.id] = func;
-      }
-
-      func.call(this, question);
-    },
-    async showAlert() {
-      this.alert({
-        title: "已经存在作答",
-        message: "修改题目，将影响已存在的作答结果。",
-        confirmText: "重新计分",
-        cancel: true,
-      }).then(() => {
-        alert(11);
-      });
+      this.updateQuestion(question);
     },
 
     /**
@@ -255,8 +241,22 @@ export default defineComponent({
       this.questions = resp.data || [];
     },
 
-    async updateQuestion(id: number, data: any) {
-      await Api.question.update(id, data);
+    async updateQuestion(question: any) {
+      const index = this.questions.findIndex((i: any) => i.id === question.id);
+      this.questions.splice(index, 1, question);
+
+      let func;
+      if (_.has(this.debouncedUpdates, question.id)) {
+        func = this.debouncedUpdates[question.id] as Function;
+      } else {
+        func = _.debounce((question: any) => {
+          Api.question.update(question.id, question);
+        }, 500);
+
+        this.debouncedUpdates[question.id] = func;
+      }
+
+      func.call(this, question);
     },
   },
 });

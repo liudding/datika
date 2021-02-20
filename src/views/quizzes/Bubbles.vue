@@ -1,16 +1,30 @@
 <template>
-    <div class="choices" :class="{ 'mode-question' : mode === 'question', 'mode-answer' : mode === 'answer' }">
-      <div
-        v-for="bubble in choices"
-        :key="bubble"
-        @click="onClickBubble(bubble)"
-        class="bubble"
-        :class="{ selected: isSelected(bubble), correct: isCorrect(bubble), incorrect: !isCorrect(bubble) }"
-      >
-      <ion-icon v-if="isSelected(bubble)" :icon="isCorrect(bubble) ? checkmark : closeOutline" class="answer-result"></ion-icon>
-        {{ bubble }}
-      </div>
+  <div
+    class="choices"
+    :class="{
+      'mode-question': mode === 'question',
+      'mode-answer': mode === 'answer',
+    }"
+  >
+    <div
+      v-for="bubble in choices"
+      :key="bubble"
+      @click="onClickBubble(bubble)"
+      class="bubble"
+      :class="{
+        selected: isSelected(bubble),
+        correct: isCorrect(bubble),
+        incorrect: !isCorrect(bubble),
+      }"
+    >
+      <ion-icon
+        v-if="isSelected(bubble)"
+        :icon="isCorrect(bubble) ? checkmark : closeOutline"
+        class="answer-result"
+      ></ion-icon>
+      {{ bubble }}
     </div>
+  </div>
 </template>
 
 <script>
@@ -24,12 +38,12 @@ export default defineComponent({
     correct: String,
     mode: {
       type: String,
-      default: 'question', // answer
+      default: "question", // answer
     },
-    name: String
+    name: String,
   },
   setup() {
-    return {closeOutline, checkmark }
+    return { closeOutline, checkmark };
   },
   data() {
     return {
@@ -39,7 +53,7 @@ export default defineComponent({
       },
       isSelected(opt) {
         return (this.answer || "").indexOf(opt) >= 0;
-      }
+      },
     };
   },
   methods: {
@@ -59,8 +73,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
-
 .choices-wrapper {
   padding: 4px 0;
 }
@@ -91,10 +103,9 @@ export default defineComponent({
   color: white;
 }
 
-
 .mode-answer .bubble {
-   border: 1px dashed gray;
-   color: gray;
+  border: 1px dashed gray;
+  color: gray;
 }
 
 .mode-answer .selected {
@@ -102,7 +113,7 @@ export default defineComponent({
 }
 
 .mode-answer .correct {
-  border: 2px solid rgba(20, 42, 243, .7);
+  border: 2px solid rgb(140, 151, 253);
 
   line-height: 26px;
 }
@@ -121,12 +132,13 @@ export default defineComponent({
 }
 
 .bubble.correct .answer-result {
-  color: rgba(255, 0, 0, 0.719);
+  color: rgb(4, 241, 75);
+  border-radius: 100px;
+  box-shadow: 0px 0px 6px rgba(4, 241, 75, 0.719);
+  border: 2px solid rgba(4, 241, 75, 1);
 }
 
 .bubble.incorrect .answer-result {
   color: rgba(255, 0, 0, 0.719);
 }
-
-
 </style>
