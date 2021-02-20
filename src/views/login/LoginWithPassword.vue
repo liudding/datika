@@ -137,7 +137,6 @@ export default defineComponent({
 ion-item {
   --inner-padding-end: 0;
   --min-height: 54px;
-  --background: #efefef;
 
   border-radius: 100px;
   margin-bottom: 8px;
@@ -146,10 +145,6 @@ ion-item {
 ion-content {
   --padding-start: 16px;
   --padding-end: 16px;
-}
-
-ion-toolbar {
-  --border-color: white;
 }
 
 ion-button {
