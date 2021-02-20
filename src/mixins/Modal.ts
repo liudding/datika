@@ -19,7 +19,13 @@ export default {
                     cssClass: cssClass
                 })
 
+            modal.onWillDismiss().then(() => {
+                document.body.classList.remove('modal')
+            })
+
             modal.present();
+
+            document.body.classList.add('modal')
 
             return modal;
         }
