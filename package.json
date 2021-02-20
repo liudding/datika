@@ -23,6 +23,7 @@
     "register-service-worker": "^1.7.1",
     "vant": "^3.0.6",
     "vue": "^3.0.0-0",
+    "vue-radial-progress": "^0.3.2",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0",
     "vuex-persistedstate": "^4.0.0-beta.3"
