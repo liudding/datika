@@ -55,7 +55,14 @@ export default defineComponent({
 
       const classroomIds = classrooms.map((i: any) => i.id);
 
-      if (classroomIds.length == 0) {
+      if (classroomIds.length === 0) {
+        alert('请选择关联的班级');
+        return
+      }
+
+      const changed = this.classrooms.find((i: any) => i.isChecked !== i.isOld);
+
+      if (!changed) {
         this.$emit("attached", classrooms);
         return;
       }
@@ -69,6 +76,7 @@ export default defineComponent({
       this.classrooms = resp.data.data;
       this.classrooms = this.classrooms.map((classroom: any) => {
         classroom.isChecked = this.isSelected(classroom);
+        classroom.isOld = this.isSelected(classroom);
         return classroom;
       });
     },
@@ -86,7 +94,6 @@ export default defineComponent({
   --padding-start: 16px;
   --padding-end: 16px;
 }
-
 
 ion-list {
   padding: 0px;
