@@ -76,10 +76,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 }
 
-ion-content {
-  --background: rgba(235, 235, 235);
-}
-
 
 @media (prefers-color-scheme: dark) {
   /*
@@ -234,9 +230,4 @@ ion-content {
 
     --ion-card-background: #1e1e1e;
   }
-
-  ion-content {
-    --background: rgb(0, 0, 0);
-  }
-  
 }

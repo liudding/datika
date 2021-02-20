@@ -1,6 +1,8 @@
 <template>
   <ion-header>
-    <div class="header"></div>
+    <ion-toolbar>
+      <ion-title>{{ title }}</ion-title>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="content">
     <ion-item lines="none">
@@ -57,6 +59,11 @@ export default defineComponent({
   props: ["student"],
   emits: ["created", "deleted"],
   mixins: [Alert],
+  computed: {
+    title() {
+      return this.student ? "编辑学生" : "添加学生";
+    },
+  },
   data() {
     return {
       name: this.student ? this.student.name : "",
@@ -122,14 +129,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.content {
-  background: white;
-  height: 100%;
-  padding: 32px 16px 0 16px;
-}
 
 ion-item {
-  --background: #eee;
   border-radius: 8px;
 }
 
@@ -162,18 +163,4 @@ ion-item {
   color: gray;
 }
 
-@media (prefers-color-scheme: dark) {
-  ion-item {
-    --background: rgb(83, 83, 83);
-    border-radius: 8px;
-  }
-
-  .modal-custom-class .header {
-    background: rgb(34, 34, 34);
-  }
-
-  ion-content {
-    --background: rgb(34, 34, 34);
-  }
-}
 </style>

@@ -1,13 +1,13 @@
 <template>
   <ion-header>
-    <div class="header d-flex justify-content-between">
-      <div></div>
-      <ion-buttons>
+    <ion-toolbar>
+      <ion-title>设置题目</ion-title>
+      <ion-buttons slot="end">
         <ion-button @click="add"
           ><ion-icon :icon="addCircle"></ion-icon
         ></ion-button>
       </ion-buttons>
-    </div>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="content">
     <ion-list :disabled="true" @ionItemReorder="doReorder($event)">
@@ -164,10 +164,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.header {
-  background: white;
-  padding: 8px 8px 0 8px;
-}
+
 
 ion-list {
   background: transparent;
@@ -193,7 +190,6 @@ ion-note {
   margin-right: 8px;
 }
 ion-input {
-  --background: #eee;
   border-radius: 8px;
   height: 30px;
 }
@@ -211,30 +207,13 @@ ion-button {
 }
 
 ion-item {
-  /* --background: #eee; */
   border-radius: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
-  ion-item {
-    --background: rgb(0, 0, 0);
-    border-radius: 8px;
-  }
-
-  .modal-custom-class .header {
-    background: rgb(34, 34, 34);
-  }
-
-  ion-content {
-    --background: rgb(34, 34, 34);
-  }
 
   .input-wrapper {
-    background: transparent;
-  }
-
-  ion-input {
-    --background: transparent;
+    background: #111;
   }
 }
 </style>

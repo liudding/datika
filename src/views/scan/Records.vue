@@ -1,8 +1,10 @@
 <template>
-  <ion-header>
-    <div class="header"></div>
+   <ion-header>
+    <ion-toolbar>
+      <ion-title>成绩</ion-title>
+    </ion-toolbar>
   </ion-header>
-  <div class="content">
+  <ion-content class="content">
     <ion-list>
       <ion-item v-for="record in records" :key="record.id">
         <b>{{ record.studentName }}</b>
@@ -16,7 +18,7 @@
         </div>
       </ion-item>
     </ion-list>
-  </div>
+  </ion-content>
 </template>
 
 <script>

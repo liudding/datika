@@ -1,7 +1,10 @@
 <template>
   <ion-header>
-    <div class="header"></div>
+    <ion-toolbar>
+      <ion-title>{{ title }}</ion-title>
+    </ion-toolbar>
   </ion-header>
+
   <ion-content class="content">
     <ion-item lines="none">
       <ion-input
@@ -28,6 +31,11 @@ export default defineComponent({
     return {
       name: this.classroom ? this.classroom.name : "",
     };
+  },
+  computed: {
+    title() {
+      return this.classroom ? "编辑班级" : "添加班级";
+    },
   },
   components: {},
   emits: ["saved"],
@@ -64,36 +72,17 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  background: white;
-  height: 100%;
-  padding: 32px 16px 0 16px;
   --padding-top: 32px;
   --padding-start: 16px;
   --padding-end: 16px;
 }
 
 ion-item {
-  --background: #eee;
   border-radius: 10px;
 }
 
 ion-button {
   margin-top: 32px;
   --border-radius: 100px;
-}
-
-@media (prefers-color-scheme: dark) {
-  ion-item {
-    --background: rgb(83, 83, 83);
-    border-radius: 8px;
-  }
-
-  .modal-custom-class .header {
-    background: rgb(34, 34, 34);
-  }
-
-  ion-content {
-    --background: rgb(34, 34, 34);
-  }
 }
 </style>

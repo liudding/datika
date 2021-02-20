@@ -1,6 +1,8 @@
 <template>
   <ion-header>
-    <div class="header"></div>
+    <ion-toolbar>
+      <ion-title>{{ title }}</ion-title>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="content">
     <ion-item lines="none">
@@ -31,6 +33,11 @@ export default defineComponent({
     return {
       name: this.quiz ? this.quiz.name : "",
     };
+  },
+  computed: {
+    title() {
+      return this.quiz ? "编辑测验" : "添加测验";
+    },
   },
   methods: {
     async submit() {
@@ -98,32 +105,12 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  /* --background: white; */
-  height: 100%;
-  padding: 32px 16px 0 16px;
   --padding-top: 32px;
   --padding-start: 16px;
   --padding-end: 16px;
 }
 
 ion-item {
-  --background: #eee;
   border-radius: 8px;
-}
-
-@media (prefers-color-scheme: dark) {
-  ion-item {
-    --background: rgb(83, 83, 83);
-    border-radius: 8px;
-  }
-
-  .modal-custom-class .header {
-    background: rgb(34, 34, 34);
-  }
-
-  ion-content {
-    --background: rgb(34, 34, 34);
-  }
-
 }
 </style>

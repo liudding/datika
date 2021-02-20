@@ -1,6 +1,8 @@
 <template>
   <ion-header>
-    <div class="header"></div>
+    <ion-toolbar>
+      <ion-title>关联班级</ion-title>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="content">
     <ion-list>
@@ -76,7 +78,6 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  background: #eee;
   height: 100%;
   padding: 32px 16px 0 16px;
   height: 100%;
@@ -85,6 +86,7 @@ export default defineComponent({
   --padding-start: 16px;
   --padding-end: 16px;
 }
+
 
 ion-list {
   padding: 0px;
@@ -99,28 +101,5 @@ ion-item {
 ion-button {
   margin-top: 32px;
   --border-radius: 100px;
-}
-
-@media (prefers-color-scheme: dark) {
-  ion-item {
-    --background: rgb(0, 0, 0);
-    border-radius: 8px;
-  }
-
-  .modal-custom-class .header {
-    background: rgb(34, 34, 34);
-  }
-
-  ion-content {
-    --background: rgb(34, 34, 34);
-  }
-
-  .input-wrapper {
-    background: transparent;
-  }
-
-  ion-input {
-    --background: transparent;
-  }
 }
 </style>
