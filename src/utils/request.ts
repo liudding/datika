@@ -41,6 +41,18 @@ instance.interceptors.response.use(
                 })
             }
 
+            if (response.status === 422) {
+                // validation errors
+                let message;
+                for (const key in response.data.errors) {
+                    const errors = response.data.errors[key];
+                    message = errors[0];
+                    break;
+                }
+
+                alert(message)
+            }
+
 
 
         } else if (error.request) {

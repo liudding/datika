@@ -110,18 +110,22 @@ export default defineComponent({
       //
       const loading = await this.loading();
 
-      await this.store.dispatch("login", {
-        username: this.username,
-        password: this.password,
-        mobile: this.mobile,
-        code: this.code,
-      });
+      try {
+        await this.store.dispatch("login", {
+          username: this.username,
+          password: this.password,
+          mobile: this.mobile,
+          code: this.code,
+        });
 
-      await this.store.dispatch("profile");
+        await this.store.dispatch("profile");
 
-      this.$router.replace({ path: "/" });
-
-      loading.dismiss();
+        this.$router.replace({ path: "/" });
+      } catch (e) {
+        //
+      } finally {
+        loading.dismiss();
+      }
     },
     async getVerificationCode() {
       await Api.auth.getVerificationCode(this.username);
