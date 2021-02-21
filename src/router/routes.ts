@@ -132,7 +132,16 @@ const routes: Array<RouteRecordRaw> = [
         path: '/about',
         name: 'About',
         component: () => import('@/views/settings/About.vue')
-    }
+    },
+
+    /**
+     * 错误页面
+     */
+    {
+        path: '/offline',
+        name: 'Offline',
+        component: () => import('@/views/errors/Offline.vue')
+    },
 
 
 ]
