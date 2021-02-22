@@ -7,7 +7,9 @@
         </ion-buttons>
         <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="primary">
-          <ion-button @click="gotoQuestions" color="primary"> 题目 </ion-button>
+          <ion-button @click="gotoQuestions" color="primary"
+            >设置题目</ion-button
+          >
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -25,7 +27,9 @@
         <ion-label> <ion-note>最高分</ion-note></ion-label>
         <ion-label> <ion-note>最低分</ion-note></ion-label>
         <ion-buttons slot="end">
-          <ion-button :routerLink="'/quizzes/' + quiz.id + '/report'" color="primary"
+          <ion-button
+            :routerLink="'/quizzes/' + quiz.id + '/report'"
+            color="primary"
             >查看报告</ion-button
           >
         </ion-buttons>
@@ -40,19 +44,6 @@
         </ion-fab-button>
       </ion-fab>
     </ion-content>
-
-    <ion-popover
-      :is-open="isOpenRef"
-      css-class="my-custom-class"
-      :event="refEvent"
-      :translucent="true"
-      @onDidDismiss="setOpen(false)"
-    >
-      <ion-list>
-        <ion-item button>编辑题目</ion-item>
-        <ion-item button>设置测验</ion-item>
-      </ion-list>
-    </ion-popover>
   </ion-page>
 </template>
 
@@ -61,12 +52,13 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import Api from "@/api";
 import Records from "./Records.vue";
 import Emptyset from "@/components/Emptyset.vue";
 import AttachClassrooms from "./AttachClassrooms.vue";
 import Modal from "@/mixins/Modal";
+import Alert from "@/mixins/Alert";
 import Loading from "@/mixins/Loading";
 
 export default defineComponent({
@@ -74,7 +66,8 @@ export default defineComponent({
     Records,
     Emptyset,
   },
-  mixins: [Modal, Loading],
+  mixins: [Modal, Loading, Alert],
+  computed: {},
   data() {
     const attachModal: any = null;
     return {
@@ -86,6 +79,7 @@ export default defineComponent({
         recordCount: 0,
         classroomCount: 0,
         classrooms: [],
+        questions: [],
       },
 
       students: [],
@@ -99,26 +93,9 @@ export default defineComponent({
     const router = useRouter();
     const store = useStore();
 
-    const classroomPickerRef = ref(false);
-    const showClassroomPickerPopup = (status = true) => {
-      classroomPickerRef.value = status;
-    };
-
-    const isOpenRef = ref(false);
-    const refEvent = ref();
-    const setOpen = (state: boolean, event: Event) => {
-      refEvent.value = event;
-      isOpenRef.value = state;
-    };
-
     return {
       router,
       store,
-      isOpenRef,
-      setOpen,
-      refEvent,
-      classroomPickerRef,
-      showClassroomPickerPopup,
       add,
       create,
       documentTextOutline,
@@ -155,14 +132,30 @@ export default defineComponent({
       const loading = await this.loading();
 
       const resp = await Api.quiz.show(+this.$route.params.id, {
-        with: ["classrooms"],
+        with: ["classrooms", "questions"],
       });
       this.quiz = resp.data;
 
       loading.dismiss();
     },
 
+    questionsIsReady() {
+      if (this.quiz.questions.length === 0) return false;
+      const noAnswer = this.quiz.questions.findIndex((i: any) => !i.answer);
+
+      return noAnswer < 0;
+    },
     gotoScan() {
+      if (!this.questionsIsReady()) {
+        this.alert({
+          title: "请先设置题目",
+          confirmText: "去设置题目"
+        }).then(() => {
+          this.gotoQuestions();
+        });
+        return;
+      }
+
       if (this.quiz.classrooms.length > 0) {
         this.router.push({
           name: "Scan",

@@ -113,6 +113,7 @@ export default defineComponent({
       let multiCount = 0;
       let booleanCount = 0;
       let score = 0;
+      let noAnswerCount = 0;
 
       this.questions.forEach((item: any) => {
         if (item.type === 1) {
@@ -123,6 +124,10 @@ export default defineComponent({
           booleanCount++;
         }
 
+        if (!item.answer) {
+          noAnswerCount ++;
+        }
+
         score += item.score || 0;
       });
 
@@ -131,6 +136,7 @@ export default defineComponent({
         multiCount: multiCount,
         booleanCount: booleanCount,
         score: score,
+        noAnswerCount,
       };
     },
   },
