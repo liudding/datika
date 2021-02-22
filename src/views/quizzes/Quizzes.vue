@@ -214,6 +214,8 @@ export default defineComponent({
     },
 
     async refresh($event: any) {
+      this.store.commit('quiz/CLEAR');
+      
       await this.getQuizzes();
 
       $event.target.complete();

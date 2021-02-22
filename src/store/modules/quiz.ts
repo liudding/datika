@@ -14,6 +14,17 @@ export default {
         studentRecords: []
     }),
     mutations: {
+        CLEAR(state: any) {
+            state.list  = [];
+            state.archived = [];
+            state.total = 0;
+
+            state.quizId = 0;
+            state.quiz = null;
+            state.students = [];
+            state.records = [];
+            state.studentRecords = [];
+        },
         SET_QUIZZES(state: any, data: any) {
             state.list = data.data;
             state.total = data.meta.total;

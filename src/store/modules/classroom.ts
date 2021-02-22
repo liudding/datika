@@ -8,6 +8,11 @@ export default {
         total: 0,
     }),
     mutations: {
+        CLEAR(state: any) {
+            state.list = [];
+            state.archived = [];
+            state.total = 0;
+        },
         SET_CLASSROOMS(state: any, data: any) {
             state.list = data.data;
             state.total = data.meta.total;

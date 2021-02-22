@@ -148,6 +148,8 @@ export default defineComponent({
       }
     },
     async refresh($event: any) {
+      this.store.commit("classroom/CLEAR");
+
       await this.getClassrooms();
 
       $event.target.complete();
