@@ -22,10 +22,13 @@
 <script>
 import { defineComponent } from "vue";
 import Api from "@/api";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   name: "CreateModal",
   props: ["classroom"],
+  emits: ["saved"],
+  mixins: [Loading],
   data() {
     return {
       name: this.classroom ? this.classroom.name : "",
@@ -36,8 +39,6 @@ export default defineComponent({
       return this.classroom ? "编辑班级" : "添加班级";
     },
   },
-  components: {},
-  emits: ["saved"],
   methods: {
     async submit() {
       if (!this.name) return;

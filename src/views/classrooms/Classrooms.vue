@@ -126,6 +126,12 @@ export default defineComponent({
       }
 
       this.createModal.dismiss();
+
+      if (isNew) {
+        this.router.push({
+          path: `/classrooms/${classroom.id}`,
+        });
+      }
     },
     async getClassrooms() {
       const loading = await this.loading({});
