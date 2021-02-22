@@ -51,6 +51,7 @@ export default defineComponent({
       if (!this.record?.id) {
         return;
       }
+
       this.router.push({
         name: "QuizRecord",
         params: {

@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-title>{{ title }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button>编辑</ion-button>
+          <!-- <ion-button>编辑</ion-button> -->
           <ion-button @click="onClickDelete">删除</ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -94,7 +94,7 @@ export default defineComponent({
         let answer: any = this.record.answers.find(
           (a: any) => a.label == item.label
         );
-        answer = answer || {};
+        answer = Object.assign({}, answer || {});
 
         answer.question = item;
 
@@ -107,12 +107,20 @@ export default defineComponent({
   async created() {
     this.title = this.$route.query.studentName as string;
 
-    const resp = await Api.quiz.record(+this.$route.params.recordId);
-    this.record = resp.data;
+    const resp = await this.store.dispatch(
+      "quiz/studentRecords",
+      +this.$route.params.quizId
+    );
 
-    const quizResp = await Api.quiz.show(+this.$route.params.quizId, {
-      with: ["questions"],
-    });
+    this.record = resp.data.find(
+      (item: any) => item.id === +this.$route.params.recordId
+    );
+
+    const quizResp = await this.store.dispatch(
+      "quiz/quiz",
+      +this.$route.params.quizId
+    );
+
     this.quiz = quizResp.data;
   },
   methods: {
