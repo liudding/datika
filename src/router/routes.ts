@@ -33,41 +33,32 @@ const routes: Array<RouteRecordRaw> = [
             }
         ]
     },
+
+    /**
+     * Quiz
+     */
     {
         path: '/quizzes/:id',
         name: 'Quiz',
-        component: () => import('@/views/quizzes/Quiz.vue'),
+        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/Quiz.vue'),
         props: true,
     },
 
     {
         path: '/quizzes/type/:archived',
-        component: () => import('@/views/quizzes/Quizzes.vue'),
+        component: () => import(/* webpackChunkName: "quiz" */  '@/views/quizzes/Quizzes.vue'),
         props: true,
     },
-
-    {
-        path: '/classrooms/type/:archived',
-        component: () => import('@/views/classrooms/Classrooms.vue'),
-        props: true,
-    },
-    {
-        path: '/classrooms/:id',
-        name: 'Classroom',
-        component: () => import('@/views/classrooms/Classroom.vue'),
-        props: true,
-    },
-
     {
         path: '/quizzes/:id/questions',
         name: 'QuizQuestions',
-        component: () => import('@/views/quizzes/Questions.vue'),
+        component: () => import(/* webpackChunkName: "quiz" */  '@/views/quizzes/Questions.vue'),
         props: true,
     },
     {
         path: '/quizzes/:id/report',
         name: 'QuizReport',
-        component: () => import('@/views/quizzes/report/Report.vue'),
+        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/report/Report.vue'),
         props: true,
     },
     {
@@ -83,21 +74,43 @@ const routes: Array<RouteRecordRaw> = [
         props: true,
     },
 
+
+
     {
         path: '/quizzes/:id/scan',
         name: 'Scan',
         component: () => import('@/views/scan/Scan.vue')
     },
 
+    /**
+     * Classroom
+     */
+
+    {
+        path: '/classrooms/type/:archived',
+        component: () => import(/* webpackChunkName: "classroom" */ '@/views/classrooms/Classrooms.vue'),
+        props: true,
+    },
+    {
+        path: '/classrooms/:id',
+        name: 'Classroom',
+        component: () => import(/* webpackChunkName: "classroom" */ '@/views/classrooms/Classroom.vue'),
+        props: true,
+    },
+
+
+    /**
+     * Login
+     */
     {
         path: '/login',
         name: 'Login',
-        component: () => import('@/views/login/Login.vue')
+        component: () => import(/* webpackChunkName: "login" */ '@/views/login/Login.vue')
     },
     {
         path: '/login/password',
         name: 'LoginWithPassword',
-        component: () => import('@/views/login/LoginWithPassword.vue')
+        component: () => import(/* webpackChunkName: "login" */  '@/views/login/LoginWithPassword.vue')
     },
 
     /**
