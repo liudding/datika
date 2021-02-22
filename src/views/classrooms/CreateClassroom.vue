@@ -10,7 +10,6 @@
       <ion-input
         :value="name"
         @ionChange="name = $event.target.value"
-        autofocus
         required
         placeholder="班级名称"
       ></ion-input>

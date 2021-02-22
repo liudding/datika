@@ -7,7 +7,6 @@
       <ion-input
         :value="data.value"
         @ionChange="newVal = $event.target.value"
-        autofocus
         required
         :placeholder="data.name"
       ></ion-input>

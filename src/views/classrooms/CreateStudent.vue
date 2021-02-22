@@ -9,7 +9,6 @@
       <ion-input
         :value="name"
         @ionChange="name = $event.target.value"
-        autofocus
         required
         placeholder="姓名"
       ></ion-input>
@@ -19,7 +18,6 @@
       <ion-input
         :value="number"
         @ionChange="number = $event.target.value"
-        autofocus
         required
         placeholder="学号，至少两位数字"
       ></ion-input>
