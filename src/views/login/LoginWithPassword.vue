@@ -33,7 +33,9 @@
             required
             placeholder="手机号"
           ></ion-input>
-          <ion-button @click="getVerificationCode">获取验证码</ion-button>
+          <ion-button slot="end" @click="getVerificationCode">{{
+            codeButtonText
+          }}</ion-button>
         </ion-item>
         <ion-item lines="none">
           <ion-icon :icon="lockClosedOutline" color="primary"></ion-icon>
@@ -84,7 +86,9 @@ import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import Loading from "@/mixins/Loading";
+import Alert from "@/mixins/Alert";
 import Api from "@/api";
+import Validator from "@/utils/validator"
 
 export default defineComponent({
   data() {
@@ -97,6 +101,9 @@ export default defineComponent({
       password: "123456",
       mobile: "",
       code: "",
+
+      isCounting: false,
+      codeButtonText: "获取验证码",
     };
   },
   setup() {
@@ -104,7 +111,7 @@ export default defineComponent({
     return { store };
   },
   components: {},
-  mixins: [Loading],
+  mixins: [Loading, Alert],
   methods: {
     async login() {
       //
@@ -122,14 +129,48 @@ export default defineComponent({
 
         this.$router.replace({ path: "/" });
       } catch (e) {
-        //
+        this.alert({
+          title: "登录失败",
+        });
       } finally {
         loading.dismiss();
       }
     },
     async getVerificationCode() {
-      await Api.auth.getVerificationCode(this.username);
+      if (this.isCounting) return;
+
+      if (!Validator.isMobile(this.mobile)) return;
+
+      const loading = await this.loading();
+      try {
+        await Api.auth.getVerificationCode(this.mobile);
+
+        this.countdown();
+      } catch (e) {
+        // this.alert({
+        //   title: "验证码发送失败",
+        // });
+      } finally {
+        loading.dismiss();
+      }
     },
+
+    countdown() {
+       this.isCounting = true;
+
+      let seconds = 60;
+
+      const timer = setInterval(() => {
+        this.codeButtonText = "已发送  " + seconds--;
+
+        if (seconds <= 0) {
+          clearInterval(timer);
+          this.codeButtonText = "获取验证码";
+          this.isCounting = false;
+        }
+      }, 1000);
+    },
+
     segmentChanged($event: CustomEvent) {
       this.segment = $event.detail.value;
     },

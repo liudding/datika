@@ -18,6 +18,7 @@ function login(data: LoginParam) {
     method: 'post',
     data: {
       username: data.username,
+      mobile: data.mobile,
       password: data.password,
       code: data.code,
       "device_name": data.deviceName
@@ -46,12 +47,13 @@ function profile() {
   })
 }
 
-function getVerificationCode(mobile: string) {
+function getVerificationCode(mobile: string, type = 'authenticate') {
   return request({
     url: '/verification_code',
     method: 'post',
     data: {
-      mobile: mobile
+      mobile: mobile,
+      type
     }
   })
 }
