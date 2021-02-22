@@ -11,13 +11,13 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-toolbar class="toolbar">
+      <ion-toolbar v-if="quiz.recordCount" class="toolbar">
         <div>平均分: {{ average }}</div>
         <ion-buttons slot="primary">
           <ion-button @click="onClickSort"> 排序 </ion-button>
         </ion-buttons>
       </ion-toolbar>
-      <ion-list>
+      <ion-list v-if="quiz.recordCount">
         <ion-item
           v-for="question in questionStats"
           :key="question.questionId"
@@ -29,6 +29,8 @@
           ></QuestionStats>
         </ion-item>
       </ion-list>
+
+      <Emptyset v-else title="尚未报告" message="请先扫描录入学生成绩"></Emptyset>
     </ion-content>
   </ion-page>
 </template>
@@ -44,10 +46,11 @@ import Api from "@/api";
 import _ from "lodash";
 import QuestionStats from "./QuestionStats";
 import Records from "./Records";
+import Emptyset from "@/components/Emptyset.vue";
 
 export default defineComponent({
   props: ["recordId", "quizId"],
-  components: { QuestionStats },
+  components: { QuestionStats, Emptyset },
   mixins: [Loading, ActionSheet, Modal],
   setup() {
     const store = useStore();
@@ -80,6 +83,10 @@ export default defineComponent({
       with: ["questions"],
     });
     this.quiz = quizResp.data;
+
+    if (this.quiz.recordCount === 0) {
+      return;
+    }
 
     await this.getRecords();
 
