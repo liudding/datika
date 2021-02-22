@@ -76,6 +76,9 @@ export default {
         ADD_RECORDS(state: any, data: any) {
             const index = state.records.findIndex((i: any) => i.studentId === data.studentId);
 
+            data.studentNumber = state.records[index].studentNumber;
+            data.studentName = state.records[index].studentName;
+
             if (index >= 0) {
                 state.records.splice(index, 1, data)
             } else {

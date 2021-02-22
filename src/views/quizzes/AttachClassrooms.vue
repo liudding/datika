@@ -26,7 +26,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-button v-if="classrooms.length" @click="attachClassrooms" expand="block">保存</ion-button>
+    <ion-button v-if="classrooms.length" @click="attachClassrooms" expand="block">确定</ion-button>
 
     <Emptyset v-else title="尚无班级" message="请先去添加班级"></Emptyset>
   </ion-content>
