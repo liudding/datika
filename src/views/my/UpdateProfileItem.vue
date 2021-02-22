@@ -21,6 +21,7 @@
 <script>
 import { defineComponent } from "vue";
 import Api from "@/api";
+import Console from "@/services/console";
 
 export default defineComponent({
   props: ["data"],
@@ -33,6 +34,11 @@ export default defineComponent({
   methods: {
     async submit() {
       if (!this.newVal) return;
+
+      if (this.newVal === "debug:console") {
+        Console.load();
+        return;
+      }
 
       const resp = await Api.user.updateProfile({
         [this.data.key]: this.newVal,
