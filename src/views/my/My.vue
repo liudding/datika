@@ -4,7 +4,7 @@
       <ion-item lines="none"></ion-item>
 
       <div class="profile">
-        <ion-item lines="none" detail  routerLink="/my/profile">
+        <ion-item lines="none" detail routerLink="/my/profile">
           <!-- <ion-avatar>
             <img
               src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
@@ -21,9 +21,18 @@
         <!-- <ion-item button routerLink="/subscriptions" lines="none">订阅</ion-item> -->
         <ion-item-divider></ion-item-divider>
 
-        <ion-item button routerLink="/settings">设置</ion-item>
+        <!-- <ion-item button routerLink="/settings">设置</ion-item> -->
         <ion-item button routerLink="/help">帮助与反馈</ion-item>
         <ion-item button routerLink="/about">关于</ion-item>
+      </ion-item-group>
+
+      <ion-item-group>
+        <ion-item-divider></ion-item-divider>
+        <ion-item @click="logout" lines="none">
+          <ion-label color="danger" style="text-align: center"
+            >退出登录</ion-label
+          >
+        </ion-item>
       </ion-item-group>
     </ion-content>
   </ion-page>
@@ -35,23 +44,55 @@ import {
   IonItemGroup,
 } from "@ionic/vue";
 import { mapState } from "vuex";
+import ActionSheet from "@/mixins/ActionSheet";
+import { useStore } from "vuex";
+import { defineComponent } from "vue"
 
-export default {
+export default defineComponent({
   name: "My",
   components: {
     IonItemDivider,
     IonItemGroup
   },
+  mixins: [ActionSheet],
   computed: {
     ...mapState({
       user: (state: any) => state.user
     })
   },
+  setup() {
+    return {
+      store: useStore()
+    }
+  },
   data() {
     return {
     };
   },
-};
+  methods: {
+      logout() {
+      this.showActionSheet({
+        title: "退出后不会删除任何历史数据",
+        cancel: true,
+        buttons: [
+          {
+            text: "退出登录",
+            role: "destructive",
+            handler: this.doLogout,
+          },
+        ],
+      });
+    },
+
+    async doLogout() {
+      await this.store.dispatch("logout");
+
+      this.$router.replace({
+        name: "Login"
+      })
+    }
+  }
+});
 </script>
 
 <style scoped>
