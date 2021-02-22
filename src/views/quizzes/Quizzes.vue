@@ -140,8 +140,7 @@ export default defineComponent({
 
       if (isNew) {
         this.router.push({
-          path: `/quizzes/${quiz.id}/questions`,
-          params: { quiz },
+          path: `/quizzes/${quiz.id}/questions`
         });
       }
     },

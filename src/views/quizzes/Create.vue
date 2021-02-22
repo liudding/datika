@@ -23,11 +23,13 @@
 <script>
 import { defineComponent } from "vue";
 import Api from "@/api";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   name: "CreateModal",
   props: ["quiz"],
   emits: ["saved"],
+  mixins: [Loading],
   data() {
     return {
       name: this.quiz ? this.quiz.name : "",

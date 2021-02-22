@@ -5,7 +5,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="content">
-    <ion-list>
+    <ion-list v-if="classrooms.length">
       <ion-item
         v-for="classroom in classrooms"
         :key="classroom.id"
@@ -26,7 +26,9 @@
       </ion-item>
     </ion-list>
 
-    <ion-button @click="attachClassrooms" expand="block">保存</ion-button>
+    <ion-button v-if="classrooms.length" @click="attachClassrooms" expand="block">保存</ion-button>
+
+    <Emptyset v-else title="尚无班级" message="请先去添加班级"></Emptyset>
   </ion-content>
 </template>
 
@@ -34,11 +36,13 @@
 import Api from "@/api";
 import { defineComponent } from "vue";
 import Loading from "@/mixins/Loading";
+import Emptyset from "@/components/Emptyset.vue";
 
 export default defineComponent({
   props: ["selected"],
   emits: ["attached"],
   mixins: [Loading],
+  components: {Emptyset},
   data() {
     const classrooms: any[] = [];
     return {
@@ -85,7 +89,7 @@ export default defineComponent({
         classroom.isOld = this.isSelected(classroom);
         return classroom;
       });
-    },
+    }
   },
 });
 </script>
@@ -99,6 +103,11 @@ export default defineComponent({
   --padding-top: 32px;
   --padding-start: 16px;
   --padding-end: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
 }
 
 ion-list {
