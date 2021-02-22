@@ -1,7 +1,10 @@
 <template>
   <div class="emptyset-container">
     <div class="emptyset-title">
-      {{title}}
+      {{ title }}
+    </div>
+    <div class="emptyset-message">
+      {{ message }}
     </div>
   </div>
 </template>
@@ -14,7 +17,11 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: "暂无数据"
+      default: "暂无数据",
+    },
+    message: {
+      type: String,
+      default: "",
     },
   },
   methods: {},
@@ -39,6 +46,9 @@ export default defineComponent({
   font-size: 24px;
   color: gray;
 }
-
-
+.emptyset-message {
+  margin-top: 8px;
+  font-size: 12px;
+  color: gray;
+}
 </style>
