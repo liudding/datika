@@ -53,11 +53,12 @@
 import { defineComponent } from "vue";
 import Api from "@/api";
 import Alert from "@/mixins/Alert";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   props: ["student"],
   emits: ["created", "deleted"],
-  mixins: [Alert],
+  mixins: [Alert, Loading],
   computed: {
     title() {
       return this.student ? "编辑学生" : "添加学生";
