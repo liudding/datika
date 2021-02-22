@@ -28,6 +28,7 @@
     <div
       style="width: 100%; margin-top: 32px"
       class="d-flex align-items-center justify-content-around"
+      v-if="student"
     >
       <ion-label
         @click="onClickDelete"
@@ -41,7 +42,7 @@
       <div class="message-box">
         <p>
           如需批量上传学生名单，请在电脑端浏览器打开
-          <small>http://dtk.com</small>
+          <b class="website-url">{{webUrl}}</b>
         </p>
       </div>
     </div>
@@ -66,6 +67,7 @@ export default defineComponent({
     return {
       name: this.student ? this.student.name : "",
       number: this.student ? this.student.number : "",
+      webUrl: process.env.VUE_APP_WEBSITE_ADDRESS
     };
   },
   methods: {
@@ -166,5 +168,9 @@ ion-item {
   padding: 4px 16px;
   font-size: 12px;
   color: gray;
+}
+
+.website-url {
+  color: var(--ion-color-primary);
 }
 </style>
