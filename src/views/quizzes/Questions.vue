@@ -77,6 +77,7 @@
 
 <script lang="ts">
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { add, createOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
 import QuestionItem from "./QuestionItem.vue";
@@ -125,7 +126,7 @@ export default defineComponent({
         }
 
         if (!item.answer) {
-          noAnswerCount ++;
+          noAnswerCount++;
         }
 
         score += item.score || 0;
@@ -143,13 +144,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    const isOpenRef = ref(false);
-    const refEvent = ref();
-    const setOpen = (state: boolean, event: Event) => {
-      refEvent.value = event;
-      isOpenRef.value = state;
-    };
-    return { router, isOpenRef, setOpen, refEvent, add, createOutline };
+    return { router, add, createOutline, store: useStore() };
   },
   components: {
     QuestionItem,
@@ -242,21 +237,35 @@ export default defineComponent({
 
     async getQuestions() {
       const quiz = this.$route.params.id;
-      const resp = await Api.quiz.questions(+quiz);
 
-      this.questions = resp.data || [];
+      const resp = await this.store.dispatch("quiz/quiz", quiz);
+
+      this.questions = resp.data.questions || [];
+      this.quiz = resp.data;
     },
 
     async updateQuestion(question: any) {
-      const index = this.questions.findIndex((i: any) => i.id === question.id);
-      this.questions.splice(index, 1, question);
+      const oldQuestion = this.questions.find((i: any) => i.id === question.id);
+
+      this.store.commit("quiz/UPDATE_QUESTION", question);
 
       let func;
       if (_.has(this.debouncedUpdates, question.id)) {
         func = this.debouncedUpdates[question.id] as Function;
       } else {
         func = _.debounce((question: any) => {
-          Api.question.update(question.id, question);
+          Api.question
+            .update(question.id, question)
+            .then(() => {
+              //
+            })
+            .catch(() => {
+              this.store.commit("quiz/UPDATE_QUESTION", oldQuestion);
+
+              this.alert({
+                title: "出错了",
+              });
+            });
         }, 500);
 
         this.debouncedUpdates[question.id] = func;

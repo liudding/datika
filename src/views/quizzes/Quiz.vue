@@ -131,9 +131,8 @@ export default defineComponent({
     async getDetail() {
       const loading = await this.loading();
 
-      const resp = await Api.quiz.show(+this.$route.params.id, {
-        with: ["classrooms", "questions"],
-      });
+      const resp = await this.store.dispatch('quiz/quiz', +this.$route.params.id)
+
       this.quiz = resp.data;
 
       loading.dismiss();

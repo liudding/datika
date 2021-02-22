@@ -8,6 +8,7 @@ export default {
         total: 0,
 
         quizId: 0,
+        quiz: null,
         students: [],
         records: [],
         studentRecords: []
@@ -61,6 +62,22 @@ export default {
 
         SET_ARCHIVED_QUIZZES(state: any, data: any) {
             state.archived = data.data;
+        },
+
+
+        /**
+         * 当前 quiz
+         */
+
+        SET_QUIZ(state: any, data: any) {
+            state.quiz = data;
+            state.quizId = data.id;
+        },
+
+        UPDATE_QUESTION(state: any, data: any) {
+            const index = state.quiz.questions.findIndex((i: any) => i.id === data.id)
+
+            state.quiz.questions.splice(index, 1, data);
         },
 
         SET_STUDENTS(state: any, data: any) {
@@ -141,6 +158,24 @@ export default {
         async archive(context: any, quiz: any) {
 
             context.commit('REMOVE_QUIZ', quiz)
+        },
+
+        async quiz(context: any, id: number) {
+            const quizId = id;
+
+            if (context.state.quizId === +quizId && context.state.quiz) {
+                return {
+                    data: context.state.quiz
+                };
+            }
+
+            const resp = await Api.quiz.show(id, {
+                with: ["classrooms", "questions"],
+            });
+
+            context.commit('SET_QUIZ', resp.data)
+
+            return resp;
         },
 
         /**
