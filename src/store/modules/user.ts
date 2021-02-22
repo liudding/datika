@@ -9,6 +9,8 @@ const mutations: MutationTree<UserState> = {
     },
 
     SET_PROFILE(state: UserState, profile: any) {
+        state.id = profile.id;
+        state.uuid = profile.uuid;
         state.name = profile.name;
         state.mobile = profile.mobile ? profile.mobile : state.mobile;
     }
@@ -17,6 +19,8 @@ const mutations: MutationTree<UserState> = {
 
 export default {
     state: () => ({
+        id: null,
+        uuid: '',
         name: '',
         mobile: '',
         token: null

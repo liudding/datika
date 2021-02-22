@@ -5,28 +5,41 @@
         <ion-buttons>
           <ion-back-button default-href="/" text=""></ion-back-button>
         </ion-buttons>
-        <ion-title>使用帮助</ion-title>
+        <ion-title>帮助与反馈</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content :fullscreen="true"> 
-      <iframe width="100%" height="100%">
-
-      </iframe>
-
+    <ion-content :fullscreen="true">
+      <iframe id="iframe" src="https://support.qq.com/product/311244" width="100%" height="100%"> </iframe>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
+<script>
+import Tucao from "@/services/tucao";
+import { mapState } from "vuex";
+
 export default {
-  name: "My",
   components: {},
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
   data() {
-    return {
-      user: {
-        name: "ClassroomItem",
-      },
-    };
+    return {};
+  },
+  mounted() {
+    const iframe = document.getElementById("iframe");
+
+    if (!iframe || !iframe.contentDocument) return;
+
+    // Tucao.loadInto(iframe.contentDocument, {
+    //   openid: this.user.uuid || this.user.id,
+    //   nickname: this.user.name,
+    //   avatar:
+    //     this.user.avatar ||
+    //     "https://txc.qq.com/static/desktop/img/products/def-product-logo.png",
+    // });
   },
 };
 </script>

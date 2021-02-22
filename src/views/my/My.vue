@@ -22,7 +22,7 @@
         <ion-item-divider></ion-item-divider>
 
         <!-- <ion-item button routerLink="/settings">设置</ion-item> -->
-        <ion-item button routerLink="/help">帮助与反馈</ion-item>
+        <ion-item button @click="gotoFeedback" >帮助与反馈</ion-item>
         <ion-item button routerLink="/about">关于</ion-item>
       </ion-item-group>
 
@@ -39,38 +39,38 @@
 </template>
 
 <script lang="ts">
-import {
-  IonItemDivider,
-  IonItemGroup,
-} from "@ionic/vue";
+import { IonItemDivider, IonItemGroup } from "@ionic/vue";
 import { mapState } from "vuex";
 import ActionSheet from "@/mixins/ActionSheet";
 import { useStore } from "vuex";
-import { defineComponent } from "vue"
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "My",
   components: {
     IonItemDivider,
-    IonItemGroup
+    IonItemGroup,
   },
   mixins: [ActionSheet],
   computed: {
     ...mapState({
-      user: (state: any) => state.user
-    })
+      user: (state: any) => state.user,
+    }),
   },
   setup() {
     return {
-      store: useStore()
-    }
-  },
-  data() {
-    return {
+      store: useStore(),
     };
   },
+  data() {
+    return {};
+  },
   methods: {
-      logout() {
+    gotoFeedback() {
+      // window.location.href = 'https://support.qq.com/product/311244'
+      window.open('https://support.qq.com/product/311244')
+    },
+    logout() {
       this.showActionSheet({
         title: "退出后不会删除任何历史数据",
         cancel: true,
@@ -88,10 +88,10 @@ export default defineComponent({
       await this.store.dispatch("logout");
 
       this.$router.replace({
-        name: "Login"
-      })
-    }
-  }
+        name: "Login",
+      });
+    },
+  },
 });
 </script>
 
