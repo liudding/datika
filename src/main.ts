@@ -23,11 +23,9 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import 'vant/lib/index.css';
 
 import '@/styles/index.scss';
 
-import { Stepper } from 'vant';
 import {
   IonItem, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
@@ -46,8 +44,6 @@ const app = createApp(App)
 router.isReady().then(() => {
   app.mount('#app');
 });
-
-app.use(Stepper);
 
 
 app.component('IonPage', IonPage)

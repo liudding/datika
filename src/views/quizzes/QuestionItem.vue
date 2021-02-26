@@ -20,15 +20,16 @@
           {{ questionType(question.type) }}
         </div>
 
-        <div>
+        <div class="d-flex align-items-center">
           <span class="mr-1" style="margin-right: 4px; color: gray;">分值</span>
-          <van-stepper
-            :default-value="question.score"
+          <stepper
+            :value="question.score"
             :name="question.id"
+            :min="0"
             button-size="20"
             disable-input
             @change="onScoreChange"
-          ></van-stepper>
+          ></stepper>
         </div>
       </div>
     </div>
@@ -39,13 +40,14 @@
 import { defineComponent } from "vue";
 import Bubbles from "./Bubbles.vue";
 import { questionType } from "@/utils/map";
+import Stepper from "@/components/Stepper.vue";
 
 export default defineComponent({
   name: "QuestionItem",
   props: {
     question: Object,
   },
-  components: { Bubbles },
+  components: { Bubbles, Stepper },
   setup() {
     return { questionType};
   },
@@ -120,9 +122,16 @@ ion-item {
   padding: 4px 0;
 }
 
+.question-label {
+  width: 36px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .choices {
   display: flex;
-  margin-left: 8px;
+  /* margin-left: 8px; */
 }
 
 .bubble {
