@@ -28,6 +28,11 @@ export default {
             state.list.splice(index, 1, data);
         },
 
+        UPDATE_STUDENT_COUNT(state: any, data: any) {
+            const index = state.list.findIndex((i: any) => i.id === data.id);
+            state.list[index].studentCount = data.studentCount || data.count;
+        },
+
         REMOVE_CLASSROOM(state: any, data: any) {
             const index = state.list.findIndex((i: any) => i.id === data.id);
             state.list.splice(index, 1);

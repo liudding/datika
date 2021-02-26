@@ -39,8 +39,8 @@
 <script lang="ts">
 import { settingsOutline, addOutline } from "ionicons/icons";
 import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useRouter, useRoute } from "vue-router";
+import { useStore, mapState } from "vuex";
 import CreateStudent from "./CreateStudent.vue";
 import Api from "@/api";
 import Alert from "@/mixins/Alert";
@@ -50,16 +50,23 @@ import Emptyset from "@/components/Emptyset.vue";
 export default defineComponent({
   name: "Classroom",
   mixins: [Alert, Modal],
+  computed: {
+    ...mapState({
+      classroom: (state: any) =>
+         state.classroom.list.find((i: any) => {
+           const route = useRoute()
+          return i.id === +route.params.id;
+        }) || {},
+    }),
+  },
   data() {
     const students: any[] = [];
-    const classroom: any = null;
 
     const createModal: any = null;
 
     return {
       settingsOutline,
       addOutline,
-      classroom,
       students,
       createModal,
       title: "",
@@ -81,7 +88,8 @@ export default defineComponent({
       setPopoverOpen,
       popoverRefEvent,
       router,
-      store
+      route: useRoute(),
+      store,
     };
   },
 
@@ -91,15 +99,9 @@ export default defineComponent({
     Api.classroom.students(+classId, { size: 50 }).then((res) => {
       this.students = res.data.data;
     });
-    
   },
   async created() {
-    this.classroom = {
-      name: this.$route.query.name,
-      archivedAt: null,
-    };
-
-    this.classroom = await this.store.dispatch("classroom/find", +this.$route.params.id);
+    //
   },
   methods: {
     async showCreate() {
@@ -122,6 +124,11 @@ export default defineComponent({
 
         this.students.splice(index, 1, student);
       }
+
+      this.store.commit("classroom/UPDATE_STUDENT_COUNT", {
+        id: this.classroom.id,
+        studentCount: this.students.length,
+      });
 
       this.createModal.dismiss();
     },
