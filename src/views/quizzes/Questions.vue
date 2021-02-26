@@ -91,13 +91,11 @@ import _ from "lodash";
 import Alert from "@/mixins/Alert.ts";
 import Modal from "@/mixins/Modal.ts";
 import QuestionDefines from "./QuestionDefines.vue";
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 
 export default defineComponent({
   mixins: [Alert, Modal],
   data() {
-    // const questions: any[] = [];
-
     const debouncedUpdates: any = {};
 
     const definesModal: any = null;
@@ -106,7 +104,6 @@ export default defineComponent({
         questions: [],
         recordCount: 0,
       },
-      // questions,
       showQuestionCountInput: false,
       showDownload: false,
       debouncedUpdates,
@@ -146,8 +143,8 @@ export default defineComponent({
       };
     },
     ...mapState({
-      questions: (state: any) => state.quiz.quiz.questions
-    })
+      questions: (state: any) => state.quiz.quiz.questions || [],
+    }),
   },
   setup() {
     const router = useRouter();
@@ -159,6 +156,8 @@ export default defineComponent({
     BubbleSheet,
   },
   created() {
+    this.getDetail();
+
     this.getQuestions();
   },
   unmounted() {
@@ -168,6 +167,14 @@ export default defineComponent({
     }
   },
   methods: {
+    async getDetail() {
+      const resp = await this.store.dispatch(
+        "quiz/quiz",
+        +this.$route.params.id
+      );
+
+      this.quiz = resp.data;
+    },
     onQuestionChange(question: any) {
       const recordCount = this.$route.query.recordCount || 0;
       if (recordCount > 0) {
@@ -189,10 +196,11 @@ export default defineComponent({
      * 改变了题目数量
      */
     async onQuestionsChange(questions: any) {
-
       for (const question of questions) {
-        const index = this.questions.findIndex((q: any) => q.label === question.label);
-        
+        const index = this.questions.findIndex(
+          (q: any) => q.label === question.label
+        );
+
         if (index < 0) continue;
 
         const oldQuestion = this.questions[index] || null;

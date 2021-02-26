@@ -8,10 +8,9 @@ export default {
         total: 0,
 
         quizId: 0,
-        quiz: null,
+        quiz: {},
         students: [],
-        records: [],
-        studentRecords: []
+        records: []
     }),
     mutations: {
         CLEAR(state: any) {
@@ -20,10 +19,9 @@ export default {
             state.total = 0;
 
             state.quizId = 0;
-            state.quiz = null;
+            state.quiz = {};
             state.students = [];
             state.records = [];
-            state.studentRecords = [];
         },
         SET_QUIZZES(state: any, data: any) {
             state.list = data.data;
@@ -107,6 +105,14 @@ export default {
         ATTACH_CLASSROOMS(state: any, classes: any[]) {
             state.quiz.classrooms = classes;
             state.quiz.classroomCount = classes.length
+            state.quiz.studentCount = classes.reduce((arr, cur) => {
+                return arr + cur.studentCount
+            }, 0)
+
+            const idx = state.list.findIndex((i: any) => i.id === state.quizId)
+            state.list[idx].classrooms = classes;
+            state.list[idx].classroomCount = classes.length
+            state.list[idx].studentCount = state.quiz.studentCount
         },
 
         SET_STUDENTS(state: any, data: any) {
@@ -131,6 +137,13 @@ export default {
                 state.records.splice(index, 1)
             }
 
+            state.quiz.recordCount = state.records.length
+
+            const idx = state.list.findIndex((i: any) => i.id === data.quizId)
+            console.log(data)
+            if (idx >= 0) {
+                state.list[idx].recordCount = state.records.length
+            }
         },
 
         REMOVE_RECORD(state: any, data: any) {
@@ -264,23 +277,23 @@ export default {
          * @param context 
          * @param quiz 
          */
-        async records(context: any, quiz: any) {
-            const quizId = quiz.id || quiz;
-            if (context.state.quizId === quizId && context.state.records.length) {
-                return context.state.records;
-            }
+        // async records(context: any, quiz: any) {
+        //     const quizId = quiz.id || quiz;
+        //     if (context.state.quizId === quizId && context.state.records.length) {
+        //         return context.state.records;
+        //     }
 
-            const resp = await Api.quiz.records(quizId);
+        //     const resp = await Api.quiz.records(quizId);
 
-            const records = resp.data.data || resp.data;
+        //     const records = resp.data.data || resp.data;
 
-            context.commit('SET_RECORDS', {
-                quizId: quizId,
-                records
-            })
+        //     context.commit('SET_RECORDS', {
+        //         quizId: quizId,
+        //         records
+        //     })
 
-            return records
-        }
+        //     return records
+        // }
 
     }
 }

@@ -22,7 +22,7 @@
         >
           <ion-fab-button @click="onClickFab" translucent>
             <!-- <ion-icon :icon="appsOutline"></ion-icon> -->
-            {{completedCount}}/{{quiz.studentCount}}
+            {{ completedCount }}/{{ quiz.studentCount }}
           </ion-fab-button>
         </radial-progress-bar>
       </ion-fab>
@@ -33,7 +33,7 @@
 <script>
 import { appsOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
-import { useStore } from "vuex"
+import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
 import Records from "./Records.vue";
@@ -49,11 +49,15 @@ export default defineComponent({
   mixins: [Modal],
   setup() {
     return {
-      store: useStore()
-    }
+      store: useStore(),
+    };
+  },
+  computed: {
+    ...mapState({
+      records: (state) => state.quiz.records
+    })
   },
   data() {
-    const records = [];
     const recordsModal = null;
     const resultModal = null;
     return {
@@ -61,7 +65,6 @@ export default defineComponent({
         name: "",
         questionCount: 0,
       },
-      records,
       currentRecord: {
         name: "",
         number: "",
@@ -72,7 +75,7 @@ export default defineComponent({
       resultModal,
 
       totalCount: 100,
-      completedCount: 100,
+      completedCount: 0,
     };
   },
 
@@ -93,15 +96,15 @@ export default defineComponent({
         with: ["classrooms", "questions"],
       });
       this.quiz = resp.data;
-      this.totalCount = this.quiz.studentCount ? 100 : this.quiz.studentCount;
+      this.totalCount =
+        this.quiz.studentCount === 0 ? 100 : this.quiz.studentCount;
       this.completedCount = this.quiz.recordCount;
     },
     async getRecords() {
-      const resp = await this.store.dispatch(
+      await this.store.dispatch(
         "quiz/studentRecords",
         +this.$route.params.id
       );
-      this.records = resp.data;
     },
     checkIsOldRecordData(answers, record) {
       if (!record || !record.id || !record.answers) return false;
@@ -118,10 +121,13 @@ export default defineComponent({
 
       // const record = this.checkIsOldRecordData(answers, student);
       if (this.checkIsOldRecordData(answers, record)) {
-        console.log(record, 'is old')
-        return Promise.resolve(record, true);
+        console.log(record, "is old");
+        return {
+          type: 'nochange',
+          data: record
+        }
       }
-  
+
       const params = {
         student: record.studentId,
         answers: answers,
@@ -129,9 +135,15 @@ export default defineComponent({
 
       const resp = await Api.quiz.submit(+this.$route.params.id, params);
 
-      this.store.commit('quiz/ADD_RECORDS', Object.assign({}, record, resp.data))
+      this.store.commit(
+        "quiz/ADD_RECORDS",
+        Object.assign({}, record, resp.data)
+      );
 
-      return resp.data;
+      return {
+        type: record.recordId ? 'update' : 'new',
+        data: resp.data
+      }
     },
     initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
@@ -153,7 +165,7 @@ export default defineComponent({
       return suc;
     },
     async onScan(scanObj) {
-      console.log("SCAN: ", scanObj);
+      console.log("SCAN: ", scanObj, this.records);
 
       await this.hideResult();
 
@@ -166,15 +178,17 @@ export default defineComponent({
         return;
       }
 
-      this.submit(scanObj, record).then((res, isOld) => {
-        console.log('on sunmited')
-        this.currentRecord = Object.assign({}, res);
+      this.submit(scanObj, record).then((res) => {
+        console.log("on sunmited", this.quiz.recordCount);
+
+        const record = res.data
+
+        this.currentRecord = Object.assign({}, record);
         this.currentRecord.name = record.studentName;
         this.currentRecord.number = record.studentNumber;
-
-        if (!isOld) {
-          this.completedCount++;
-        }
+        this.currentRecord.type = res.type;
+        
+        this.completedCount = this.quiz.recordCount;
 
         this.showResult(this.currentRecord);
 

@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useStore, mapState } from "vuex";
 import { add, create } from "ionicons/icons";
 import { scanOutline, documentTextOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
@@ -67,20 +67,16 @@ export default defineComponent({
     Emptyset,
   },
   mixins: [Modal, Loading, Alert],
-  computed: {},
+  computed: {
+    ...mapState({
+      quiz: (state: any) => state.quiz.quiz || {}
+    })
+  },
   data() {
     const attachModal: any = null;
     return {
       scanOutline,
       showFab: true,
-      quiz: {
-        id: 0,
-        name: "",
-        recordCount: 0,
-        classroomCount: 0,
-        classrooms: [],
-        questions: [],
-      },
 
       students: [],
       records: [],
@@ -130,9 +126,7 @@ export default defineComponent({
     async getDetail() {
       const loading = await this.loading();
 
-      const resp = await this.store.dispatch('quiz/quiz', +this.$route.params.id)
-
-      this.quiz = resp.data;
+      await this.store.dispatch('quiz/quiz', +this.$route.params.id)
 
       loading.dismiss();
     },

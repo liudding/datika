@@ -9,6 +9,7 @@ import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import RecordItem from "./RecordItem.vue";
 import Loading from "@/mixins/Loading";
+import {mapState} from "vuex"
 
 export default defineComponent({
   name: "Records",
@@ -20,11 +21,15 @@ export default defineComponent({
   setup() {
     return { store: useStore(), }
   },
+  computed: {
+    ...mapState({
+      records: (state: any) => state.quiz.records
+    })
+  },
   data() {
     const studentRecords: any[] = [];
     return {
       students: [],
-      records: [],
       studentRecords,
     };
   },
@@ -40,8 +45,7 @@ export default defineComponent({
 
       const loading = await this.loading();
 
-      const resp = await this.store.dispatch("quiz/studentRecords", this.quiz);
-      this.records = resp.data;
+      await this.store.dispatch("quiz/studentRecords", this.quiz);
 
       loading.dismiss();
     },
