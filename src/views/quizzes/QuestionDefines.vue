@@ -11,43 +11,62 @@
   </ion-header>
   <ion-content class="content">
     <ion-list :disabled="true" @ionItemReorder="doReorder($event)">
+      <ion-item class="list-header" lines="none">
+        <ion-label>题目</ion-label>
+        <ion-label>选项</ion-label>
+        <ion-label>分值</ion-label>
+      </ion-item>
+
       <ion-item
         v-for="(definition, index) in definitions"
         :key="definition.from"
         lines="none"
       >
-        <div class="d-flex align-items-center">
-          <ion-note>从</ion-note>
-          <div class="input-wrapper">
-            <ion-input
-              :value="definition.from"
-              type="number"
-              @ionChange="definition.from = $event.target.value"
-            ></ion-input>
+        <div class="d-flex w-100">
+          <div class="flex-grow d-flex align-items-center">
+            <div class="input-wrapper">
+              <ion-input
+                :value="definition.from"
+                type="number"
+                @ionChange="definition.from = $event.target.value"
+              ></ion-input>
+            </div>
+
+            <ion-note>至</ion-note>
+            <div class="input-wrapper">
+              <ion-input
+                :value="definition.to"
+                type="number"
+                @ionChange="definition.to = $event.target.value"
+              ></ion-input>
+            </div>
           </div>
 
-          <ion-note>到</ion-note>
-          <div class="input-wrapper">
-            <ion-input
-              :value="definition.to"
+          <div class="flex-grow d-flex align-items-center">
+            <Stepper
+              :value="definition.choices"
               type="number"
-              @ionChange="definition.to = $event.target.value"
-            ></ion-input>
+              @change="definition.choices = $event"
+            ></Stepper>
           </div>
 
-          <ion-note>分数</ion-note>
-          <div class="input-wrapper">
-            <ion-input
+          <div class="flex-grow d-flex align-items-center">
+            <stepper
               :value="definition.score"
               type="number"
-              @ionChange="definition.score = $event.target.value"
-            ></ion-input>
+              @change="definition.score = $event"
+            ></stepper>
           </div>
+        </div>
 
-          <ion-buttons slot="end" v-if="definitions.length > 1">
-            <ion-button @click="remove(index)" color="danger"
+        <div slot="end" style="margin-left: 0px; min-width: 16px">
+          <ion-buttons>
+            <ion-buttons
+              v-if="definitions.length > 1"
+              @click="remove(index)"
+              color="danger"
               ><ion-icon :icon="removeCircle" color="danger"></ion-icon
-            ></ion-button>
+            ></ion-buttons>
           </ion-buttons>
         </div>
       </ion-item>
@@ -62,9 +81,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { addCircle, removeCircle } from "ionicons/icons";
+import Stepper from "@/components/Stepper.vue";
 
 export default defineComponent({
-  components: {},
+  components: { Stepper },
   props: ["questions"],
   emits: ["change"],
   setup() {
@@ -107,7 +127,8 @@ export default defineComponent({
         definitions.push({
           from: group[0].label,
           to: group[group.length - 1].label,
-          score: group[0].score
+          score: group[0].score,
+          choices: group[0].choices.length,
         });
       }
 
@@ -123,6 +144,7 @@ export default defineComponent({
         from: +last.to + 1,
         to: this.increaseLable(last.to + "", 10),
         score: 1,
+        choices: 4,
       });
     },
     increaseLable(label: string, step = 1) {
@@ -143,19 +165,28 @@ export default defineComponent({
     },
 
     makeQuestions() {
-      console.log("def: ", this.definitions)
+      console.log("def: ", this.definitions);
       const questions = [];
+
       for (const def of this.definitions) {
         for (let i = +def.from; i <= +def.to; i++) {
           questions.push({
             label: i + "",
-            choices: def.choices || "ABCD",
+            choices: this.getChoices(def),
             score: def.score,
           });
         }
       }
 
       return questions;
+    },
+
+    getChoices(def: any) {
+      if (!def.choices) return "ABCD";
+
+      if (+def.choices === 2) return "TF";
+
+      return "ABCDEFGHIJK".substr(0, +def.choices);
     },
   },
 });
@@ -175,12 +206,17 @@ ion-note {
   margin-right: 4px;
 }
 
+.list-header {
+  margin-bottom: 1px;
+  --background: transparent;
+}
+
 .input-wrapper {
   padding-left: 8px;
   padding-right: 0;
   background: #eee;
   border-radius: 8px;
-  width: 60px;
+  width: 40px;
   margin-left: 4px;
 
   margin-right: 8px;
@@ -198,8 +234,8 @@ ion-button {
   height: 100%;
   padding: 32px 16px 0 16px;
   --padding-top: 32px;
-  --padding-start: 16px;
-  --padding-end: 16px;
+  --padding-start: 8px;
+  --padding-end: 8px;
 }
 
 ion-item {

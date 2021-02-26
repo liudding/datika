@@ -41,23 +41,26 @@ export default defineComponent({
 <style scoped>
 .stepper-container {
   display: flex;
+  align-items: center;
 }
 
 input {
   width: 30px;
   border: none;
   text-align: center;
-  border-top: solid 1px #ddd;
-  border-bottom: solid 1px #ddd;
+  border-top: solid 1px #bbb;
+  border-bottom: solid 1px #bbb;
+  box-sizing: border-box !important;
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .stepper-button {
   width: 20px;
   height: 20px;
-  background-color: #ddd;
-
-  /* text-align: center; */
-  /* line-height: 20px; */
+  background-color: #bbb;
   font-size: 15px;
   padding: 0;
 }

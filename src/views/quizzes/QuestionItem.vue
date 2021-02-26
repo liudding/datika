@@ -26,8 +26,6 @@
             :value="question.score"
             :name="question.id"
             :min="0"
-            button-size="20"
-            disable-input
             @change="onScoreChange"
           ></stepper>
         </div>
@@ -158,6 +156,6 @@ ion-item {
 }
 
 .question-type {
-  color: rgb(235, 82, 108);
+  color: #888;
 }
 </style>
