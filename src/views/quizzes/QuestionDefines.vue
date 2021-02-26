@@ -16,38 +16,40 @@
         :key="definition.from"
         lines="none"
       >
-        <ion-note>从</ion-note>
-        <div class="input-wrapper">
-          <ion-input
-            :value="definition.from"
-            type="number"
-            @ionChange="definition.from = $event.target.value"
-          ></ion-input>
-        </div>
+        <div class="d-flex align-items-center">
+          <ion-note>从</ion-note>
+          <div class="input-wrapper">
+            <ion-input
+              :value="definition.from"
+              type="number"
+              @ionChange="definition.from = $event.target.value"
+            ></ion-input>
+          </div>
 
-        <ion-note>到</ion-note>
-        <div class="input-wrapper">
-          <ion-input
-            :value="definition.to"
-            type="number"
-            @ionChange="definition.to = $event.target.value"
-          ></ion-input>
-        </div>
+          <ion-note>到</ion-note>
+          <div class="input-wrapper">
+            <ion-input
+              :value="definition.to"
+              type="number"
+              @ionChange="definition.to = $event.target.value"
+            ></ion-input>
+          </div>
 
-        <ion-note>分数</ion-note>
-        <div class="input-wrapper">
-          <ion-input
-            :value="definition.score"
-            type="number"
-            @ionChange="definition.score = $event.target.value"
-          ></ion-input>
-        </div>
+          <ion-note>分数</ion-note>
+          <div class="input-wrapper">
+            <ion-input
+              :value="definition.score"
+              type="number"
+              @ionChange="definition.score = $event.target.value"
+            ></ion-input>
+          </div>
 
-        <ion-buttons slot="end" v-if="definitions.length > 1">
-          <ion-button @click="remove(index)" color="danger"
-            ><ion-icon :icon="removeCircle" color="danger"></ion-icon
-          ></ion-button>
-        </ion-buttons>
+          <ion-buttons slot="end" v-if="definitions.length > 1">
+            <ion-button @click="remove(index)" color="danger"
+              ><ion-icon :icon="removeCircle" color="danger"></ion-icon
+            ></ion-button>
+          </ion-buttons>
+        </div>
       </ion-item>
     </ion-list>
 
@@ -83,25 +85,19 @@ export default defineComponent({
       const result: any[] = [];
       let temp: any[] = [];
 
-      questions
-        .sort(function (a: any, b: any) {
-          return +a.label > +b.label ? 1 : -1;
-        })
-        .concat(null)
-        .reduce(function (pre: any, item: any) {
-          temp.push(pre);
+      // questions 是已经排序好的
 
-          if (
-            !item ||
-            +item.label - +pre.label > 1 ||
-            item.score != +pre.score
-          ) {
-            result.push(temp);
-            temp = [];
-          }
+      for (let i = 1; i <= questions.length; i++) {
+        const pre = questions[i - 1] || null;
+        const item = questions[i] || null;
 
-          return item;
-        });
+        temp.push(pre);
+
+        if (!item || +item.label - +pre.label > 1 || item.score != +pre.score) {
+          result.push(temp);
+          temp = [];
+        }
+      }
 
       return result;
     },
@@ -111,9 +107,10 @@ export default defineComponent({
         definitions.push({
           from: group[0].label,
           to: group[group.length - 1].label,
-          score: group[0].score,
+          score: group[0].score
         });
       }
+
       return definitions;
     },
     add() {
@@ -146,9 +143,10 @@ export default defineComponent({
     },
 
     makeQuestions() {
+      console.log("def: ", this.definitions)
       const questions = [];
       for (const def of this.definitions) {
-        for (let i = def.from; i <= def.to; i++) {
+        for (let i = +def.from; i <= +def.to; i++) {
           questions.push({
             label: i + "",
             choices: def.choices || "ABCD",
@@ -164,8 +162,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
-
 ion-list {
   background: transparent;
 }
@@ -211,7 +207,6 @@ ion-item {
 }
 
 @media (prefers-color-scheme: dark) {
-
   .input-wrapper {
     background: #111;
   }

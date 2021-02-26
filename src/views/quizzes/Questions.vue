@@ -13,38 +13,42 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-item lines="none" class="infos">
-        <div style="width: 70px">
+      <ion-item lines="none">
+        <div class="infos">
           <div class="d-flex align-items-center">
-            <div style="font-size: 24px">{{ stats.score }}</div>
-            <small style="margin-left: 4px">分</small>
-          </div>
-        </div>
-        <div class="questions-stats">
-          <div @click="onEditQuestionCount">
-            <h3>
-              {{ questions.length }} 题
-              <span v-if="quiz.recordCount === 0">
-                <ion-icon :icon="createOutline"></ion-icon>
-              </span>
-            </h3>
-          </div>
-          <div class="stats">
-            <ion-note
-              >单选题:<span class="stats-number">{{
-                stats.singleCount
-              }}</span></ion-note
-            >
-            <ion-note
-              >多选题:<span class="stats-number">{{
-                stats.multiCount
-              }}</span></ion-note
-            >
-            <ion-note
-              >判断题:<span class="stats-number">{{
-                stats.booleanCount
-              }}</span></ion-note
-            >
+            <div style="width: 70px">
+              <div class="d-flex align-items-center">
+                <div style="font-size: 24px">{{ stats.score }}</div>
+                <small style="margin-left: 4px">分</small>
+              </div>
+            </div>
+            <div class="questions-stats">
+              <div @click="onEditQuestionCount">
+                <h3>
+                  {{ questions.length }} 题
+                  <span v-if="quiz.recordCount === 0">
+                    <ion-icon :icon="createOutline"></ion-icon>
+                  </span>
+                </h3>
+              </div>
+              <div class="stats">
+                <ion-note
+                  >单选题:<span class="stats-number">{{
+                    stats.singleCount
+                  }}</span></ion-note
+                >
+                <ion-note
+                  >多选题:<span class="stats-number">{{
+                    stats.multiCount
+                  }}</span></ion-note
+                >
+                <ion-note
+                  >判断题:<span class="stats-number">{{
+                    stats.booleanCount
+                  }}</span></ion-note
+                >
+              </div>
+            </div>
           </div>
         </div>
       </ion-item>
@@ -87,11 +91,12 @@ import _ from "lodash";
 import Alert from "@/mixins/Alert.ts";
 import Modal from "@/mixins/Modal.ts";
 import QuestionDefines from "./QuestionDefines.vue";
+import {mapState} from 'vuex'
 
 export default defineComponent({
   mixins: [Alert, Modal],
   data() {
-    const questions: any[] = [];
+    // const questions: any[] = [];
 
     const debouncedUpdates: any = {};
 
@@ -101,7 +106,7 @@ export default defineComponent({
         questions: [],
         recordCount: 0,
       },
-      questions,
+      // questions,
       showQuestionCountInput: false,
       showDownload: false,
       debouncedUpdates,
@@ -140,6 +145,9 @@ export default defineComponent({
         noAnswerCount,
       };
     },
+    ...mapState({
+      questions: (state: any) => state.quiz.quiz.questions
+    })
   },
   setup() {
     const router = useRouter();
@@ -181,34 +189,21 @@ export default defineComponent({
      * 改变了题目数量
      */
     async onQuestionsChange(questions: any) {
-      const toCreate = questions.filter((item: any) => {
-        return !this.questions.find((q: any) => q.label === item.label);
-      });
 
-      const toDelete = this.questions
-        .filter((item: any) => {
-          return !questions.find((q: any) => q.label === item.label);
-        })
-        .map((item: any) => item.id);
+      for (const question of questions) {
+        const index = this.questions.findIndex((q: any) => q.label === question.label);
+        
+        if (index < 0) continue;
 
-      if (toDelete.length > 0) {
-        await Api.question.batchDestroy(+this.$route.params.id, toDelete);
-        this.questions = this.questions.filter(
-          (q: any) => toDelete.indexOf(q.id) < 0
-        );
+        const oldQuestion = this.questions[index] || null;
+
+        question.answer = oldQuestion.answer;
       }
 
-      if (toCreate.length > 0) {
-        const resp = await Api.question.batchCreate(+this.$route.params.id, {
-          questions: toCreate,
-        });
+      const resp = await Api.question.set(+this.$route.params.id, questions);
+      questions = resp.data;
 
-        this.questions = this.questions
-          .concat(resp.data)
-          .sort((a: any, b: any) => {
-            return +a.label > +b.label ? 1 : -1;
-          });
-      }
+      this.store.commit("quiz/UPDATE_QUIZ_QUESTIONS", questions);
 
       this.definesModal.dismiss();
     },
@@ -225,7 +220,7 @@ export default defineComponent({
       // 检查所有题目是否都设置了正确答案
 
       const noAnswer = this.questions.findIndex(
-        (item) => !item.answer || item.answer.length === 0
+        (item: any) => !item.answer || item.answer.length === 0
       );
 
       if (noAnswer) {
@@ -240,7 +235,6 @@ export default defineComponent({
 
       const resp = await this.store.dispatch("quiz/quiz", quiz);
 
-      this.questions = resp.data.questions || [];
       this.quiz = resp.data;
     },
 
@@ -299,7 +293,11 @@ ion-item {
 }
 
 .infos {
+  width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+  justify-items: space-around;
 }
 
 .questions-stats {

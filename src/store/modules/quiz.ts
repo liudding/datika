@@ -15,7 +15,7 @@ export default {
     }),
     mutations: {
         CLEAR(state: any) {
-            state.list  = [];
+            state.list = [];
             state.archived = [];
             state.total = 0;
 
@@ -81,6 +81,11 @@ export default {
          */
 
         SET_QUIZ(state: any, data: any) {
+            if (data.questions) {
+                data.questions.sort(function (a: any, b: any) {
+                    return +a.label > +b.label ? 1 : -1;
+                });
+            }
             state.quiz = data;
             state.quizId = data.id;
         },
@@ -89,6 +94,12 @@ export default {
             const index = state.quiz.questions.findIndex((i: any) => i.id === data.id)
 
             state.quiz.questions.splice(index, 1, data);
+        },
+
+        UPDATE_QUIZ_QUESTIONS(state: any, questions: any) {
+            state.quiz.questions = questions.sort(function (a: any, b: any) {
+                return +a.label > +b.label ? 1 : -1;
+            });
         },
 
         SET_STUDENTS(state: any, data: any) {

@@ -45,6 +45,16 @@ function create(quiz: number, data: any) {
   })
 }
 
+function set(quiz: number, data: any) {
+  return request({
+    url: `quizzes/${quiz}/questions/set`,
+    method: 'post',
+    data: {
+      questions: data
+    }
+  })
+}
+
 function batchCreate(quiz: number, data: any) {
   return request({
     url: `quizzes/${quiz}/questions/batch`,
@@ -81,6 +91,7 @@ function trim(quiz: number, data: any) {
 export default {
   list,
   show,
+  set,
   create,
   batchCreate,
   update,
