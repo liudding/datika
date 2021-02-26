@@ -21,7 +21,6 @@
     "dom-to-image": "^2.6.0",
     "lodash": "^4.17.20",
     "register-service-worker": "^1.7.1",
-    "vant": "^3.0.6",
     "vue": "^3.0.0-0",
     "vue-radial-progress": "^0.3.2",
     "vue-router": "^4.0.0-0",
