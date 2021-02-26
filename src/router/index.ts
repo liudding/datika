@@ -15,12 +15,21 @@ function isLoggedIn(): boolean {
 }
 
 // permission judge function
-function hasPermission(rolesRequired: string[]) {
-  const roles: string[] = []; // user roles;
+function hasPermission(to: RouteLocationNormalized) {
 
-  if (!rolesRequired || roles.includes('admin')) return true;
+  return true;
 
-  return roles.some(role => rolesRequired.indexOf(role) >= 0)
+  // if (!to.meta || !to.meta.roles) {
+  //   return false;
+  // }
+
+  // const rolesRequired = to.meta.roles as string[];
+
+  // const roles: string[] = []; // user roles;
+
+  // if (!rolesRequired || roles.includes('admin')) return true;
+
+  // return roles.some(role => rolesRequired.indexOf(role) >= 0)
 }
 
 const whiteList = ['/login', '/login/password', '/register'] // no redirect whitelist
@@ -57,7 +66,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if (hasPermission(to.meta.roles)) {
+  if (hasPermission(to)) {
     next()
   } else {
     next({ path: '/401', replace: true })
