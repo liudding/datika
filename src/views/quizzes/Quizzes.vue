@@ -140,7 +140,14 @@ export default defineComponent({
 
       if (isNew) {
         this.router.push({
-          path: `/quizzes/${quiz.id}/questions`
+          name: "QuizQuestions",
+          params: {
+            id: quiz.id,
+          },
+          query: {
+            name: quiz.name,
+            recordCount: quiz.recordCount,
+          },
         });
       }
     },
@@ -214,8 +221,8 @@ export default defineComponent({
     },
 
     async refresh($event: any) {
-      this.store.commit('quiz/CLEAR');
-      
+      this.store.commit("quiz/CLEAR");
+
       await this.getQuizzes();
 
       $event.target.complete();
