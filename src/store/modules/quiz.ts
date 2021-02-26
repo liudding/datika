@@ -100,6 +100,13 @@ export default {
             state.quiz.questions = questions.sort(function (a: any, b: any) {
                 return +a.label > +b.label ? 1 : -1;
             });
+
+            state.quiz.questionCount = questions.length;
+        },
+
+        ATTACH_CLASSROOMS(state: any, classes: any[]) {
+            state.quiz.classrooms = classes;
+            state.quiz.classroomCount = classes.length
         },
 
         SET_STUDENTS(state: any, data: any) {

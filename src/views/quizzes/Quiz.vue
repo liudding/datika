@@ -111,8 +111,7 @@ export default defineComponent({
         return (classrooms: any) => {
           this.attachModal.dismiss();
 
-          this.quiz.classrooms = classrooms;
-          this.quiz.classroomCount = classrooms.length;
+          this.store.commit('quiz/ATTACH_CLASSROOMS', classrooms)
 
           resolve(classrooms);
         };
