@@ -2,6 +2,7 @@ import Form from './Form'
 import BubbleGroup from './BubbleGroup';
 import BubbleSection from './BubbleSection';
 import NumberSection from './NumberSection';
+import Bubble from './Bubble';
 
 
 
@@ -32,10 +33,11 @@ export default class Renderer {
         return div.firstChild as HTMLElement;
     }
 
-    makeGroup(group: BubbleGroup) {
+    makeGroup(group: BubbleGroup, section: BubbleSection) {
         let ele = `<div class="group" style="grid-column-gap:${group.gap}px;"><div class="label" style="width:${group.labelWidth}px;">${group.label}</div>`
-        for (let index = 0; index < group.bubbles.length; index++) {
-            ele += this.makeBubble(group.bubbles[index].text, group.bubbleRadius);
+        for (let index = 0; index < section.bubbles; index++) {
+            const bubble = group.bubbles[index] || new Bubble('<span style="font-size: 80px;">&times</span>');
+            ele += this.makeBubble(bubble.text, group.bubbleRadius);
         }
 
         ele += ' </div>'
@@ -51,7 +53,7 @@ export default class Renderer {
     makeSection(section: BubbleSection, x: number, y = 0) {
         let ele = `<div class="section" style="left:${x}px; top: ${y}px;grid-row-gap:${section.gap}px; padding:${section.paddingY}px ${section.paddingX}px;">`
         for (let index = 0; index < section.groups.length; index++) {
-            ele += this.makeGroup(section.groups[index])
+            ele += this.makeGroup(section.groups[index], section)
 
         }
         ele += ' </div>'

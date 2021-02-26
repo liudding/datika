@@ -8,12 +8,23 @@ export default class BubbleSection extends Section {
 
     public groups: BubbleGroup[] = [];
 
-    // private _size: Size|null = null;
+    private _bubbles = 0;
 
     constructor(groups: BubbleGroup[]) {
         super();
 
         this.groups = groups
+    }
+
+
+    get bubbles(): number {
+        if (this._bubbles) return this._bubbles;
+
+        this.groups.forEach(item => {
+            this._bubbles = Math.max(this._bubbles, item.bubbles.length)
+        })
+
+        return this._bubbles;
     }
 
     get size(): Size {
