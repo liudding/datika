@@ -26,6 +26,9 @@ import './theme/variables.css';
 
 import '@/styles/index.scss';
 
+import "@/utils/env";
+import ionicConfig from '@/utils/ionic-config';
+
 import {
   IonItem, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
@@ -37,7 +40,7 @@ import {
 
 
 const app = createApp(App)
-  .use(IonicVue)
+  .use(IonicVue, ionicConfig())
   .use(router)
   .use(store);
 
