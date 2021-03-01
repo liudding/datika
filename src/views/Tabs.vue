@@ -19,7 +19,7 @@
       </ion-tab-bar>
     </ion-tabs>
 
-    <InstallPrompt show="force"></InstallPrompt>
+    <InstallPrompt></InstallPrompt>
   </ion-page>
 </template>
 

@@ -67,7 +67,7 @@ export default defineComponent({
      */
     delay: {
       type: Number,
-      default: 3,
+      default: 30,
     },
   },
   watch: {
