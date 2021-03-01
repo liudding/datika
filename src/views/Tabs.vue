@@ -18,6 +18,8 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>
+
+    <InstallPrompt show="force"></InstallPrompt>
   </ion-page>
 </template>
 
@@ -30,9 +32,10 @@ import {
 import { reader, person, square } from "ionicons/icons";
 import { defineComponent} from "vue";
 import { useStore } from "vuex"
+import InstallPrompt from '@/components/install-prompt/index.vue'
 
 export default defineComponent({
-  components: { IonTabs, IonTabBar, IonTabButton },
+  components: { IonTabs, IonTabBar, IonTabButton, InstallPrompt },
   setup() {
     return {
       reader,
