@@ -140,7 +140,7 @@ export default defineComponent({
 
       if (isNew) {
         this.router.push({
-          name: "QuizQuestions",
+          name: "Quiz",
           params: {
             id: quiz.id,
           },
