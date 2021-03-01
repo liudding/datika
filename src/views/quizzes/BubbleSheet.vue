@@ -25,7 +25,7 @@ export default defineComponent({
   props: {
     questions: Array,
   },
-  emits: ['downloaded', 'backdrop'],
+  emits: ["downloaded", "backdrop"],
   data() {
     return {
       previewUrl: "",
@@ -69,12 +69,12 @@ export default defineComponent({
       a.setAttribute("href", dataUrl);
       a.click();
 
-      this.$emit('downloaded')
+      this.$emit("downloaded");
     },
 
     onClickBackdrop() {
-      this.$emit("backdrop")
-    }
+      this.$emit("backdrop");
+    },
   },
 });
 </script>
@@ -124,10 +124,13 @@ export default defineComponent({
   transform: scale(0.3, 0.3);
 }
 
+
 #bubble-sheet {
   display: block;
   user-select: none;
-  font-family: "Work Sans", Arial, Helvetica, sans-serif;
+  font-family: "PingFang SC", "Helvetica Neue", Helvetica, Arial,
+    "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei",
+    sans-serif;
   padding: 16px;
   background-color: white;
 
@@ -230,5 +233,6 @@ export default defineComponent({
   font-size: 36px;
   font-weight: lighter;
   color: rgb(71, 71, 71);
+  text-transform: uppercase;
 }
 </style>
