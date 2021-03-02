@@ -40,6 +40,7 @@ import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
 import beep from '@/services/scanner/beep';
+import { canSpeak, speak } from "@/services/speech"
 import Records from "./Records.vue";
 import Result from "./Result.vue";
 import Api from "@/api";
@@ -224,6 +225,8 @@ export default defineComponent({
     },
 
     async showResult(result) {
+      speak(result.name + ', Jack ,' + result.score + '分')
+
       this.resultModal = await this.modal(
         Result,
         {
