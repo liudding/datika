@@ -20,7 +20,9 @@ export default class Renderer {
     createCanvas(): HTMLElement {
         const htmlString = `
         <div id="form-container" style="user-select: none; padding: 16px;background: white;">
-            <div class="header" style="position: relative;width: 100%;"></div>
+            <div class="header" style="position: relative;width: 100%;">
+
+            </div>
             <div class="box" style="width:${this.form.width}px;min-width:${this.form.width}px;height:${this.form.height}px;min-height:${this.form.height}px;border: ${this.form.border}px solid black;position: relative;">
                 <div class="number" id="number" style="position: absolute; right: 0;top: 0;display: flex;border-left: 9px solid black;border-bottom: 9px solid black;"></div>
                 <div id="bubbles" class="bubbles"></div>
@@ -87,13 +89,20 @@ export default class Renderer {
 
         const number = this.canvas.getElementsByClassName('number')[0]
         number.innerHTML = html
-
-        this.drawNumberGrid()
     }
 
-    drawNumberGrid() {
+    drawHeader() {
+        let html = this.drawInput()
+
+        html += this.drawNumberGrid()
+
+        const header = this.canvas.getElementsByClassName('header')[0]
+        header.innerHTML = html;
+    }
+
+    drawNumberGrid(): string {
         if (!this.form.numberSection) {
-            return;
+            return '';
         }
 
         let html = '<div class="number-grid" style="right: 12px;">'
@@ -104,8 +113,19 @@ export default class Renderer {
         }
         html += '</div>'
 
-        const header = this.canvas.getElementsByClassName('header')[0]
-        header.innerHTML = html
+        return html;
+    }
+
+    drawInput(): string {
+        if (!this.form.numberSection) {
+            return '';
+        }
+
+        let html = '<div class="name-input">姓名: __________'
+       
+        html += '</div>'
+
+        return html;
     }
 
 
@@ -145,6 +165,8 @@ export default class Renderer {
         if (this.form.numberSection) {
             this.drawNumber()
         }
+
+        this.drawHeader();
 
         return this.canvas;
     }

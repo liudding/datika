@@ -137,12 +137,15 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+
+  position: relative;
 }
 
 #bubble-sheet .header {
   min-height: 150px;
   position: relative;
   width: 100%;
+  max-width: 100%;
 }
 
 #bubble-sheet .box {
@@ -173,22 +176,30 @@ export default defineComponent({
   background: white;
 }
 
-#bubble-sheet .number-grid {
-  /* position: absolute; */
-  float: right;
+#bubble-sheet .header .number-grid {
+  position: absolute;
   right: 0;
   bottom: 16px;
   display: flex;
   border: 4px solid black;
 }
 
-#bubble-sheet .number-grid .item {
+#bubble-sheet .header .number-grid .item {
   width: 80px;
   height: 80px;
 }
 
-#bubble-sheet .number-grid .item:not(:last-child) {
+#bubble-sheet .header .number-grid .item:not(:last-child) {
   border-right: 1px solid black;
+}
+
+
+#bubble-sheet .header .name-input {
+  position: absolute;
+  left: 20px;
+  bottom: 16px;
+  min-width: 200px;
+  font-size: 48px;
 }
 
 #bubble-sheet .bubbles {
