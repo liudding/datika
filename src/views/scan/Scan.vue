@@ -5,6 +5,9 @@
         <ion-buttons>
           <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
+         <!-- <ion-buttons slot="end">
+          <ion-button><ion-icon :icon="settingsOutline"></ion-icon></ion-button>
+        </ion-buttons> -->
       </ion-toolbar>
     </ion-header>
 
@@ -31,11 +34,12 @@
 </template>
 
 <script>
-import { appsOutline } from "ionicons/icons";
+import { appsOutline, settingsOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
+import beep from '@/services/scanner/beep';
 import Records from "./Records.vue";
 import Result from "./Result.vue";
 import Api from "@/api";
@@ -50,6 +54,7 @@ export default defineComponent({
   setup() {
     return {
       store: useStore(),
+      settingsOutline
     };
   },
   computed: {
@@ -169,6 +174,8 @@ export default defineComponent({
 
       await this.hideResult();
 
+      beep();
+
       const record = this.records.find(
         (item) => item.studentNumber === scanObj.gradecam_id
       );
@@ -252,12 +259,12 @@ ion-content {
 }
 
 ion-toolbar {
-  --background: transparent !important;
+  /* --background: transparent !important;
   --background-color: transparent;
   --ion-color-base: transparent !important;
   --border-width: 0px;
   --border-color: transparent;
-  --box-shadow: none;
+  --box-shadow: none; */
 }
 
 ion-fab-button {
