@@ -20,9 +20,9 @@ export default class Form extends Section {
     public numberSection: NumberSection | null = null;
 
     public bubbleSections: BubbleSection[] = [];
-    public subBubbleSections: BubbleSection[]|null = null;
+    public subBubbleSections: BubbleSection[] | null = null;
 
-    public static make(data: any, digits=0) {
+    public static make(data: any, digits = 0) {
         const groups: BubbleGroup[] = [];
         for (const group of data) {
             groups.push(new BubbleGroup(group.label, group.choices));
@@ -64,13 +64,19 @@ export default class Form extends Section {
         max = max || groups.length
 
         function chunk(arr: any[], size: number) {
+
+            if (size >= arr.length) {
+                return [arr]
+            }
+
             const chunks: any[] = [];
+
 
             arr.forEach((item: any) => {
                 if (chunks.length === 0) {
                     chunks.push([])
                 }
-                const lastChunk = chunks[chunks.length -1];
+                const lastChunk = chunks[chunks.length - 1];
 
                 if (lastChunk.length === size) {
                     chunks.push([item]);
@@ -81,6 +87,7 @@ export default class Form extends Section {
 
             return chunks
         }
+
 
         const s = chunk(groups, max)
 
@@ -135,7 +142,9 @@ export default class Form extends Section {
 
     findPossibleLayouts(groups: BubbleGroup[]) {
 
-        let maxGroupsPerSection = 1;
+        const groupsInFirstSection = 12;
+
+        let maxGroupsPerSection = Math.min(groupsInFirstSection, groups.length);
 
         const possibleLayouts = [];
 
@@ -273,9 +282,11 @@ export default class Form extends Section {
             acc.height = Math.max(acc.height, section.height)
             acc.width += section.width
             return acc
-        }, {width: 0, height: 0});
+        }, { width: 0, height: 0 });
 
         this._size = { height, width } as Size;
+
+        this._size.height += this.border * 2;
 
         return this._size
     }
