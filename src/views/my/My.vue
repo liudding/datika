@@ -68,7 +68,8 @@ export default defineComponent({
   methods: {
     gotoFeedback() {
       // window.location.href = 'https://support.qq.com/product/311244'
-      window.open('https://support.qq.com/product/311244')
+      const url = process.env.VUE_APP_BASE_URL + '/feedback?token=' + this.user.token  
+      window.open(url)
     },
     logout() {
       this.showActionSheet({
