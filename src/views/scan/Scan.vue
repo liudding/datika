@@ -5,6 +5,7 @@
         <ion-buttons>
           <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
+        <ion-title>{{ quiz.name }}</ion-title>
          <!-- <ion-buttons slot="end">
           <ion-button><ion-icon :icon="settingsOutline"></ion-icon></ion-button>
         </ion-buttons> -->
