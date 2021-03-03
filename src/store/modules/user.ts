@@ -23,12 +23,12 @@ export default {
         uuid: '',
         name: '',
         mobile: '',
-        token: null
+        token: localStorage.getItem('AUTH_TOKEN')
     }),
     mutations,
 
     getters: {
-        
+
     },
 
     actions: {
@@ -39,6 +39,7 @@ export default {
             localStorage.removeItem('APP_STATE_DATA')
 
             context.commit('SET_AUTH_TOKEN', resp.data.token);
+            localStorage.setItem('AUTH_TOKEN', resp.data.token);
         },
 
         async profile(context: any) {
@@ -48,15 +49,22 @@ export default {
         },
 
         async logout(context: any) {
-            await Api.auth.logout()
 
             context.commit('SET_AUTH_TOKEN', '');
             // 清除全部数据
             localStorage.removeItem('APP_STATE_DATA')
+            localStorage.removeItem('AUTH_TOKEN')
+
+            try {
+                Api.auth.logout()
+            } catch {
+                console.error('Logout error');
+            }
         },
 
         async feLogout(context: any) {
             context.commit('SET_AUTH_TOKEN', '');
+            localStorage.removeItem('AUTH_TOKEN')
         }
     }
 }
