@@ -6,9 +6,11 @@
           <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ quiz.name }}</ion-title>
-         <!-- <ion-buttons slot="end">
-          <ion-button><ion-icon :icon="settingsOutline"></ion-icon></ion-button>
-        </ion-buttons> -->
+        <ion-buttons slot="end">
+          <ion-button @click="showSettings"
+            ><ion-icon :icon="settingsOutline"></ion-icon
+          ></ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -40,10 +42,11 @@ import { defineComponent } from "vue";
 import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
-import beep from '@/services/scanner/beep';
-import { canSpeak, speak } from "@/services/speech"
+import beep from "@/services/scanner/beep";
+import { canSpeak, speak } from "@/services/speech";
 import Records from "./Records.vue";
 import Result from "./Result.vue";
+import Settings from "./Settings.vue";
 import Api from "@/api";
 import Modal from "@/mixins/Modal";
 import RadialProgressBar from "vue-radial-progress";
@@ -56,13 +59,13 @@ export default defineComponent({
   setup() {
     return {
       store: useStore(),
-      settingsOutline
+      settingsOutline,
     };
   },
   computed: {
     ...mapState({
-      records: (state) => state.quiz.records
-    })
+      records: (state) => state.quiz.records,
+    }),
   },
   data() {
     const recordsModal = null;
@@ -80,9 +83,15 @@ export default defineComponent({
       appsOutline,
       recordsModal,
       resultModal,
+      settingsModal: null,
 
       totalCount: 100,
       completedCount: 0,
+
+      settings: {
+        sound: true,
+        camera: "",
+      },
     };
   },
 
@@ -108,10 +117,7 @@ export default defineComponent({
       this.completedCount = this.quiz.recordCount;
     },
     async getRecords() {
-      await this.store.dispatch(
-        "quiz/studentRecords",
-        +this.$route.params.id
-      );
+      await this.store.dispatch("quiz/studentRecords", +this.$route.params.id);
     },
     checkIsOldRecordData(answers, record) {
       if (!record || !record.id || !record.answers) return false;
@@ -130,9 +136,9 @@ export default defineComponent({
       if (this.checkIsOldRecordData(answers, record)) {
         console.log(record, "is old");
         return {
-          type: 'nochange',
-          data: record
-        }
+          type: "nochange",
+          data: record,
+        };
       }
 
       const params = {
@@ -148,9 +154,9 @@ export default defineComponent({
       );
 
       return {
-        type: record.recordId ? 'update' : 'new',
-        data: resp.data
-      }
+        type: record.recordId ? "update" : "new",
+        data: resp.data,
+      };
     },
     initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
@@ -176,7 +182,9 @@ export default defineComponent({
 
       await this.hideResult();
 
-      beep();
+      if (this.settings.sound) {
+        beep();
+      }
 
       const record = this.records.find(
         (item) => item.studentNumber === scanObj.gradecam_id
@@ -190,13 +198,13 @@ export default defineComponent({
       this.submit(scanObj, record).then((res) => {
         console.log("on sunmited", this.quiz.recordCount);
 
-        const record = res.data
+        const record = res.data;
 
         this.currentRecord = Object.assign({}, record);
         this.currentRecord.name = record.studentName;
         this.currentRecord.number = record.studentNumber;
         this.currentRecord.type = res.type;
-        
+
         this.completedCount = this.quiz.recordCount;
 
         this.showResult(this.currentRecord);
@@ -221,12 +229,27 @@ export default defineComponent({
       });
     },
 
+    async showSettings() {
+      this.settingsModal = await this.modal(
+        Settings,
+        {
+          cameraList: scanner.getCameraList(),
+          onChange: (res) => {
+            this.settings = res;
+
+            scanner.setCamera(res.camera)
+          },
+        },
+        "scan-settings-modal"
+      );
+    },
+
     async hideResult() {
       this.resultModal && (await this.resultModal.dismiss());
     },
 
     async showResult(result) {
-      speak(result.name + ', Jack ,' + result.score + '分')
+      speak(result.name + ", Jack ," + result.score + "分");
 
       this.resultModal = await this.modal(
         Result,
@@ -280,5 +303,6 @@ ion-fab-button {
 #camera-container {
   height: 100%;
   width: 100%;
+  background: black;
 }
 </style>
