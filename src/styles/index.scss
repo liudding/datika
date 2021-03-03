@@ -5,6 +5,11 @@ ion-content {
     --background: rgb(241, 241, 246);
 }
 
+ion-back-button {
+    --icon-padding-end: 30px;
+}
+
+
 @media (prefers-color-scheme: dark) {
     ion-content {
         --background: rgb(0, 0, 0);

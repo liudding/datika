@@ -53,8 +53,8 @@ export default defineComponent({
   computed: {
     ...mapState({
       classroom: (state: any) =>
-         state.classroom.list.find((i: any) => {
-           const route = useRoute()
+        state.classroom.list.find((i: any) => {
+          const route = useRoute();
           return i.id === +route.params.id;
         }) || {},
     }),
