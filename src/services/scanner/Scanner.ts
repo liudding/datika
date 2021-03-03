@@ -8,6 +8,9 @@ interface ScanDriver {
   bind: Function;
   unbind: Function;
   ready: Function;
+
+  getCameraList: Function;
+  setCamera: Function;
 }
 
 import GradecamDriver from './GradecamDriver';
@@ -53,9 +56,18 @@ export default class Scanner {
     this.driver().unbind();
   }
 
+  getCameraList() {
+    return this.driver().getCameraList();
+  }
+
+  setCamera(camera: string) {
+    this.driver().setCamera(camera);    
+  }
+
   ready() {
     return this.driver().ready();
   }
+
 
   driver(name: string|null = null): ScanDriver {
     if (this.currentDriver) {

@@ -129,7 +129,13 @@ export default class GradeCam {
       high_res: true,
       selected_camera: camera
     })
+
+    this.gradecam.stopCamera();
+
+    this.gradecam.startCamera()
+
   }
+
 
   private unbindEvents() {
     for (let event in this.events) {
