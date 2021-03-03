@@ -3,99 +3,161 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-          <ion-back-button
-            :text="getBackButtonText()"
-            default-href="/"
-          ></ion-back-button>
+          <ion-back-button text="" default-href="/"></ion-back-button>
         </ion-buttons>
+        <ion-title>注册</ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true" v-if="message">
-      <ion-item>
-        <ion-icon :icon="personCircle" color="primary"></ion-icon>
-        <ion-label> </ion-label>
-        <ion-input placeholder="手机号"></ion-input>
-      </ion-item>
+    <ion-content :fullscreen="true">
+      <div style="margin-top: 16px">
+        <ion-item lines="none">
+          <ion-icon :icon="phonePortraitOutline" color="primary"></ion-icon>
+          <ion-input
+            :value="mobile"
+            @ionChange="mobile = $event.target.value"
+            autofocus
+            required
+            placeholder="手机号"
+          ></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon :icon="personOutline" color="primary"></ion-icon>
+          <ion-input
+            :value="name"
+            @ionChange="name = $event.target.value"
+            autofocus
+            required
+            placeholder="昵称"
+          ></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon :icon="lockClosedOutline" color="primary"></ion-icon>
+          <ion-input
+            :value="password"
+            @ionChange="password = $event.target.value"
+            type="password"
+            required
+            placeholder="密码"
+          ></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>密码</ion-label>
-        <ion-input></ion-input>
-      </ion-item>
-
-      <ion-button expand="block">登录</ion-button>
+        <ion-button @click="register" expand="block" style="margin-top: 32px"
+          >注册</ion-button
+        >
+      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { personCircle } from "ionicons/icons";
+import {
+  personOutline,
+  lockClosedOutline,
+  phonePortraitOutline,
+} from "ionicons/icons";
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
+import Loading from "@/mixins/Loading";
+import Alert from "@/mixins/Alert";
+import Api from "@/api";
+import Validator from "@/utils/validator";
 
 export default defineComponent({
   data() {
     return {
-      personCircle,
-      getBackButtonText: () => {
-        const win = window as any;
-        const mode = win && win.Ionic && win.Ionic.mode;
-        return mode === "ios" ? "登录" : "";
-      },
+      personOutline,
+      lockClosedOutline,
+      phonePortraitOutline,
+
+      password: "",
+      mobile: "",
+      name: "",
     };
   },
   setup() {
-    const message = {
-      fromName: "Jordan Firth",
-      subject: "Report Results",
-      date: "4:55 AM",
-      id: 2,
-    };
-
-    return { message };
+    const store = useStore();
+    return { store };
   },
   components: {},
+  mixins: [Loading, Alert],
+  methods: {
+    async register() {
+      if (!this.mobile || !this.password || !this.name) return;
+
+      if (!Validator.isMobile(this.mobile)) {
+        alert("手机号不正确");
+        return;
+      }
+
+      if (!Validator.isValidPassword(this.password)) {
+        alert("密码至少 6 位");
+        return;
+      }
+
+      const loading = await this.loading();
+
+      try {
+        await this.store.dispatch("register", {
+          password: this.password,
+          mobile: this.mobile,
+          name: this.name,
+        });
+
+        this.login();
+      } catch (e) {
+        this.alert({
+          title: "注册失败",
+        });
+      } finally {
+        loading.dismiss();
+      }
+    },
+
+    async login() {
+      const loading = await this.loading();
+
+      try {
+        await this.store.dispatch("login", {
+          username: this.mobile,
+          password: this.password,
+          mobile: this.mobile,
+        });
+
+        await this.store.dispatch("profile");
+
+        this.$router.replace({ path: "/" });
+      } catch (e) {
+        this.alert({
+          title: "登录失败",
+        });
+      } finally {
+        loading.dismiss();
+      }
+    },
+  },
 });
 </script>
 
 <style scoped>
 ion-item {
   --inner-padding-end: 0;
-  --background: transparent;
+  --min-height: 54px;
+
+  border-radius: 100px;
+  margin-bottom: 8px;
 }
 
-ion-label {
-  margin-top: 12px;
-  margin-bottom: 12px;
+ion-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
 }
 
-ion-item h2 {
-  font-weight: 600;
-}
-
-ion-item .date {
-  float: right;
-  align-items: center;
-  display: flex;
+ion-button {
+  --border-radius: 100px;
 }
 
 ion-item ion-icon {
-  font-size: 42px;
-  margin-right: 8px;
-}
-
-ion-item ion-note {
-  font-size: 15px;
-  margin-right: 12px;
-  font-weight: normal;
-}
-
-h1 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-p {
-  line-height: 22px;
+  margin-right: 16px;
 }
 </style>

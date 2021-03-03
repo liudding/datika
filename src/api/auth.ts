@@ -26,6 +26,39 @@ function login(data: LoginParam) {
   })
 }
 
+function register(data: any) {
+
+  data.deviceName = data.deviceName || env();
+
+  return request({
+    url: '/register',
+    method: 'post',
+    data: {
+      username: data.username,
+      mobile: data.mobile,
+      password: data.password,
+      code: data.code,
+      "device_name": data.deviceName
+    }
+  })
+}
+
+function registerWithNoVerification(data: any) {
+
+  data.deviceName = data.deviceName || env();
+
+  return request({
+    url: '/register/no_verification',
+    method: 'post',
+    data: {
+      mobile: data.mobile,
+      password: data.password,
+      name: data.name,
+      "device_name": data.deviceName
+    }
+  })
+}
+
 function refreshToken() {
   return request({
     url: '/refresh',
@@ -60,6 +93,8 @@ function getVerificationCode(mobile: string, type = 'authenticate') {
 
 export default {
   login,
+  register,
+  registerWithNoVerification,
   logout,
   profile,
   getVerificationCode

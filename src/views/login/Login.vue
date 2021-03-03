@@ -25,9 +25,9 @@
               >账户登录
             </ion-button>
 
-            <!-- <ion-router-link href="/register" class="mt-1"
+            <ion-router-link href="/register" class="mt-1"
               >注册</ion-router-link
-            > -->
+            >
           </div>
         </div>
       </div>
