@@ -100,7 +100,7 @@ export default defineComponent({
     this.getRecords();
   },
   async mounted() {
-    await this.getQuiz();
+    // await this.getQuiz();
 
     if (!window.cameraPermissionGranted) {
       window.cameraPermissionGranted = await this.preRequestPermission();
@@ -175,9 +175,11 @@ export default defineComponent({
           video: true,
         });
 
-        stream.getTracks().forEach((track) => {
+        stream.getTracks && stream.getTracks().forEach((track) => {
           track.stop();
         });
+
+        stream.stop && stream.stop();
 
         return true;
       } catch (err) {
