@@ -6,7 +6,7 @@
         <img v-if="previewUrl" :src="previewUrl" />
       </div>
 
-      <ion-button @click="download">Save</ion-button>
+      <ion-button @click="download">下载</ion-button>
     </div>
   </div>
 
@@ -49,15 +49,13 @@ export default defineComponent({
       const renderer = new Renderer(form);
       const formNode = renderer.render();
 
-      // console.log(formNode);
-
       document.getElementById("bubble-sheet")?.append(formNode);
 
       const node = document.getElementById("bubble-sheet");
 
       const dataUrl = await domtoimage.toPng(node as Node);
 
-      // formNode.remove();
+      formNode.remove();
 
       this.previewUrl = dataUrl;
     },
