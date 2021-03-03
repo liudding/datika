@@ -195,7 +195,8 @@ export default class GradeCam {
   }
 
   private checkFullyLoaded(): boolean {
-    return this.checkSdkLoaded();//&& this.pluginLoaded;
+    const gc = window.gradecam as any;
+    return this.checkSdkLoaded() && gc.isInstalled();
   }
 
   private checkSdkLoaded() {

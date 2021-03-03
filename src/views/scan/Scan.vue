@@ -109,7 +109,10 @@ export default defineComponent({
     this.initScanner();
   },
   ionViewWillLeave() {
-    scanner.stop();
+    scanner && scanner.stop();
+  },
+  beforeUnmount() {
+    scanner && scanner.stop();
   },
   methods: {
     async getQuiz() {
@@ -137,9 +140,7 @@ export default defineComponent({
         return item.value;
       });
 
-      // const record = this.checkIsOldRecordData(answers, student);
       if (this.checkIsOldRecordData(answers, record)) {
-        console.log(record, "is old");
         return {
           type: "nochange",
           data: record,
@@ -201,10 +202,6 @@ export default defineComponent({
         .catch((err) => {
           console.error(err);
         });
-    },
-
-    gcInitCallback(suc) {
-      return suc;
     },
     async onScan(scanObj) {
       console.log("SCAN: ", scanObj, this.records);

@@ -42,7 +42,7 @@ export default defineComponent({
     onClickLogo() {
       this.clickCount++;
 
-      if (this.clickCount >= 12) {
+      if (this.clickCount === 12) {
         Console.load();
       }
     },

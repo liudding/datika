@@ -81,15 +81,16 @@ export default defineComponent({
 .container {
   position: fixed;
   z-index: 1001;
-  /* top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; */
   background-color: transparent;
 
   display: flex;
   flex-direction: column;
   padding: 8px 16px;
+}
+
+.preview img {
+  width: 100%;
+  max-height: 80%;
 }
 
 .main {

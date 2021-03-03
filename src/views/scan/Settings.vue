@@ -46,7 +46,7 @@ export default defineComponent({
   async created() {
     const settings = this.getCache();
 
-    this.soundEnabled = settings.sound;
+    this.soundEnabled = settings.sound || true;
 
     if (!this.cameraList || this.cameraList.length === 0) {
       const devices = await navigator.mediaDevices.enumerateDevices();
