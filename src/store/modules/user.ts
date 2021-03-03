@@ -36,10 +36,14 @@ export default {
             const resp = await Api.auth.login(data)
 
             // 清除全部数据
-            localStorage.removeItem('APP_STATE_DATA')
+            context.commit('quiz/CLEAR')
+            context.commit('classroom/CLEAR')
 
             context.commit('SET_AUTH_TOKEN', resp.data.token);
-            localStorage.setItem('AUTH_TOKEN', resp.data.token);
+        },
+
+        async register(context: any, data: any) {
+            return await Api.auth.registerWithNoVerification(data)
         },
 
         async profile(context: any) {
@@ -50,10 +54,10 @@ export default {
 
         async logout(context: any) {
 
-            context.commit('SET_AUTH_TOKEN', '');
             // 清除全部数据
-            localStorage.removeItem('APP_STATE_DATA')
-            localStorage.removeItem('AUTH_TOKEN')
+            context.commit('quiz/CLEAR')
+            context.commit('classroom/CLEAR')
+            context.commit('SET_AUTH_TOKEN', '');
 
             try {
                 Api.auth.logout()
