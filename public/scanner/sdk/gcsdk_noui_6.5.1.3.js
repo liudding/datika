@@ -1410,6 +1410,7 @@
                                         } catch (t) {
                                             h.error("Couldn't process plugin2 camera list")
                                         }
+                                        console.log('cameraList', n, r)
                                         return this.cameraList = n, this.cameraMap = r, this.p2Cameras = o, [3, 7];
                                     case 6:
                                         return v = i.sent(), h.error("Error detecting camera list"), this.cameraList = ["Default Camera"], this.cameraMap["Default Camera"] = "", this.p2Cameras = {}, h.error(v.name + ": " + v.message), [3, 7];
@@ -1429,6 +1430,7 @@
                                         } catch (t) {
                                             h.error("Couldn't process plugin2 camera list")
                                         }
+                                        console.log('10: cmaraMap: ', n, r)
                                         return this.cameraList = n, this.cameraMap = r, [3, 12];
                                     case 11:
                                         return O = i.sent(), h.error("Could not process media sources:", O.message), [3, 12];
@@ -1437,6 +1439,7 @@
                                     case 13:
                                         for (n = ["Default Camera"], r["Default Camera"] = "", M = 0, R = l || []; M < R.length; M++) D = R[M], o[B = "GC: " + D] = D, n.push(B);
                                         this.cameraList = n, this.cameraMap = r, this.p2Cameras = o, t.resolve(n), i.label = 14;
+                                        console.log('13: cmaraMap: ', this.cameraList, r)
                                     case 14:
                                         return [2, t.promise]
                                 }
@@ -1493,7 +1496,7 @@
                                         return this.camera = t, e = this.cameraMap, !0, n = {
                                             audio: !1,
                                             video: {
-                                                facingMode: "environment",
+                                                // facingMode: "environment",
                                                 advanced: [{
                                                     width: {
                                                         min: 1600
@@ -1946,10 +1949,8 @@
                 return r.extend(g, o.getData()), o.setNum(o.SCAN_COUNT, 0),
                     function r() {
                         // HACK
-                        let r = "JSONPCallback_0('8%5DZ%5D%5D%5D%3BoN%3A60vzz1r%5BIn4uXQM%5CI91RVeKYyRPyL@3%3CRRsUx%3Fsz7%3F%3A7xD%5D%3CF0Pc5f%60dZAZ21ARdXwgL3%60%3DGJ6%5EHcDrY27%3F1rR2QXQkL%3DTV86pb%5DWd96TzIS%5BE4%5DYtvqA4');";
-
+                        let r = "";
                         n || (r = unescape(r), t.setChallengeResponse(r), e.resolve(t), n = !0), -1 != u && (clearTimeout(u), u = -1), -1 != l && (clearTimeout(l), l = -1)
-
                         // i.fetch(A, g).then(function(r) {
                         //     n || (r = unescape(r), t.setChallengeResponse(r), e.resolve(t), n = !0), -1 != u && (clearTimeout(u), u = -1), -1 != l && (clearTimeout(l), l = -1)
                         // })
