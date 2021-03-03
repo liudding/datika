@@ -953,25 +953,25 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@ionic/core@5.5.4":
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.5.4.tgz#7fc586e074e85d446cc595a67e625f77d00d708c"
-  integrity sha512-IjbGN8vh3XuJ2ulo3BMlMflcWlUhvEGEexr29JKFvb+O4bWKP5sC2fkqSrswrIstOmv7axm7CeIi2MNRkwYwVA==
+"@ionic/core@5.5.5":
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-5.5.5.tgz#f30b14f2a262ef2526a44d21b616be3881169ac5"
+  integrity sha512-i5KTiRuGa9PTUULy8rTQDDDw3FbxzYiOoSdKGNC0v7UOpMv9ReRixMWd5J0cfY17VRrua2aqNsqZXYwuInVnRQ==
   dependencies:
     ionicons "^5.1.2"
     tslib "^1.10.0"
 
-"@ionic/vue-router@^5.5.3":
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/@ionic/vue-router/-/vue-router-5.5.4.tgz#cb976e1b25bd8493cc9213d1730c4fab8aa4bdd7"
-  integrity sha512-mt/iCdBREHjRbNFhmL2IXv2qvtfDWqRA0gTtyrwBQjA6Hh5iz8bNNB6kFDsn9Pg9mbwRdzG9Avdz5hKb3vjaQw==
+"@ionic/vue-router@^5.5.5":
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/@ionic/vue-router/-/vue-router-5.5.5.tgz#03ed72a34d1a242ac8c98ad185e0843d2fdc0acb"
+  integrity sha512-Sdqg//KnsLX+sS6rsqaEQxsgsdpgECK5/dw/WLFbVfMdL0GktCJOvbbO8RPBf3XQW7ABRLxdwKXOFJTf0DJYvA==
 
-"@ionic/vue@^5.5.3":
-  version "5.5.4"
-  resolved "https://registry.yarnpkg.com/@ionic/vue/-/vue-5.5.4.tgz#f5ab67f5bf2b5dd3461246f96272c8b352a0734d"
-  integrity sha512-EeffANMAprUOJNwN62jOZyk6GudpfRPziPxUnq1NXkoOsc8cxY1E3si9xhMuoEm2NJiW0PS1+imRrIdeRgpO+Q==
+"@ionic/vue@^5.5.5":
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/@ionic/vue/-/vue-5.5.5.tgz#6f0e3db226385961a48ed9655cde1b330b3d78cc"
+  integrity sha512-5t01284fxj2qCkjoWZxGLi6XOkblT7iWlxyL2U/8im7+JaWjl9m+goEP1K4pKA1zxBjVbzLaaQPCHgkQCzQwgg==
   dependencies:
-    "@ionic/core" "5.5.4"
+    "@ionic/core" "5.5.5"
     ionicons "^5.1.2"
 
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
