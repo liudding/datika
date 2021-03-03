@@ -102,7 +102,9 @@ export default defineComponent({
   async mounted() {
     await this.getQuiz();
 
-    await this.preRequestPermission();
+    if (!window.cameraPermissionGranted) {
+      window.cameraPermissionGranted = await this.preRequestPermission();
+    }
 
     this.initScanner();
   },
@@ -172,9 +174,11 @@ export default defineComponent({
           video: true,
         });
 
-        stream.getTracks().forEach(track => {
+        stream.getTracks().forEach((track) => {
           track.stop();
-        })
+        });
+
+        return true;
       } catch (err) {
         if (err.name === "NotAllowedError") {
           alert("您拒绝了使用相机的请求，无法扫描");
@@ -260,9 +264,11 @@ export default defineComponent({
         {
           cameraList: scanner.getCameraList(),
           onChange: (res) => {
-            this.settings = res;
+            if (this.settings.camera != res.camera) {
+              scanner.setCamera(res.camera);
+            }
 
-            scanner.setCamera(res.camera);
+            this.settings = res;
           },
         },
         "scan-settings-modal"
