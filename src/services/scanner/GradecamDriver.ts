@@ -1,7 +1,7 @@
 /* eslint-disable*/
 
 declare global {
-  interface Window { gradeCamOnAPILoad: Function; gradecam: Object; }
+  interface Window { gradeCamOnAPILoad: Function; gradecam: Object|null; }
 }
 
 
@@ -38,8 +38,8 @@ export default class GradeCam {
   }
 
 
-  async load() {
-    if (this.checkFullyLoaded()) {
+  async load(force=false) {
+    if (!force && this.checkFullyLoaded()) {
       this.loadEntity()
       return this
     };
@@ -53,10 +53,14 @@ export default class GradeCam {
     return this;
   }
 
-  async start() {
-    await this.load();
+  /**
+   * 
+   * @param force 重新下载 skd
+   */
+  async start(force=false) {
+    await this.load(force);
 
-    if (!this.checkCameraRendered()) {
+    if (!force && !this.checkCameraRendered()) {
       this.renderCamera();
     }
 
@@ -72,6 +76,7 @@ export default class GradeCam {
 
   stop() {
     this.unbindEvents()
+    this.gradecam.setValidateCallback(function() {})
     this.gradecam.stopCamera()
   }
 
@@ -148,8 +153,11 @@ export default class GradeCam {
     this.sdkUrl = url;
   }
 
+  /**
+   * 下载 sdk
+   */
   private async loadSdk() {
-    if (this.checkFullyLoaded()) return true;
+    window.gradecam = null;
 
     return new Promise((resolve, reject) => {
       window.gradeCamOnAPILoad = (gradecam: object) => {
@@ -234,9 +242,10 @@ export default class GradeCam {
       throw new Error();
     }
 
+    document.getElementById(this.CAMERA_RENDERED_ID)?.remove();
+
     container.appendChild(this.gradecam.getElement())
-    const gc = (document.getElementById(this.CAMERA_RENDERED_ID)) as HTMLElement;
-    gc.style.backgroundImage = '';
+    // const gc = (document.getElementById(this.CAMERA_RENDERED_ID)) as HTMLElement;
 
     this.cameraRendered = true;
   }

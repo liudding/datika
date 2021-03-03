@@ -3125,7 +3125,8 @@
                         e.callQ.shift()()
                     } else {
                         var r = t.plugin.getScan();
-                        if ("bad_auth" == r) return void (e.ivId = -1);
+                        // HACK
+                        // if ("bad_auth" == r) return void (e.ivId = -1);
                         if (e.doGetVidSize) {
                             var i = t.plugin.getVideoSize();
                             try {

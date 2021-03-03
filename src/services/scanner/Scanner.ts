@@ -31,8 +31,8 @@ export default class Scanner {
     this.autoLength = autoLength;
   }
 
-  async start() {
-    this.driver().start();
+  async start(force=false) {
+    this.driver().start(force);
   }
 
   async stop() {

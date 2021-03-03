@@ -169,15 +169,17 @@ export default defineComponent({
      * 否则可能会出现 scanner 拿不到相机 label 的情况
      */
     async preRequestPermission() {
+      console.log("pre request camera permission");
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: false,
           video: true,
         });
 
-        stream.getTracks && stream.getTracks().forEach((track) => {
-          track.stop();
-        });
+        stream.getTracks &&
+          stream.getTracks().forEach((track) => {
+            track.stop();
+          });
 
         stream.stop && stream.stop();
 
@@ -197,7 +199,7 @@ export default defineComponent({
       scanner.bind("issue", this.onIssue);
 
       scanner
-        .start()
+        .start(true)
         .then((res) => {
           console.log("SUCC", res);
         })
