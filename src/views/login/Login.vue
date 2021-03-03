@@ -25,8 +25,8 @@
               >账户登录
             </ion-button>
 
-            <ion-router-link href="/register" class="mt-1"
-              >注册</ion-router-link
+            <ion-button color="primary" fill="none" size="small" routerLink="/register" class="mt-1 register"
+              >注册</ion-button
             >
           </div>
         </div>
@@ -147,5 +147,9 @@ ion-button {
   width: 100%;
   height: 100%;
   /* background-color:red; */
+}
+
+.register {
+  color: var(--ion-color-primary);
 }
 </style>
