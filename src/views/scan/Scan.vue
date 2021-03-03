@@ -101,6 +101,9 @@ export default defineComponent({
   },
   async mounted() {
     await this.getQuiz();
+
+    await this.preRequestPermission();
+
     this.initScanner();
   },
   ionViewWillLeave() {
@@ -157,6 +160,28 @@ export default defineComponent({
         type: record.recordId ? "update" : "new",
         data: resp.data,
       };
+    },
+    /**
+     * 在 scanner 之前请求相机权限
+     * 否则可能会出现 scanner 拿不到相机 label 的情况
+     */
+    async preRequestPermission() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: true,
+        });
+
+        stream.getTracks().forEach(track => {
+          track.stop();
+        })
+      } catch (err) {
+        if (err.name === "NotAllowedError") {
+          alert("您拒绝了使用相机的请求，无法扫描");
+        }
+
+        console.error(err.name, err.message);
+      }
     },
     initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
@@ -237,7 +262,7 @@ export default defineComponent({
           onChange: (res) => {
             this.settings = res;
 
-            scanner.setCamera(res.camera)
+            scanner.setCamera(res.camera);
           },
         },
         "scan-settings-modal"
