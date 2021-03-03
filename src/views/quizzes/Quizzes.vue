@@ -101,9 +101,17 @@ export default defineComponent({
     },
 
     async showCreate() {
-      this.createModal = await this.modal(Create, {
-        onSaved: this.onQuizSaved,
-      });
+
+        this.router.push({
+          name: "Scan",
+          params: {
+            id: 0,
+          },
+        });
+
+      // this.createModal = await this.modal(Create, {
+      //   onSaved: this.onQuizSaved,
+      // });
     },
 
     async showEdit(quiz: any) {
