@@ -130,6 +130,9 @@ export default class Form extends Section {
         const blocks = this.getBubbleBlocks(sections);
         const mainBlock = blocks[0];
 
+        const lastSection = sections[sections.length - 1];
+        if (lastSection.groups.length < 5) return false;
+
         // 暂时只允许学号栏下面放置一列
         if (!sub) {
             return this.checkInSuitableInBlock(sections, mainBlock);
@@ -142,7 +145,7 @@ export default class Form extends Section {
 
     findPossibleLayouts(groups: BubbleGroup[]) {
 
-        const groupsInFirstSection = 12;
+        const groupsInFirstSection = groups.length <= 12 ? 12 : 1;
 
         let maxGroupsPerSection = Math.min(groupsInFirstSection, groups.length);
 
