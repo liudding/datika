@@ -19,20 +19,17 @@
       </ion-tab-bar>
     </ion-tabs>
 
-    <InstallPrompt></InstallPrompt>
+    <InstallPrompt v-if="showInstallPrompt"></InstallPrompt>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-} from "@ionic/vue";
+import { IonTabBar, IonTabButton, IonTabs } from "@ionic/vue";
 import { reader, person, square } from "ionicons/icons";
-import { defineComponent} from "vue";
-import { useStore } from "vuex"
-import InstallPrompt from '@/components/install-prompt/index.vue'
+import { defineComponent } from "vue";
+import { useStore } from "vuex";
+import InstallPrompt from "@/components/install-prompt/index.vue";
+import { isIos, isBrowser } from "@/utils/env";
 
 export default defineComponent({
   components: { IonTabs, IonTabBar, IonTabButton, InstallPrompt },
@@ -41,11 +38,18 @@ export default defineComponent({
       reader,
       person,
       square,
-      store: useStore()
+      store: useStore(),
+    };
+  },
+  data() {
+    return {
+      showInstallPrompt: false,
     };
   },
   created() {
     this.store.dispatch("classroom/list");
+
+    this.showInstallPrompt = isIos() && isBrowser();
   },
 });
 </script>
