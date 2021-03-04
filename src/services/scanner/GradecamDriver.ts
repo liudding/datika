@@ -1,7 +1,7 @@
 /* eslint-disable*/
 
 declare global {
-  interface Window { gradeCamOnAPILoad: Function; gradecam: Object|null; }
+  interface Window { gradeCamOnAPILoad: Function; gradecam: Object | null; }
 }
 
 
@@ -38,7 +38,7 @@ export default class GradeCam {
   }
 
 
-  async load(force=false) {
+  async load(force = false) {
     if (!force && this.checkFullyLoaded()) {
       this.loadEntity()
       return this
@@ -57,7 +57,7 @@ export default class GradeCam {
    * 
    * @param force 重新下载 skd
    */
-  async start(force=false) {
+  async start(force = false) {
     await this.load(force);
 
     if (!force && !this.checkCameraRendered()) {
@@ -76,7 +76,7 @@ export default class GradeCam {
 
   stop() {
     this.unbindEvents()
-    this.gradecam.setValidateCallback(function() {})
+    this.gradecam.setValidateCallback(function () { })
     this.gradecam.stopCamera()
   }
 
@@ -157,6 +157,9 @@ export default class GradeCam {
    * 下载 sdk
    */
   private async loadSdk() {
+
+    document.querySelector('script[src="/scanner/sdk/gcsdk_noui_6.5.1.3.js"]')?.remove();
+
     window.gradecam = null;
 
     return new Promise((resolve, reject) => {
