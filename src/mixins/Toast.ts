@@ -1,9 +1,13 @@
 import { toastController } from "@ionic/vue";
+import { Plugins } from '@capacitor/core';
+const { Toast } = Plugins;
+import { isApp } from "@/utils/env";
 
 export default {
 
     methods: {
         async toast(options?: any) {
+
             if (typeof options === 'string') {
                 options = {
                     title: options
@@ -16,6 +20,15 @@ export default {
             }
 
 
+            if (isApp()) {
+                await Toast.show({
+                    text: options.title || options.header,
+                    duration: duration > 3000 ? 'long' : 'short',
+                    position: options.position || 'top'
+                });
+
+                return
+            }
 
             const toast = await toastController
                 .create({
