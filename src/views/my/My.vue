@@ -22,7 +22,7 @@
         <ion-item-divider></ion-item-divider>
 
         <!-- <ion-item button routerLink="/settings">设置</ion-item> -->
-        <ion-item button @click="gotoFeedback" >帮助与反馈</ion-item>
+        <ion-item button @click="gotoFeedback">帮助与反馈</ion-item>
         <ion-item button routerLink="/about">关于</ion-item>
       </ion-item-group>
 
@@ -44,6 +44,8 @@ import { mapState } from "vuex";
 import ActionSheet from "@/mixins/ActionSheet";
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
+import { Plugins } from "@capacitor/core";
+const { Browser } = Plugins;
 
 export default defineComponent({
   name: "My",
@@ -66,10 +68,10 @@ export default defineComponent({
     return {};
   },
   methods: {
-    gotoFeedback() {
-      // window.location.href = 'https://support.qq.com/product/311244'
-      const url = process.env.VUE_APP_BASE_URL + '/feedback?token=' + this.user.token  
-      window.open(url)
+    async gotoFeedback() {
+      const url =
+        process.env.VUE_APP_BASE_URL + "/feedback?token=" + this.user.token;
+      await Browser.open({ url });
     },
     logout() {
       this.showActionSheet({
