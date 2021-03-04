@@ -11,7 +11,7 @@ type LoginParam = {
 
 function login(data: LoginParam) {
 
-  data.deviceName = data.deviceName || env();
+  data.deviceName = data.deviceName as any || env();
 
   return request({
     url: data.code ? '/login/verification_code' : '/login',
