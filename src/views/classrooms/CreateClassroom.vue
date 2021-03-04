@@ -23,12 +23,13 @@
 import { defineComponent } from "vue";
 import Api from "@/api";
 import Loading from "@/mixins/Loading";
+import Toast from "@/mixins/Toast";
 
 export default defineComponent({
   name: "CreateModal",
   props: ["classroom"],
   emits: ["saved"],
-  mixins: [Loading],
+  mixins: [Loading, Toast],
   data() {
     return {
       name: this.classroom ? this.classroom.name : "",
@@ -43,6 +44,11 @@ export default defineComponent({
     async submit() {
       if (!this.name) return;
 
+      if (this.name.length < 2) {
+        this.toast("名称至少需要 2 个字符");
+        return;
+      }
+
       const loading = await this.loading();
       try {
         let resp = null;
@@ -56,11 +62,21 @@ export default defineComponent({
           });
         }
 
+        this.toast({
+          title: "保存成功",
+          color: "success",
+          duration: 3000
+        });
+
         this.$emit("saved", resp.data, !this.classroom);
 
         this.resetData();
       } catch (e) {
-        console.log(e);
+        this.toast({
+          title: "保存失败",
+          message: e.response.data.friendlyMessage,
+          color: "danger",
+        });
       } finally {
         loading.dismiss();
       }

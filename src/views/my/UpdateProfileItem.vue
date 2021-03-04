@@ -22,10 +22,13 @@
 import { defineComponent } from "vue";
 import Api from "@/api";
 import Console from "@/services/console";
+import Toast from "@/mixins/Toast";
+import Loading from "@/mixins/Loading";
 
 export default defineComponent({
   props: ["data"],
   emits: ["saved"],
+  mixins: [Toast, Loading],
   data() {
     return {
       newVal: "",
@@ -40,15 +43,33 @@ export default defineComponent({
         return;
       }
 
-      const resp = await Api.user.updateProfile({
-        [this.data.key]: this.newVal,
-      });
+      const loading = await this.loading();
 
-      this.$store.commit("SET_PROFILE", resp.data);
+      try {
+        const resp = await Api.user.updateProfile({
+          [this.data.key]: this.newVal,
+        });
 
-      this.$emit("saved");
+        this.toast({
+          title: "保存成功",
+          color: "success",
+          duration: 3000,
+        });
 
-      this.resetData();
+        this.$store.commit("SET_PROFILE", resp.data);
+
+        this.$emit("saved");
+
+        this.resetData();
+      } catch (e) {
+        this.toast({
+          title: "保存失败",
+          message: e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
 
     resetData() {

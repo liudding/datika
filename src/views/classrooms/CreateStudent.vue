@@ -42,7 +42,7 @@
       <div class="message-box">
         <p>
           如需批量上传学生名单，请在电脑端浏览器打开
-          <b class="website-url">{{webUrl}}</b>
+          <b class="website-url">{{ webUrl }}</b>
         </p>
       </div>
     </div>
@@ -54,11 +54,12 @@ import { defineComponent } from "vue";
 import Api from "@/api";
 import Alert from "@/mixins/Alert";
 import Loading from "@/mixins/Loading";
+import Toast from "@/mixins/Toast";
 
 export default defineComponent({
   props: ["student"],
   emits: ["created", "deleted"],
-  mixins: [Alert, Loading],
+  mixins: [Alert, Loading, Toast],
   computed: {
     title() {
       return this.student ? "编辑学生" : "添加学生";
@@ -68,7 +69,7 @@ export default defineComponent({
     return {
       name: this.student ? this.student.name : "",
       number: this.student ? this.student.number : "",
-      webUrl: process.env.VUE_APP_WEBSITE_ADDRESS
+      webUrl: process.env.VUE_APP_WEBSITE_ADDRESS,
     };
   },
   methods: {
@@ -80,6 +81,7 @@ export default defineComponent({
       }
 
       if (this.number.length < 2) {
+        this.toast("名称至少需要 2 个字符");
         return;
       }
 
@@ -99,11 +101,22 @@ export default defineComponent({
           });
         }
 
+        this.toast({
+          title: "保存成功",
+          color: "success",
+          duration: 3000
+        });
+
         this.$emit("created", resp.data, !this.student);
 
         this.resetData();
       } catch (e) {
         console.log(e);
+        this.toast({
+          title: "保存失败",
+          message: e.response.data.friendlyMessage,
+          color: "danger",
+        });
       } finally {
         loading.dismiss();
       }
@@ -122,7 +135,20 @@ export default defineComponent({
     async delete(student) {
       const loading = await this.loading();
 
-      await Api.student.destroy(student.id);
+      try {
+        await Api.student.destroy(student.id);
+
+        this.toast({
+          title: "删除成功",
+          color: "success",
+          duration: 3000
+        });
+      } catch (e) {
+        this.toast({
+          title: "删除失败",
+          color: "danger",
+        });
+      }
 
       this.$emit("deleted", student);
 
