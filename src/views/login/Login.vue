@@ -9,24 +9,23 @@
             <img src="/img/icons/android-chrome-512x512.png" class="logo" />
           </div>
           <div class="body">
-            <h3 class="app-name">Quiz</h3>
-            <div class="slogan">slogan</div>
+            <h3 class="app-name">{{appName}}</h3>
+            <!-- <div class="slogan">slogan</div> -->
           </div>
 
           <div class="bottom flex">
-            <ion-button v-if="isApp" expand="block">微信登录</ion-button>
-            <ion-button v-if="isInWechat" expand="block">微信登录</ion-button>
+            <!-- <ion-button v-if="isApp" expand="block">微信登录</ion-button>
+            <ion-button v-if="isInWechat" expand="block">微信登录</ion-button> -->
        
             <ion-button
               routerLink="/login/password"
               expand="block"
-              class="outline"
               style="margin-top: 16px"
-              >账户登录
+              >登 录
             </ion-button>
 
             <ion-button color="primary" fill="none" size="small" routerLink="/register" class="mt-1 register"
-              >注册</ion-button
+              >注 册</ion-button
             >
           </div>
         </div>
@@ -41,7 +40,9 @@ import { isApp, isInWechat } from "@/utils/env";
 
 export default defineComponent({
   data() {
-    return {};
+    return {
+      appName: process.env.VUE_APP_NAME
+    };
   },
   setup() {
     return {

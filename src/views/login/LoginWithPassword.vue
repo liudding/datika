@@ -10,7 +10,7 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <ion-segment
+      <!-- <ion-segment
         @ionChange="segmentChanged($event)"
         :value="segment"
         style="margin-top: 8px"
@@ -21,7 +21,7 @@
         <ion-segment-button value="password">
           <ion-label>密码</ion-label>
         </ion-segment-button>
-      </ion-segment>
+      </ion-segment> -->
 
       <div v-show="segment === 'code'" style="margin-top: 16px">
         <ion-item lines="none">
@@ -95,10 +95,10 @@ export default defineComponent({
     return {
       personOutline,
       lockClosedOutline,
-      segment: "code",
+      segment: "password",
 
-      username: "ding",
-      password: "123456",
+      username: "",
+      password: "",
       mobile: "",
       code: "",
 
