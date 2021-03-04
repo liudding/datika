@@ -58,8 +58,10 @@ instance.interceptors.response.use(
 
         } else if (error.request) {
             // The request was made but no response was received
+            alert('请检测网络是否正常');
         } else {
             // Something happened in setting up the request that triggered an Error
+            alert('出错了');
         }
 
         return Promise.reject(error)
