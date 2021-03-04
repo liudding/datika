@@ -46,7 +46,7 @@
 import { addOutline } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 import QuizItem from "./QuizItem.vue";
 import Create from "./Create.vue";
@@ -56,6 +56,7 @@ import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
 import Modal from "@/mixins/Modal";
 import Loading from "@/mixins/Loading";
+import Toast from "@/mixins/Toast";
 import { mapState } from "vuex";
 
 export default defineComponent({
@@ -65,7 +66,7 @@ export default defineComponent({
     Emptyset,
   },
   props: ["archived"],
-  mixins: [Alert, ActionSheet, Modal, Loading],
+  mixins: [Alert, ActionSheet, Modal, Loading, Toast],
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -191,11 +192,25 @@ export default defineComponent({
     async unarchiveQuiz(quiz: any) {
       const loading = await this.loading();
 
-      await Api.quiz.unarchive(quiz.id);
+      try {
+        await Api.quiz.unarchive(quiz.id);
 
-      this.store.commit("quiz/UNARCHIVE_QUIZ", quiz);
+        this.store.commit("quiz/UNARCHIVE_QUIZ", quiz);
 
-      loading.dismiss();
+        this.toast({
+          title: "解档成功",
+          color: "success",
+          duration: 3000,
+        });
+      } catch (e) {
+        this.toast({
+          title: "解档失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
 
     async archiveQuiz(quiz: any) {
@@ -231,28 +246,71 @@ export default defineComponent({
     async copy(quiz: any) {
       const loading = await this.loading();
 
-      const resp = await Api.quiz.copy(quiz.id);
+      try {
+        const resp = await Api.quiz.copy(quiz.id);
 
-      this.store.commit("quiz/UNSHIFT_QUIZ", resp.data);
+        this.store.commit("quiz/UNSHIFT_QUIZ", resp.data);
 
-      loading.dismiss();
+        this.toast({
+          title: "创建成功",
+          color: "success",
+          duration: 3000,
+        });
+      } catch (e) {
+        this.toast({
+          title: "创建失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
     async archive(quiz: any) {
       const loading = await this.loading();
 
-      await Api.quiz.archive(quiz.id);
+      try {
+        await Api.quiz.archive(quiz.id);
 
-      this.store.commit("quiz/ARCHIVE_QUIZ", quiz);
+        this.store.commit("quiz/ARCHIVE_QUIZ", quiz);
 
-      loading.dismiss();
+        this.toast({
+          title: "归档成功",
+          color: "success",
+          duration: 3000,
+        });
+      } catch (e) {
+        this.toast({
+          title: "归档失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
     async delete(quiz: any) {
       const loading = await this.loading();
 
-      await Api.quiz.destroy(quiz.id);
-      this.store.commit("quiz/REMOVE_QUIZ", quiz);
+      try {
+        await Api.quiz.destroy(quiz.id);
 
-      loading.dismiss();
+        this.toast({
+          title: "删除成功",
+          color: "success",
+          duration: 3000,
+        });
+
+        this.store.commit("quiz/REMOVE_QUIZ", quiz);
+      } catch (e) {
+        this.toast({
+          title: "删除失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
   },
 });

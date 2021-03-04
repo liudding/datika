@@ -58,6 +58,7 @@ import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
 import ActionSheet from "@/mixins/ActionSheet";
 import Loading from "@/mixins/Loading";
+import Toast from "@/mixins/Toast";
 import Emptyset from "@/components/Emptyset.vue";
 import { useStore, mapState } from "vuex";
 
@@ -70,7 +71,7 @@ export default defineComponent({
   props: {
     archived: Boolean,
   },
-  mixins: [Modal, Alert, ActionSheet, Loading],
+  mixins: [Modal, Alert, ActionSheet, Loading, Toast],
   setup() {
     const router = useRouter();
 
@@ -188,24 +189,72 @@ export default defineComponent({
 
     async doArchive(classroom: any) {
       const loading = await this.loading();
-      await Api.classroom.archive(classroom.id);
 
-      classroom.archivedAt = Date.now() / 1000;
+      try {
+        await Api.classroom.archive(classroom.id);
 
-      await this.store.dispatch("classroom/archive", classroom);
-      loading.dismiss();
+        classroom.archivedAt = Date.now() / 1000;
+
+        await this.store.dispatch("classroom/archive", classroom);
+
+        this.toast({
+          title: "归档成功",
+          color: "success",
+          duration: 3000,
+        });
+      } catch (e) {
+        this.toast({
+          title: "归档失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
     async doUnarchive(classroom: any) {
       const loading = await this.loading();
-      await Api.classroom.unarchive(classroom + classroom.id);
-      loading.dismiss();
+
+      try {
+        await Api.classroom.unarchive(classroom + classroom.id);
+
+        this.toast({
+          title: "解档成功",
+          color: "success",
+          duration: 3000,
+        });
+      } catch (e) {
+        this.toast({
+          title: "解档失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
 
     async doDelete(classroom: any) {
       const loading = await this.loading();
-      await Api.classroom.destroy(classroom.id);
-      this.store.commit("classroom/REMOVE_CLASSROOM", classroom);
-      loading.dismiss();
+
+      try {
+        await Api.classroom.destroy(classroom.id);
+        this.store.commit("classroom/REMOVE_CLASSROOM", classroom);
+
+        this.toast({
+          title: "删除成功",
+          color: "success",
+          duration: 3000,
+        });
+      } catch (e) {
+        this.toast({
+          title: "删除失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
 
     async archiveClassroom(classroom: any) {

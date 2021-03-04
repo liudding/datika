@@ -88,13 +88,15 @@ import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
 import _ from "lodash";
-import Alert from "@/mixins/Alert.ts";
-import Modal from "@/mixins/Modal.ts";
+import Alert from "@/mixins/Alert";
+import Modal from "@/mixins/Modal";
+import Toast from "@/mixins/Toast";
+import Loading from "@/mixins/Loading";
 import QuestionDefines from "./QuestionDefines.vue";
 import { mapState } from "vuex";
 
 export default defineComponent({
-  mixins: [Alert, Modal],
+  mixins: [Alert, Modal, Toast, Loading],
   data() {
     const debouncedUpdates: any = {};
 
@@ -208,12 +210,24 @@ export default defineComponent({
         question.answer = oldQuestion.answer;
       }
 
-      const resp = await Api.question.set(+this.$route.params.id, questions);
-      questions = resp.data;
+      const loading = await this.loading();
 
-      this.store.commit("quiz/UPDATE_QUIZ_QUESTIONS", questions);
+      try {
+        const resp = await Api.question.set(+this.$route.params.id, questions);
+        questions = resp.data;
 
-      this.definesModal.dismiss();
+        this.store.commit("quiz/UPDATE_QUIZ_QUESTIONS", questions);
+
+        this.definesModal.dismiss();
+      } catch (e) {
+        this.toast({
+          title: "更新失败",
+          message: e.response.data && e.response.data.friendlyMessage,
+          color: "danger",
+        });
+      } finally {
+        loading.dismiss();
+      }
     },
     async onEditQuestionCount() {
       if (this.quiz.recordCount > 0) return;
@@ -261,11 +275,13 @@ export default defineComponent({
             .then(() => {
               //
             })
-            .catch(() => {
+            .catch((e) => {
               this.store.commit("quiz/UPDATE_QUESTION", oldQuestion);
 
-              this.alert({
-                title: "出错了",
+              this.toast({
+                title: "更新失败",
+                message: e.response.data && e.response.data.friendlyMessage,
+                color: "danger",
               });
             });
         }, 500);

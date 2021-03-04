@@ -69,8 +69,8 @@ export default defineComponent({
 
         this.toast({
           title: "创建成功",
-          color: 'success',
-          duration: 3000
+          color: "success",
+          duration: 3000,
         });
 
         this.$emit("saved", resp.data, true);
@@ -80,7 +80,7 @@ export default defineComponent({
         this.toast({
           title: "创建失败",
           message: e.response.data.friendlyMessage,
-          color: 'danger',
+          color: "danger",
         });
       } finally {
         loading.dismiss();
@@ -94,6 +94,12 @@ export default defineComponent({
           name: this.name,
         });
 
+        this.toast({
+          title: "更新成功",
+          color: "success",
+          duration: 3000,
+        });
+
         this.$emit("saved", resp.data, false);
 
         this.resetData();
@@ -101,7 +107,7 @@ export default defineComponent({
         this.toast({
           title: "更新失败",
           message: e.response.data && e.response.data.friendlyMessage,
-          color: 'danger',
+          color: "danger",
         });
       } finally {
         loading.dismiss();
