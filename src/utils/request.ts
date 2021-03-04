@@ -41,6 +41,8 @@ instance.interceptors.response.use(
                 })
             }
 
+            error.response.data.friendlyMessage = response.data.message
+
             if (response.status === 422) {
                 // validation errors
                 let message;
@@ -50,10 +52,9 @@ instance.interceptors.response.use(
                     break;
                 }
 
-                alert(message)
+                message &&  (error.response.data.friendlyMessage = message);
+                return Promise.reject(error);
             }
-
-
 
         } else if (error.request) {
             // The request was made but no response was received
