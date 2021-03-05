@@ -1,16 +1,46 @@
-export function detect(): string {
+// import { parseUa } from '@/utils/ua';
+import { uuid } from '@/utils/uuid';
+import ua from '@/utils/uaDetect'
+
+
+function getUid(): string {
+    if (typeof window !== 'undefined') {
+      let uid = window.localStorage.getItem('_uuid');
+      if (uid) {
+        return uid;
+      }
+
+      uid = uuid();
+      window.localStorage.setItem('_uuid', uid);
+      return uid;
+    }
+
+    return uuid();
+  }
+
+export  function detect(): any {
+
+    let env = 'browser';
+
     if (location.search.indexOf('source=pwa') > 0) {
-        return 'pwa';
-    }
-
-    const ua = navigator.userAgent;
-
-    if (/MicroMessenger/i.test(ua) || /weixin/i.test(ua) || /wechat/i.test(ua)) {
-        return 'wechat';
+        env = 'pwa';
     }
 
 
-    return 'browser';
+    const uaFields = ua.properties;
+
+
+    return {
+        env,
+        model: uaFields.model,
+        platform: <const>'web',
+        operatingSystem: uaFields.operatingSystem,
+        osVersion: uaFields.osVersion,
+        manufacturer: navigator.vendor,
+        uuid: getUid(),
+        browser: uaFields.browser,
+        browserVersion: uaFields.browserVersion,
+    };
 }
 
 export function os() {
@@ -26,12 +56,12 @@ export function os() {
 }
 
 export function env() {
-    let env = localStorage.getItem('env')
+    const env = localStorage.getItem('env')
     if (env) return env;
 
-    env = detect();
+    // env = await detect();
 
-    localStorage.setItem('env', env);
+    // localStorage.setItem('env', env);
 
     return env;
 }
@@ -42,7 +72,7 @@ export function isPwa() {
 }
 
 export function isBrowser() {
-    return env() === 'browser';
+    return env() === 'browser' || env() === 'web';
 }
 
 export function isApp() {
@@ -50,15 +80,16 @@ export function isApp() {
 }
 
 export function isInWechat() {
-    return true;
+    return ua.isWechat;
 }
 
 export function isAndroid() {
-    return os() === 'android'
+    return ua.isAndroid;
 }
 
 export function isIos() {
-    return os() === 'ios';
+  
+    return ua.isIos;
 }
 
 /**
@@ -71,4 +102,4 @@ export function isIos() {
  */
 
 
-env();
+detect()
