@@ -64,13 +64,13 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/quizzes/:id/records',
         name: 'QuizRecords',
-        component: () => import('@/views/quizzes/Records.vue'),
+        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/Records.vue'),
         props: true,
     },
     {
         path: '/quizzes/:quizId/records/:recordId',
         name: 'QuizRecord',
-        component: () => import('@/views/quizzes/Record.vue'),
+        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/Record.vue'),
         props: true,
     },
 
@@ -79,7 +79,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/quizzes/:id/scan',
         name: 'Scan',
-        component: () => import('@/views/scan/Scan.vue')
+        component: () => import(/* webpackChunkName: "quiz" */ '@/views/scan/Scan.vue')
     },
 
     /**
@@ -139,17 +139,17 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/settings',
         name: 'Settings',
-        component: () => import('@/views/settings/Settings.vue')
+        component: () => import( /* webpackChunkName: "settings" */  '@/views/settings/Settings.vue')
     },
     {
         path: '/help',
         name: 'Help',
-        component: () => import('@/views/settings/Help.vue')
+        component: () => import(/* webpackChunkName: "settings" */  '@/views/settings/Help.vue')
     },
     {
         path: '/about',
         name: 'About',
-        component: () => import('@/views/settings/About.vue')
+        component: () => import(/* webpackChunkName: "settings" */  '@/views/settings/About.vue')
     },
 
     /**
