@@ -58,8 +58,10 @@ import {
 } from "ionicons/icons";
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue";
 import Loading from "@/mixins/Loading";
 import Alert from "@/mixins/Alert";
+import Toast from "@/mixins/Toast";
 import Api from "@/api";
 import Validator from "@/utils/validator";
 
@@ -77,21 +79,21 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    return { store };
+    return { store, router: useRouter() };
   },
   components: {},
-  mixins: [Loading, Alert],
+  mixins: [Loading, Alert, Toast],
   methods: {
     async register() {
       if (!this.mobile || !this.password || !this.name) return;
 
       if (!Validator.isMobile(this.mobile)) {
-        alert("手机号不正确");
+        this.toast("手机号格式不正确");
         return;
       }
 
       if (!Validator.isValidPassword(this.password)) {
-        alert("密码至少 6 位");
+        this.toast("密码至少 6 位");
         return;
       }
 
@@ -107,7 +109,7 @@ export default defineComponent({
         this.login();
       } catch (e) {
         this.alert({
-          title: "注册失败",
+          title: (e.response && e.response.data.friendlyMessage) || "注册失败",
         });
       } finally {
         loading.dismiss();
@@ -128,6 +130,8 @@ export default defineComponent({
 
         this.$router.replace({ path: "/" });
       } catch (e) {
+        this.router.back();
+
         this.alert({
           title: "登录失败",
         });

@@ -59,7 +59,7 @@
             @ionChange="username = $event.target.value"
             autofocus
             required
-            placeholder="手机号/邮箱"
+            placeholder="手机号"
           ></ion-input>
         </ion-item>
         <ion-item lines="none">
@@ -87,8 +87,9 @@ import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import Loading from "@/mixins/Loading";
 import Alert from "@/mixins/Alert";
+import Toast from "@/mixins/Toast";
 import Api from "@/api";
-import Validator from "@/utils/validator"
+import Validator from "@/utils/validator";
 
 export default defineComponent({
   data() {
@@ -111,10 +112,19 @@ export default defineComponent({
     return { store };
   },
   components: {},
-  mixins: [Loading, Alert],
+  mixins: [Loading, Alert, Toast],
   methods: {
     async login() {
-      //
+      if (!Validator.isMobile(this.username)) {
+        this.toast("手机号格式不正确");
+        return;
+      }
+
+      if (!Validator.isValidPassword(this.password)) {
+        this.toast("密码过短");
+        return;
+      }
+
       const loading = await this.loading();
 
       try {
@@ -130,7 +140,7 @@ export default defineComponent({
         this.$router.replace({ path: "/" });
       } catch (e) {
         this.alert({
-          title: "登录失败",
+          title: e.response && e.response.data.friendlyMessage || "登录失败",
         });
       } finally {
         loading.dismiss();
@@ -156,7 +166,7 @@ export default defineComponent({
     },
 
     countdown() {
-       this.isCounting = true;
+      this.isCounting = true;
 
       let seconds = 60;
 
