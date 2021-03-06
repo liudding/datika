@@ -59,11 +59,11 @@ export function env() {
     const env = localStorage.getItem('env')
     if (env) return env;
 
-    // env = await detect();
+    const infos = detect();
 
-    // localStorage.setItem('env', env);
+    localStorage.setItem('env', infos.env);
 
-    return env;
+    return infos.env;
 }
 
 
