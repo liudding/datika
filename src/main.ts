@@ -35,7 +35,7 @@ import {
   IonInput, IonCheckbox, IonToggle,
   IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel, IonNote,
   IonToolbar, IonSegment, IonSegmentButton,
-  IonAlert, IonPopover
+  IonAlert, IonSpinner, IonPopover
 } from '@ionic/vue';
 
 
@@ -72,4 +72,5 @@ app.component('IonPage', IonPage)
   .component('IonNote', IonNote)
   .component('IonLabel', IonLabel)
   .component('IonPopover', IonPopover)
-  .component('IonAlert', IonAlert);
+  .component('IonAlert', IonAlert)
+  .component('IonSpinner', IonSpinner);

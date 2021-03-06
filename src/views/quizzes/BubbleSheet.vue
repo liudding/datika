@@ -4,9 +4,12 @@
     <div class="main">
       <div id="preview">
         <img v-if="previewUrl" :src="previewUrl" />
+        <ion-spinner v-else name="circles" color="medium"></ion-spinner>
       </div>
 
-      <ion-button @click="download">下载</ion-button>
+      <ion-button :disabled="!previewUrl" @click="download" class="download-btn"
+        >下载</ion-button
+      >
     </div>
   </div>
 
@@ -85,20 +88,43 @@ export default defineComponent({
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 8px 16px;
 }
 
-.preview img {
+#preview {
   width: 100%;
-  max-height: 80%;
+  height: 300px;
+  text-align: center;
+}
+
+#preview img {
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
 }
 
 .main {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background: white;
   padding: 16px;
   border-radius: 16px;
+
+  min-width: 200px;
+  min-height: 300px;
+}
+
+ion-spinner {
+  margin-top: 100px;
+}
+
+.download-btn {
+  margin-top: 16px;
+  min-width: 120px;
+  width: 300px;
+  max-width: 400px;
 }
 
 .backdrop {
@@ -122,7 +148,6 @@ export default defineComponent({
 
   transform: scale(0.3, 0.3);
 }
-
 
 #bubble-sheet {
   display: block;
@@ -191,7 +216,6 @@ export default defineComponent({
 #bubble-sheet .header .number-grid .item:not(:last-child) {
   border-right: 1px solid black;
 }
-
 
 #bubble-sheet .header .name-input {
   position: absolute;
