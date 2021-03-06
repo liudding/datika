@@ -47,6 +47,7 @@ export default defineComponent({
 input {
   width: 30px;
   border: none;
+  border-radius: 0;
   text-align: center;
   border-top: solid 1px #bbb;
   border-bottom: solid 1px #bbb;
