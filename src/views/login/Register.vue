@@ -58,7 +58,7 @@ import {
 } from "ionicons/icons";
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue";
+import { useRouter } from "vue-router";
 import Loading from "@/mixins/Loading";
 import Alert from "@/mixins/Alert";
 import Toast from "@/mixins/Toast";
