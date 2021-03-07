@@ -8,8 +8,6 @@ export default {
     methods: {
         async alert(options: any) {
 
-
-
             return new Promise<void>((resolve, reject) => {
 
                 const buttons = options.buttons || [];
@@ -25,7 +23,7 @@ export default {
                     })
                 }
 
-                if (options.confirm || buttons.length === 0) {
+                if (options.confirm || options.confirmText || buttons.length === 0) {
                     options.confirm = true;
 
                     buttons.push({
