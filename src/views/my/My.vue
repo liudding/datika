@@ -27,7 +27,7 @@
       </ion-item-group>
 
       <ion-item-group>
-        <ion-item-divider></ion-item-divider>
+         <ion-item-divider></ion-item-divider>
         <ion-item @click="logout" lines="none">
           <ion-label color="danger" style="text-align: center"
             >退出登录</ion-label
@@ -101,15 +101,13 @@ export default defineComponent({
 <style scoped>
 ion-item-divider {
   --background: transparent;
-  --inner-padding-bottom: 0;
+  /* --inner-padding-bottom: 0;
   --inner-padding-top: 0;
   --padding-top: 0;
-  --padding-bottom: 0;
-  min-height: 8px;
+  --padding-bottom: 0; */
 }
 
 .profile ion-item {
-  /* height: 80px; */
   --padding-top: 32px;
   --padding-bottom: 16px;
   margin-bottom: 8px;

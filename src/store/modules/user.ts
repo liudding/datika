@@ -54,15 +54,16 @@ export default {
 
         async logout(context: any) {
 
-            // 清除全部数据
-            context.commit('quiz/CLEAR')
-            context.commit('classroom/CLEAR')
-            context.commit('SET_AUTH_TOKEN', '');
-
             try {
-                Api.auth.logout()
+                await Api.auth.logout()
             } catch {
                 console.error('Logout error');
+            } finally {
+                // 清除全部数据
+                context.commit('quiz/CLEAR')
+                context.commit('classroom/CLEAR')
+                context.commit('SET_AUTH_TOKEN', '');
+                context.commit('SET_PROFILE', {});
             }
         },
 
