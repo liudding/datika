@@ -5,7 +5,7 @@
         <ion-buttons>
           <ion-back-button default-href="/" text=""></ion-back-button>
         </ion-buttons>
-        <ion-title>我的订阅</ion-title>
+        <ion-title>{{ subscription ?  '开通会员': '我的订阅' }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -53,7 +53,6 @@ export default defineComponent({
     },
     subscribed(subscription: any) {
       this.subscription = subscription;
-      this.showPlans = false;
     },
   },
 });

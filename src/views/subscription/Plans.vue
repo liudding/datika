@@ -5,46 +5,40 @@
         <ion-col
           v-for="plan in plans"
           :key="plan.id"
+          size="4"
           @click="pickPlan(plan)"
-          class="plan"
-          :class="{
-            selected: plan.selected,
-          }"
-          style="padding: 8px;"
         >
-          <ion-card>
-            <ion-card-header>
-              <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-              <ion-card-title>{{plan.name}}</ion-card-title>
-            </ion-card-header>
+          <div
+            class="plan"
+            :class="{
+              selected: plan.selected,
+            }"
+          >
+            <div class="plan-name">
+              <div>{{ plan.name }}</div>
+            </div>
 
-            <ion-card-content>
-              Keep close to Nature's heart... and break clear away, once in
-              awhile, and climb a mountain or spend a week in the woods. Wash
-              your spirit clean.
-            </ion-card-content>
-          </ion-card>
+            <div class="plan-price"><span>¥</span>16</div>
+
+            <div class="description">折合</div>
+
+            <div></div>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
 
-    <ion-button @click="subscribe" expand="block">购买</ion-button>
+    <ion-button @click="subscribe" expand="block">立即开通</ion-button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {
-  IonCard,
-  IonCardContent,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol, IonGrid, IonRow
-} from "@ionic/vue";
+import { IonCol, IonGrid, IonRow } from "@ionic/vue";
 import Api from "@/api";
 
 export default defineComponent({
-  components: { IonCard, IonCardContent, IonCardSubtitle, IonCardTitle, IonCol, IonGrid, IonRow },
+  components: { IonCol, IonGrid, IonRow },
   data() {
     const plans: any[] = [];
     return {
@@ -83,21 +77,54 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 ion-content {
   --padding-start: 8px;
   --padding-end: 8px;
 }
-ion-item {
-  --padding-top: 16px;
-  --border-radius: 16px;
+
+ion-button {
+  margin-top: 16px;
 }
 
 .plan {
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 16px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &.selected {
+    background-image: linear-gradient(
+      90deg,
+      rgb(250, 232, 204),
+      rgb(224, 188, 129)
+    );
+  }
+
+  .description {
+    font-size: 12px;
+    color: gray;
+  }
 }
 
-.selected ion-card {
+.plan-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.plan-price {
+  font-weight: bold;
+  color: rgb(98, 65, 24);
+  font-size: 30px;
+}
+
+.plan-price span {
+  font-size: 17px;
+}
+
+.selected ion-plan {
   --background: rgb(245, 200, 1);
   --color: white;
 }
