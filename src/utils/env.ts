@@ -83,6 +83,10 @@ export function isInWechat() {
     return ua.isWechat;
 }
 
+export function isSafari() {
+    return ua.isSafari;
+}
+
 export function isAndroid() {
     return ua.isAndroid;
 }

@@ -29,7 +29,7 @@ import { reader, person, square } from "ionicons/icons";
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
 import InstallPrompt from "@/components/install-prompt/index.vue";
-import { isIos, isBrowser } from "@/utils/env";
+import { isIos, isBrowser, isSafari } from "@/utils/env";
 
 export default defineComponent({
   components: { IonTabs, IonTabBar, IonTabButton, InstallPrompt },
@@ -49,7 +49,7 @@ export default defineComponent({
   created() {
     this.store.dispatch("classroom/list");
 
-    this.showInstallPrompt = isIos() && isBrowser();
+    this.showInstallPrompt = isIos() && isBrowser() && isSafari();
   },
 });
 </script>

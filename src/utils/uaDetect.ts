@@ -16,6 +16,7 @@ interface UaDetect {
     isWechat: boolean;
     isAndroid: boolean;
     isIos: boolean;
+    isSafari: boolean;
 }
 
 type Rule = string | Function;
