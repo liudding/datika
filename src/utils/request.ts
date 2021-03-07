@@ -41,6 +41,12 @@ instance.interceptors.response.use(
                 })
             }
 
+            if (response.status === 404) {
+                error.response.data.friendlyMessage = '数据不存在，请刷新';
+
+                return Promise.reject(error);
+            }
+
             error.response.data.friendlyMessage = response.data.message
 
             if (response.status === 422) {
@@ -52,7 +58,7 @@ instance.interceptors.response.use(
                     break;
                 }
 
-                message &&  (error.response.data.friendlyMessage = message);
+                message && (error.response.data.friendlyMessage = message);
                 return Promise.reject(error);
             }
 
