@@ -23,6 +23,10 @@ import { defineComponent } from "vue";
 import Form from "@/services/sheetGenerator/Form";
 import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
+import { isApp } from "@/utils/env";
+import { Plugins } from "@capacitor/core";
+
+const { PhotosPlugin } = Plugins;
 
 export default defineComponent({
   props: {
@@ -63,12 +67,19 @@ export default defineComponent({
       this.previewUrl = dataUrl;
     },
 
-    download() {
+    async download() {
       const dataUrl = this.previewUrl;
-      const a = document.createElement("a");
-      a.setAttribute("download", "答题卡");
-      a.setAttribute("href", dataUrl);
-      a.click();
+
+      if (isApp()) {
+        await PhotosPlugin.savePhoto({
+          data: dataUrl,
+        });
+      } else {
+        const a = document.createElement("a");
+        a.setAttribute("download", "答题卡");
+        a.setAttribute("href", dataUrl);
+        a.click();
+      }
 
       this.$emit("downloaded");
     },
