@@ -151,17 +151,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'About',
         component: () => import(/* webpackChunkName: "settings" */  '@/views/settings/About.vue')
     },
-
-    /**
-     * 错误页面
-     */
-    {
-        path: '/offline',
-        name: 'Offline',
-        component: () => import('@/views/errors/Offline.vue')
-    },
-
-
 ]
 
 export default routes;
