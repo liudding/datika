@@ -97,7 +97,10 @@ export default defineComponent({
 }
 
 ion-item {
-  border-radius: 10px;
+  --inner-padding-end: 0;
+  border-radius: 100px;
+  border-top-left-radius: 100px;
+  margin-bottom: 8px;
 }
 
 ion-button {

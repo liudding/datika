@@ -145,6 +145,14 @@ export default defineComponent({
 }
 
 ion-item {
-  border-radius: 8px;
+  --inner-padding-end: 0;
+  border-radius: 100px;
+  border-top-left-radius: 100px;
+  margin-bottom: 8px;
+}
+
+ion-button {
+  margin-top: 32px;
+  --border-radius: 100px;
 }
 </style>

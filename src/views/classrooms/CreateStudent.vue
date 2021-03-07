@@ -164,10 +164,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-ion-item {
-  border-radius: 8px;
-}
-
 ion-content {
   --padding-top: 32px;
   --padding-start: 16px;
@@ -179,6 +175,11 @@ ion-item {
   border-radius: 100px;
   border-top-left-radius: 100px;
   margin-bottom: 8px;
+}
+
+ion-button {
+  margin-top: 32px;
+  --border-radius: 100px;
 }
 
 .message-wrapper {

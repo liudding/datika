@@ -1,6 +1,8 @@
 <template>
   <ion-header>
-    <div class="header"></div>
+    <ion-toolbar>
+      <ion-title>编辑{{ data.name }}</ion-title>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="content">
     <ion-item lines="none">
@@ -81,7 +83,6 @@ export default defineComponent({
 
 <style scoped>
 .content {
-  --background: white;
   height: 100%;
   padding: 32px 16px 0 16px;
   --padding-top: 32px;
@@ -90,22 +91,14 @@ export default defineComponent({
 }
 
 ion-item {
-  --background: #eee;
-  border-radius: 8px;
+  --inner-padding-end: 0;
+  border-radius: 100px;
+  border-top-left-radius: 100px;
+  margin-bottom: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  ion-item {
-    --background: rgb(83, 83, 83);
-    border-radius: 8px;
-  }
-
-  .modal-custom-class .header {
-    background: rgb(34, 34, 34);
-  }
-
-  ion-content {
-    --background: rgb(34, 34, 34);
-  }
+ion-button {
+  margin-top: 32px;
+  --border-radius: 100px;
 }
 </style>
