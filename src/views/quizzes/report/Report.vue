@@ -30,7 +30,7 @@
         </ion-item>
       </ion-list>
 
-      <Emptyset v-else title="尚未报告" message="请先扫描录入学生成绩"></Emptyset>
+      <Emptyset v-else title="尚无报告" message="请先扫描录入学生成绩"></Emptyset>
     </ion-content>
   </ion-page>
 </template>

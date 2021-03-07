@@ -19,7 +19,7 @@
         <ion-label @click="showAttachClassrooms"
           >班级：{{ quiz.classroomCount }}</ion-label
         >
-        <ion-label>总人数：{{ quiz.studentCount }}</ion-label>
+        <ion-label>学生：{{ quiz.studentCount }}</ion-label>
         <ion-label>已录入：{{ quiz.recordCount }}</ion-label>
       </ion-item>
       <ion-item lines="none">
