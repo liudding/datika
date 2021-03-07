@@ -12,7 +12,9 @@ export default {
 
                 const buttons = options.buttons || [];
 
-                if (options.cancel) {
+                if (options.cancel || options.cancelText) {
+                    options.cancel = true;
+
                     buttons.push({
                         text: options.cancelText || "取消",
                         role: "cancel",
