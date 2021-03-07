@@ -70,7 +70,7 @@ export default defineComponent({
         this.toast({
           title: "创建成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
 
         this.$emit("saved", resp.data, true);
@@ -97,7 +97,7 @@ export default defineComponent({
         this.toast({
           title: "更新成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
 
         this.$emit("saved", resp.data, false);

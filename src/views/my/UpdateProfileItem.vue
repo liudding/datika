@@ -55,7 +55,7 @@ export default defineComponent({
         this.toast({
           title: "保存成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
 
         this.$store.commit("SET_PROFILE", resp.data);

@@ -107,7 +107,7 @@ export default defineComponent({
         this.toast({
           title: "保存成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
 
         this.$emit("created", resp.data, !this.student);
@@ -155,7 +155,7 @@ export default defineComponent({
         this.toast({
           title: "删除成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
       } catch (e) {
         this.toast({
