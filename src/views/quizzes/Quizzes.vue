@@ -254,7 +254,7 @@ export default defineComponent({
         this.toast({
           title: "创建成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
       } catch (e) {
         this.toast({
@@ -277,7 +277,7 @@ export default defineComponent({
         this.toast({
           title: "归档成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
       } catch (e) {
         this.toast({
@@ -298,7 +298,7 @@ export default defineComponent({
         this.toast({
           title: "删除成功",
           color: "success",
-          duration: 3000,
+          duration: 1000,
         });
 
         this.store.commit("quiz/REMOVE_QUIZ", quiz);
