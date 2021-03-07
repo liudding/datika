@@ -42,7 +42,7 @@
       <div class="message-box">
         <p>
           如需批量上传学生名单，请在电脑端浏览器打开
-          <b class="website-url">{{ webUrl }}</b>
+          <b @click="onClickUrl" class="website-url">{{ webUrl }}</b>
         </p>
       </div>
     </div>
@@ -55,6 +55,9 @@ import Api from "@/api";
 import Alert from "@/mixins/Alert";
 import Loading from "@/mixins/Loading";
 import Toast from "@/mixins/Toast";
+import { Plugins } from "@capacitor/core";
+
+const { Clipboard } = Plugins;
 
 export default defineComponent({
   props: ["student"],
@@ -104,7 +107,7 @@ export default defineComponent({
         this.toast({
           title: "保存成功",
           color: "success",
-          duration: 3000
+          duration: 3000,
         });
 
         this.$emit("created", resp.data, !this.student);
@@ -120,6 +123,17 @@ export default defineComponent({
       } finally {
         loading.dismiss();
       }
+    },
+
+    onClickUrl() {
+      Clipboard.write({
+        string: this.webUrl,
+      });
+
+      this.toast({
+        title: "已复制",
+        duration: 2000
+      })
     },
 
     onClickDelete() {
@@ -141,7 +155,7 @@ export default defineComponent({
         this.toast({
           title: "删除成功",
           color: "success",
-          duration: 3000
+          duration: 3000,
         });
       } catch (e) {
         this.toast({
