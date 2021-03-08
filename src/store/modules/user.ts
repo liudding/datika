@@ -93,6 +93,12 @@ export default {
         },
 
         async updateSettings(context: any, data: any) {
+            if (data.key) {
+                data = Object.assign(context.state.settings, {
+                    [data.key]: data.value
+                });
+            }
+
             await Api.settings.update(data);
 
             context.commit('SET_SETTINGS', data);
