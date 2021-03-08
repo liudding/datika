@@ -9,22 +9,46 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
+      <ion-item-divider></ion-item-divider>
+      <ion-item-group>
+        <ion-item
+          >扫描提示音
+          <div slot="end">
+            <ion-toggle @ionChange="onBeepChange" :checked="settings.scan_beep">
+            </ion-toggle>
+          </div>
+        </ion-item>
+        <ion-item
+          >扫描播报语音
+          <div slot="end">
+            <ion-toggle
+              @ionChange="onSpeechChange"
+              :checked="settings.scan_speech"
+            >
+            </ion-toggle>
+          </div>
+        </ion-item>
+      </ion-item-group>
+
+      <ion-item-divider></ion-item-divider>
       <ion-item-group>
         <ion-item @click="showQuestionCount"
           >默认题目数量
-          <div slot="end">10</div>
+          <div slot="end">{{ settings.default_question_count || 10 }}</div>
         </ion-item>
         <ion-item-divider></ion-item-divider>
         <ion-item @click="showAutoArchive"
           >自动归档测验
-          <div slot="end">半年前的</div>
+          <div slot="end">{{settings.auto_archive_quizzes || 12}} 个月前的</div>
         </ion-item>
       </ion-item-group>
 
       <ion-item-group>
         <ion-item-divider></ion-item-divider>
         <ion-item @click="logout" lines="none">
-          <ion-label color="danger" style="text-align:center">退出登录</ion-label>
+          <ion-label color="danger" style="text-align: center"
+            >退出登录</ion-label
+          >
         </ion-item>
       </ion-item-group>
     </ion-content>
@@ -33,7 +57,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useStore } from "vuex";
+import { useStore, mapState } from "vuex";
 import { IonItemDivider, IonItemGroup } from "@ionic/vue";
 import QuestionCount from "./QuestionCount.vue";
 import AutoArchive from "./AutoArchive.vue";
@@ -46,35 +70,54 @@ export default defineComponent({
   mixins: [Modal, ActionSheet],
   setup() {
     return {
-      store: useStore()
+      store: useStore(),
     };
   },
+  computed: {
+    ...mapState({
+      settings: (state: any) => state.user.settings,
+    }),
+  },
   data() {
-    return {
-      settings: {
-        questionCount: 15,
-        autoArchiveDays: 30,
-      },
-    };
+    return {};
+  },
+  created() {
+    this.store.dispatch('getSettings');
   },
   methods: {
     async showQuestionCount() {
       await this.modal(QuestionCount, {
-        count: this.settings.questionCount,
+        count: this.settings.default_question_count,
         onChange: this.onQuestionCountChange,
       });
     },
     showAutoArchive() {
       this.modal(AutoArchive, {
-        days: this.settings.autoArchiveDays,
+        months: this.settings.auto_archive_quizzes,
         onChange: this.onAutoArchiveChange,
       });
     },
+
     onQuestionCountChange(count: number) {
-      this.settings.questionCount = count;
+       this.updateSettings("default_question_count", count);
     },
-    onAutoArchiveChange(days: number) {
-      this.settings.autoArchiveDays = days;
+    onAutoArchiveChange(months: number) {
+      this.updateSettings("auto_archive_quizzes", months);
+    },
+
+    onBeepChange($event: any) {
+      this.updateSettings("scan_beep", $event.detail.checked);
+    },
+
+    onSpeechChange($event: any) {
+      this.updateSettings("scan_speech", $event.detail.checked);
+    },
+
+    async updateSettings(key: string, value: any) {
+      const settings = Object.assign({}, this.settings);
+      settings[key] = value;
+
+      this.store.dispatch('updateSettings', settings);
     },
 
     logout() {
@@ -95,9 +138,9 @@ export default defineComponent({
       await this.store.dispatch("logout");
 
       this.$router.replace({
-        name: "Login"
-      })
-    }
+        name: "Login",
+      });
+    },
   },
 });
 </script>
@@ -105,10 +148,10 @@ export default defineComponent({
 <style scoped>
 ion-item-divider {
   --background: transparent;
-  --inner-padding-bottom: 0;
+  /* --inner-padding-bottom: 0;
   --inner-padding-top: 0;
   --padding-top: 0;
   --padding-bottom: 0;
-  min-height: 8px;
+  min-height: 8px; */
 }
 </style>

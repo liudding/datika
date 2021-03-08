@@ -18,10 +18,10 @@
       <ion-item-group>
         <!-- <ion-item-divider></ion-item-divider> -->
 
-        <!-- <ion-item button routerLink="/subscriptions" lines="none">订阅</ion-item> -->
+        <ion-item button routerLink="/subscriptions" lines="none">订阅</ion-item>
         <ion-item-divider></ion-item-divider>
 
-        <!-- <ion-item button routerLink="/settings">设置</ion-item> -->
+        <ion-item button routerLink="/settings">设置</ion-item>
         <ion-item button @click="gotoFeedback">帮助与反馈</ion-item>
         <ion-item button routerLink="/about">关于</ion-item>
       </ion-item-group>

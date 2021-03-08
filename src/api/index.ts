@@ -6,6 +6,7 @@ import record from './record'
 import subscription from './subscription'
 import auth from './auth'
 import user from './user'
+import settings from './settings'
 
 export default {
     auth,
@@ -15,5 +16,6 @@ export default {
     quiz,
     question,
     record,
-    subscription
+    subscription,
+    settings
 }

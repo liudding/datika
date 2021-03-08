@@ -13,6 +13,11 @@ const mutations: MutationTree<UserState> = {
         state.uuid = profile.uuid;
         state.name = profile.name;
         state.mobile = profile.mobile ? profile.mobile : state.mobile;
+    },
+
+
+    SET_SETTINGS(state: any, settings: any) {
+        state.settings = settings;
     }
 }
 
@@ -23,12 +28,19 @@ export default {
         uuid: '',
         name: '',
         mobile: '',
-        token: localStorage.getItem('AUTH_TOKEN')
+        token: localStorage.getItem('AUTH_TOKEN'),
+
+        settings: {
+            default_question_count: 10,
+            auto_archive_quizzes: 6,
+            scan_beep: true,
+            scan_speech: false,
+        }
     }),
     mutations,
 
     getters: {
-
+       
     },
 
     actions: {
@@ -70,6 +82,20 @@ export default {
         async feLogout(context: any) {
             context.commit('SET_AUTH_TOKEN', '');
             localStorage.removeItem('AUTH_TOKEN')
+        },
+
+        async getSettings(context: any) {
+            const resp = await Api.settings.get();
+
+            const settings = typeof resp.data.preferences === 'string' ? JSON.parse(resp.data.preferences) : resp.data.preferences
+
+            context.commit('SET_SETTINGS', Object.assign(context.state.settings, settings));
+        },
+
+        async updateSettings(context: any, data: any) {
+            await Api.settings.update(data);
+
+            context.commit('SET_SETTINGS', data);
         }
     }
 }

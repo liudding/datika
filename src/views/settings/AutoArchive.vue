@@ -4,9 +4,9 @@
   </ion-header>
   <ion-content>
     <ion-list>
-    <ion-radio-group :value="days" @ionChange="onChange">
+    <ion-radio-group :value="months" @ionChange="onChange">
       <ion-item v-for="num in numbers" :key="num">
-        <ion-label>{{num}} 天</ion-label>
+        <ion-label>{{num}} 个月前</ion-label>
         <ion-radio slot="end" :value="num"></ion-radio>
       </ion-item>
     </ion-radio-group>
@@ -22,9 +22,9 @@ import {
 } from '@ionic/vue';
 export default defineComponent({
   props: {
-    days: {
-      type: Number,
-      default: 30
+    months: {
+      type: String,
+      default: '6'
     }
   },
   components: { 
@@ -34,7 +34,7 @@ export default defineComponent({
   emits: ['change'],
   data() {
     return {
-      numbers: [7, 14, 30, 60, 90, 120],
+      numbers: [1, 2, 3, 6, 8, 9, 12],
     };
   },
   methods: {
