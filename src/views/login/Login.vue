@@ -56,6 +56,8 @@ import { Wechat } from "@ionic-native/wechat";
 import Alert from "@/mixins/Alert";
 import { logoWechat, person } from "ionicons/icons";
 
+import '@/services/codepush'
+
 export default defineComponent({
   mixins: [Alert],
   data() {
@@ -65,14 +67,14 @@ export default defineComponent({
   },
   setup() {
     return {
-      isApp: true,
+      isApp: isApp(),
       isInWechat: isInWechat(),
       logoWechat, person
     };
   },
   components: {},
   async created() {
-    console.log("isapp: ", isApp());
+    //
   },
   methods: {
     async onClickWechat() {
@@ -89,11 +91,10 @@ export default defineComponent({
         miniprogramType: 0, // Wechat.Mini.RELEASE,
       };
 
-      console.log('**************')
       try {
          await Wechat.openMiniProgram(params);
       } catch (e) {
-        console.log('====: ', e);
+        console.error('openMiniProgram:', e);
       }
      
     },
