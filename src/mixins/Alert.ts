@@ -10,6 +10,12 @@ export default {
 
             return new Promise<void>((resolve, reject) => {
 
+                if (typeof options === 'string') {
+                    options = {
+                        title: options
+                    }
+                }
+
                 const buttons = options.buttons || [];
 
                 if (options.cancel || options.cancelText) {
