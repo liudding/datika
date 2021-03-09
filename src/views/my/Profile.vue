@@ -78,7 +78,6 @@ ion-item-divider {
   --inner-padding-top: 0;
   --padding-top: 0;
   --padding-bottom: 0;
-  min-height: 8px;
 }
 
 .profile ion-item {

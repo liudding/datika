@@ -18,7 +18,7 @@
             </ion-toggle>
           </div>
         </ion-item>
-        <ion-item
+        <ion-item lines="none"
           >扫描播报语音
           <div slot="end">
             <ion-toggle
@@ -32,12 +32,12 @@
 
       <ion-item-divider></ion-item-divider>
       <ion-item-group>
-        <ion-item @click="showQuestionCount"
+        <ion-item @click="showQuestionCount" lines="none"
           >默认题目数量
           <div slot="end">{{ settings.default_question_count || 10 }}</div>
         </ion-item>
         <ion-item-divider></ion-item-divider>
-        <ion-item @click="showAutoArchive"
+        <ion-item @click="showAutoArchive" lines="none"
           >自动归档测验
           <div slot="end">{{settings.auto_archive_quizzes || 12}} 个月前的</div>
         </ion-item>
