@@ -123,7 +123,7 @@ class UaDetect {
         for (const property in properties) {
             const value = properties[property];
 
-            if (name.toLocaleLowerCase() === value.toLocaleLowerCase()) return true;
+            if (value && name.toLocaleLowerCase() === value.toLocaleLowerCase()) return true;
         }
 
         return false;

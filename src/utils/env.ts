@@ -1,4 +1,3 @@
-// import { parseUa } from '@/utils/ua';
 import { uuid } from '@/utils/uuid';
 import ua from '@/utils/uaDetect'
 
@@ -18,7 +17,7 @@ function getUid(): string {
     return uuid();
   }
 
-export  function detect(): any {
+export function detect(): any {
 
     let env = 'browser';
 
@@ -76,7 +75,7 @@ export function isBrowser() {
 }
 
 export function isApp() {
-    return false;
+    return navigator.userAgent.toLocaleLowerCase().indexOf('youce') >= 0;
 }
 
 export function isInWechat() {
