@@ -19,13 +19,14 @@
         <div class="infos">
           <div @click="showAttachClassrooms" class="info-item">
             <span class="info-title">班级</span> <span class="info-content">{{ quiz.classroomCount }}</span>
-            <ion-icon :icon="createOutline"></ion-icon>
+            <ion-icon :icon="createOutline" class="info-edit"></ion-icon>
           </div>
           <div class="info-item">
             <span class="info-title">学生</span> <span class="info-content">{{ quiz.studentCount }}</span>
           </div>
           <div class="info-item">
             <span class="info-title">已录</span> <span class="info-content">{{ quiz.recordCount }}</span>
+            <ion-icon v-if="quiz.recordCount > 0 && quiz.recordCount >= quiz.studentCount" :icon="checkmarkCircle" style="color: green;"></ion-icon>
           </div>
         </div>
 
@@ -75,6 +76,7 @@ import {
   scanOutline,
   documentTextOutline,
   readerOutline,
+  checkmarkCircle
 } from "ionicons/icons";
 import { defineComponent } from "vue";
 import Records from "./Records.vue";
@@ -143,6 +145,7 @@ export default defineComponent({
       createOutline,
       documentTextOutline,
       readerOutline,
+      checkmarkCircle
     };
   },
 
@@ -294,6 +297,7 @@ ion-item {
   font-size: 10px;
   width: 30px;
   text-align: left;
+  color: gray;
 }
 
 .info-content {
@@ -305,6 +309,9 @@ ion-item {
   position: absolute;
   right: 8px;
   font-size: 14px;
+}
+
+.info-item .info-edit {
   color: var(--ion-color-primary);
 }
 
