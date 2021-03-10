@@ -69,6 +69,7 @@
             @ionChange="password = $event.target.value"
             type="password"
             required
+            clearOnEdit
             placeholder="密码"
           ></ion-input>
         </ion-item>
