@@ -9,7 +9,7 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="content">
+  <ion-content>
     <ion-list :disabled="true" @ionItemReorder="doReorder($event)">
       <ion-item class="list-header" lines="none">
         <ion-label>题目</ion-label>
@@ -17,7 +17,8 @@
         <ion-label>分值</ion-label>
       </ion-item>
 
-      <ion-item
+      <div
+        class="def"
         v-for="(definition, index) in definitions"
         :key="definition.from"
         lines="none"
@@ -32,7 +33,7 @@
               ></ion-input>
             </div>
 
-            <ion-note>至</ion-note>
+            <small>至</small>
             <div class="input-wrapper">
               <ion-input
                 :value="definition.to"
@@ -59,20 +60,20 @@
           </div>
         </div>
 
-        <div slot="end" style="margin-left: 0px; min-width: 16px">
-          <ion-buttons>
-            <ion-buttons
-              v-if="definitions.length > 1"
-              @click="remove(index)"
-              color="danger"
-              ><ion-icon :icon="removeCircle" color="danger"></ion-icon
-            ></ion-buttons>
-          </ion-buttons>
+        <div style="margin-left: 0px; min-width: 40px">
+          <ion-button
+            v-if="definitions.length > 1"
+            @click="remove(index)"
+            color="danger"
+            fill="clear"
+            size="small"
+            ><ion-icon :icon="removeCircle" color="danger"></ion-icon
+          ></ion-button>
         </div>
-      </ion-item>
+      </div>
     </ion-list>
 
-    <div style="padding: 0 16px">
+    <div class="footer">
       <ion-button @click="submit" expand="block">确定</ion-button>
     </div>
   </ion-content>
@@ -192,23 +193,36 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style  lang="scss" scoped>
 ion-list {
   background: transparent;
-}
-
-ion-item {
-  margin-bottom: 16px;
-}
-
-ion-note {
-  font-size: 12px;
-  margin-right: 4px;
 }
 
 .list-header {
   margin-bottom: 1px;
   --background: transparent;
+  color: #2b2b2b;
+}
+
+.def {
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 8px 8px;
+  margin-bottom: 8px;
+
+  small {
+    font-size: 12px;
+    margin-right: 4px;
+    color: gray;
+  }
+
+  ion-button {
+    --border-radius: 100px;
+    margin-top: 0px;
+    font-size: 14px;
+    margin: 0;
+  }
 }
 
 .input-wrapper {
@@ -226,10 +240,6 @@ ion-input {
   height: 30px;
 }
 
-ion-button {
-  --border-radius: 100px;
-}
-
 .content {
   height: 100%;
   padding: 32px 16px 0 16px;
@@ -242,7 +252,22 @@ ion-item {
   border-radius: 8px;
 }
 
+.footer {
+  padding: 0 16px;
+  ion-button {
+    --border-radius: 100px;
+    margin-top: 32px;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
+  .list-header {
+    color: lightgray;
+  }
+  .def {
+    background: rgb(41, 41, 41);
+  }
+
   .input-wrapper {
     background: #111;
   }
