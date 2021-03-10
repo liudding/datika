@@ -32,28 +32,28 @@ export default class Scanner {
   }
 
   async start(force=false) {
-    this.driver().start(force);
+    return this.driver().start(force);
   }
 
   async stop() {
-    this.driver().stop();
+    return this.driver().stop();
   }
 
   pause() {
-    this.driver().pause();
+    return this.driver().pause();
   }
 
   resume() {
-    this.driver().resume();
+    return this.driver().resume();
   }
 
   
   bind(event: Event, callback: Function) {
-    this.driver().bind(event, callback);
+    return this.driver().bind(event, callback);
   }
 
   unbind() {
-    this.driver().unbind();
+    return this.driver().unbind();
   }
 
   getCameraList() {
@@ -61,7 +61,7 @@ export default class Scanner {
   }
 
   setCamera(camera: string) {
-    this.driver().setCamera(camera);    
+    return this.driver().setCamera(camera);    
   }
 
   ready() {

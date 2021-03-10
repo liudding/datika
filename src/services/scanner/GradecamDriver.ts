@@ -61,7 +61,7 @@ export default class GradeCam {
     await this.load(force);
 
     if (!force && !this.checkCameraRendered()) {
-      this.renderCamera();
+      await this.renderCamera();
     }
 
     this.gradecam.setMode({
@@ -72,6 +72,8 @@ export default class GradeCam {
     })
 
     this.gradecam.startCamera()
+
+    return true;
   }
 
   stop() {
@@ -158,7 +160,7 @@ export default class GradeCam {
    */
   private async loadSdk() {
 
-    document.querySelector('script[src="/scanner/sdk/gcsdk_noui_6.5.1.3.js"]')?.remove();
+    document.querySelector(`script[src="${this.sdkUrl}"]`)?.remove();
 
     window.gradecam = null;
 
@@ -247,8 +249,18 @@ export default class GradeCam {
 
     document.getElementById(this.CAMERA_RENDERED_ID)?.remove();
 
-    container.appendChild(this.gradecam.getElement())
-    // const gc = (document.getElementById(this.CAMERA_RENDERED_ID)) as HTMLElement;
+    try {
+      const ele = this.gradecam.getElement()
+
+      if (!ele || ele.children.length === 0) {
+        throw new Error('初始化失败');
+      }
+
+      container.appendChild(ele)
+    } catch (e) {
+
+      throw new Error('初始化失败');
+    }
 
     this.cameraRendered = true;
   }
