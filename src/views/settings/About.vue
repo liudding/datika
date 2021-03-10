@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-buttons>
+        <ion-buttons slot="start">
           <ion-back-button default-href="/" text=""></ion-back-button>
         </ion-buttons>
         <ion-title>关于</ion-title>

@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="false">
       <ion-toolbar>
-        <ion-buttons>
+        <ion-buttons slot="start">
           <ion-back-button default-href="/" text=""></ion-back-button>
         </ion-buttons>
         <ion-title>{{ quiz.name }}</ion-title>

@@ -5,10 +5,10 @@ ion-content {
     --background: rgb(241, 241, 246);
 }
 
-ion-back-button {
+.ios ion-back-button {
+    // 增大返回按钮点击面积
     --icon-padding-end: 30px;
 }
-
 
 @media (prefers-color-scheme: dark) {
     ion-content {
@@ -19,7 +19,6 @@ ion-back-button {
         --background: rgb(41, 41, 41);
     }
 }
-
 
 .w-100 {
     width: 100%;
