@@ -1,14 +1,18 @@
 <template>
   <div class="stepper-container">
-    <button class="stepper-button decrease" @click.stop="onDecrease"><ion-icon :icon="removeOutline"></ion-icon></button>
-    <input type="text" :value="value" :min="min" :max="max" readonly />
-    <button class="stepper-button increase" @click="onIncrease"><ion-icon :icon="addOutline"></ion-icon></button>
+    <button class="stepper-button decrease" :disabled="value === min"  @click.stop="onDecrease">
+      <ion-icon :icon="removeOutline"></ion-icon>
+    </button>
+    <input type="number" :value="value" :min="min" :max="max" readonly/>
+    <button class="stepper-button increase" :disabled="value === max" @click="onIncrease">
+      <ion-icon :icon="addOutline"></ion-icon>
+    </button>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import { addOutline, removeOutline} from "ionicons/icons";
+import { addOutline, removeOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "Stepper",
@@ -17,8 +21,14 @@ export default defineComponent({
       type: Number,
       value: 0,
     },
-    min: Number,
-    max: Number,
+    min: {
+      type: Number,
+      value: -Infinity
+    },
+    max: {
+      type: Number,
+      value: Infinity
+    },
   },
   emits: ["change"],
   methods: {
@@ -33,12 +43,12 @@ export default defineComponent({
     },
   },
   data() {
-    return {addOutline, removeOutline};
+    return { addOutline, removeOutline };
   },
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .stepper-container {
   display: flex;
   align-items: center;
@@ -49,19 +59,33 @@ input {
   border: none;
   border-radius: 0;
   text-align: center;
-  border-top: solid 1px #bbb;
-  border-bottom: solid 1px #bbb;
+  border-top: solid 1px #ededed;
+  border-bottom: solid 1px #ededed;
   box-sizing: border-box !important;
   height: 20px;
   line-height: 20px;
   font-size: 14px;
   font-weight: bold;
+
+  // Firefox-specific hack
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:focus {
+    outline: 0;
+    border-color: var(--ion-color-primary);
+  }
 }
 
 .stepper-button {
   width: 20px;
   height: 20px;
-  background-color: #bbb;
+  background-color: #ededed;
   font-size: 15px;
   padding: 0;
 }
