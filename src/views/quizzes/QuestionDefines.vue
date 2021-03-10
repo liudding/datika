@@ -46,7 +46,8 @@
           <div class="flex-grow d-flex align-items-center">
             <Stepper
               :value="definition.choices"
-              type="number"
+              :min="2"
+              :max="6"
               @change="definition.choices = $event"
             ></Stepper>
           </div>
@@ -54,7 +55,7 @@
           <div class="flex-grow d-flex align-items-center">
             <stepper
               :value="definition.score"
-              type="number"
+              :min="1"
               @change="definition.score = $event"
             ></stepper>
           </div>
