@@ -17,6 +17,9 @@ interface UaDetect {
     isAndroid: boolean;
     isIos: boolean;
     isSafari: boolean;
+
+    os: string;
+    osVersion: string;
 }
 
 type Rule = string | Function;
@@ -129,6 +132,12 @@ class UaDetect {
         return false;
     }
 
+    get(name: string): string {
+        const properties = this.detect();
+
+        return properties[name] || null;
+    }
+
     detect(): any {
         if (this.properties) return this.properties;
 
@@ -195,7 +204,7 @@ const proxy = new Proxy(detect, {
         } if (prop.startsWith('is')) {
             return target.is(prop.slice(2));
         } else {
-            return false;
+            return target.get(prop);
         }
     }
 });

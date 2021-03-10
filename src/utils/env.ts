@@ -42,18 +42,6 @@ export function detect(): any {
     };
 }
 
-export function os() {
-    const ua = navigator.userAgent;
-
-    if (/Android/i.test(ua)) {
-        return 'android';
-    }
-
-    if (/iPhone/i.test(ua) || /iPad/i.test(ua) || /iPod/i.test(ua)) {
-        return 'ios';
-    }
-}
-
 export function env() {
     const env = localStorage.getItem('env')
     if (env) return env;

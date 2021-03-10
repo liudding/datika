@@ -39,6 +39,7 @@ import { useStore } from "vuex";
 import { defineComponent } from "vue";
 import { Plugins } from "@capacitor/core";
 const { Browser } = Plugins;
+import ua from "@/utils/uaDetect";
 
 export default defineComponent({
   name: "My",
@@ -62,8 +63,25 @@ export default defineComponent({
   },
   methods: {
     async gotoFeedback() {
+      const params: any = {
+        clientInfo: "",
+        clientVersion: "",
+        os: ua.os,
+        osVersion: ua.osVersion,
+        customInfo: navigator.userAgent,
+      };
+
+      let query = "";
+      for (const key in params) {
+        query += "&" + key + "=" + encodeURIComponent(params[key]);
+      }
+
       const url =
-        process.env.VUE_APP_BASE_URL + "/feedback?token=" + this.user.token;
+        process.env.VUE_APP_BASE_URL +
+        "/feedback?token=" +
+        this.user.token +
+        query;
+
       await Browser.open({ url });
     },
   },
