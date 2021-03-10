@@ -18,8 +18,12 @@
 
     <ion-content :fullscreen="false">
       <div v-if="scanStatus !== 'ready'" class="initializing">
-        <ion-spinner v-if="scanStatus === 'initializing'" name="circles" color="primary"></ion-spinner>
-        <div v-if="scanStatus === 'failed'"  style="color:white;">启动失败</div>
+        <ion-spinner
+          v-if="scanStatus === 'initializing'"
+          name="circles"
+          color="primary"
+        ></ion-spinner>
+        <div v-if="scanStatus === 'failed'" style="color: white">启动失败</div>
       </div>
 
       <ion-fab vertical="bottom" horizontal="end">
@@ -245,21 +249,23 @@ export default defineComponent({
         return;
       }
 
+      console.log(record, "=====");
+
       this.submit(scanObj, record).then((res) => {
         console.log("on sunmited", this.quiz.recordCount);
 
-        const record = res.data;
+        const result = res.data;
 
-        this.currentRecord = Object.assign({}, record);
-        this.currentRecord.name = record.studentName;
-        this.currentRecord.number = record.studentNumber;
-        this.currentRecord.type = res.type;
+        this.currentRecord = {
+          name: record.studentName,
+          number: record.studentNumber,
+          score: result.score,
+          type: res.type,
+        };
 
         this.completedCount = this.quiz.recordCount;
 
         this.showResult(this.currentRecord);
-
-        console.log(res);
       });
     },
     onIssue(issue) {
@@ -301,7 +307,8 @@ export default defineComponent({
     },
 
     async showResult(result) {
-      speak(result.name + ", Jack ," + result.score + "分");
+      
+      speak(result.name.split('').join('-') + "," + result.score + ",分");
 
       this.resultModal = await this.modal(
         Result,
