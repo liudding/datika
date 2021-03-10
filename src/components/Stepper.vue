@@ -1,10 +1,10 @@
 <template>
   <div class="stepper-container">
-    <button class="stepper-button decrease" :disabled="value === min"  @click.stop="onDecrease">
+    <button class="stepper-button decrease" :disabled="value <= min"  @click.stop="onDecrease">
       <ion-icon :icon="removeOutline"></ion-icon>
     </button>
     <input type="number" :value="value" :min="min" :max="max" readonly/>
-    <button class="stepper-button increase" :disabled="value === max" @click="onIncrease">
+    <button class="stepper-button increase" :disabled="value >= max" @click="onIncrease">
       <ion-icon :icon="addOutline"></ion-icon>
     </button>
   </div>
