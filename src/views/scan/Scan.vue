@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-title>{{ quiz.name }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button @click="showSettings"
+          <ion-button @click="showSettings" :disabled="scanStatus !== 'ready'"
             ><ion-icon :icon="settingsOutline"></ion-icon
           ></ion-button>
         </ion-buttons>
@@ -17,6 +17,11 @@
     <div id="camera-container"></div>
 
     <ion-content :fullscreen="false">
+      <div v-if="scanStatus !== 'ready'" class="initializing">
+        <ion-spinner v-if="scanStatus === 'initializing'" name="circles" color="primary"></ion-spinner>
+        <div v-if="scanStatus === 'failed'"  style="color:white;">启动失败</div>
+      </div>
+
       <ion-fab vertical="bottom" horizontal="end">
         <radial-progress-bar
           :diameter="65"
@@ -49,13 +54,14 @@ import Result from "./Result.vue";
 import Settings from "./Settings.vue";
 import Api from "@/api";
 import Modal from "@/mixins/Modal";
+import Alert from "@/mixins/Alert";
 import RadialProgressBar from "vue-radial-progress";
 
 let scanner;
 
 export default defineComponent({
   name: "Scan",
-  mixins: [Modal],
+  mixins: [Modal, Alert],
   setup() {
     return {
       store: useStore(),
@@ -92,15 +98,19 @@ export default defineComponent({
         sound: true,
         camera: "",
       },
+
+      scanStatus: "initializing", // initializing, ready, failed
     };
   },
 
   components: { RadialProgressBar },
   async created() {
+    this.scanStatus = "initializing";
+
     this.getRecords();
   },
   async mounted() {
-    // await this.getQuiz();
+    await this.getQuiz();
 
     if (!window.cameraPermissionGranted) {
       window.cameraPermissionGranted = await this.preRequestPermission();
@@ -170,6 +180,13 @@ export default defineComponent({
      */
     async preRequestPermission() {
       console.log("pre request camera permission");
+
+      if (!navigator.mediaDevices) {
+        this.scanStatus = "failed";
+        this.alert("无法读取摄像头");
+        return false;
+      }
+
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: false,
@@ -185,6 +202,8 @@ export default defineComponent({
 
         return true;
       } catch (err) {
+        this.scanStatus = "failed";
+
         if (err.name === "NotAllowedError") {
           alert("您拒绝了使用相机的请求，无法扫描");
         }
@@ -192,20 +211,21 @@ export default defineComponent({
         console.error(err.name, err.message);
       }
     },
-    initScanner() {
+
+    async initScanner() {
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
 
-      scanner
-        .start(true)
-        .then((res) => {
-          console.log("SUCC", res);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      try {
+        await scanner.start(true);
+
+        this.scanStatus = "ready";
+      } catch (err) {
+        this.scanStatus = "failed";
+        console.error(err);
+      }
     },
     async onScan(scanObj) {
       console.log("SCAN: ", scanObj, this.records);
@@ -336,5 +356,16 @@ ion-fab-button {
   height: 100%;
   width: 100%;
   background: black;
+}
+
+.initializing {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
