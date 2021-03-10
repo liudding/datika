@@ -26,6 +26,10 @@
       </ion-item>
     </ion-list>
 
+    <div v-if="showLoading" class="d-flex flex-column align-items-center" style="height: 100px;">
+       <ion-spinner name="circles"></ion-spinner>
+    </div>
+
     <ion-button v-if="classrooms.length" @click="attachClassrooms" expand="block">确定</ion-button>
 
     <Emptyset v-else title="尚无班级" message="请先去添加班级"></Emptyset>
@@ -50,6 +54,7 @@ export default defineComponent({
       isSelected: (classroom: any) => {
         return this.selected.indexOf(classroom.id) > -1;
       },
+      showLoading: true
     };
   },
   created() {
@@ -82,6 +87,8 @@ export default defineComponent({
       this.$emit("attached", classrooms);
     },
     async getClassrooms() {
+      this.showLoading = true;
+
       const resp = await Api.classroom.list();
       this.classrooms = resp.data.data;
       this.classrooms = this.classrooms.map((classroom: any) => {
@@ -89,6 +96,8 @@ export default defineComponent({
         classroom.isOld = this.isSelected(classroom);
         return classroom;
       });
+
+       this.showLoading = false;
     }
   },
 });
