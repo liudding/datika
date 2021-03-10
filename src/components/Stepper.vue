@@ -88,6 +88,7 @@ input {
   background-color: #ededed;
   font-size: 15px;
   padding: 0;
+  color: black;
 }
 
 .stepper-button.increase {

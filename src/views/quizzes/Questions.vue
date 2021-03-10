@@ -15,38 +15,34 @@
     <ion-content :fullscreen="true">
       <ion-item lines="none">
         <div class="infos">
-          <div class="d-flex align-items-center">
-            <div style="width: 70px">
-              <div class="d-flex align-items-center">
-                <div style="font-size: 24px">{{ stats.score }}</div>
-                <small style="margin-left: 4px">分</small>
-              </div>
+          <div class="total-score">
+            <div class="d-flex align-items-center">
+              <div style="font-size: 24px">{{ stats.score }}</div>
+              <small style="margin-left: 4px">分</small>
             </div>
-            <div class="questions-stats">
-              <div @click="onEditQuestionCount">
-                <h3>
-                  {{ questions.length }} 题
-                  <span v-if="quiz.recordCount === 0">
-                    <ion-icon :icon="createOutline"></ion-icon>
-                  </span>
-                </h3>
+          </div>
+
+          <div @click="onEditQuestionCount" class="question-count">
+            <h3>
+              {{ questions.length }} 题
+              <span v-if="quiz.recordCount === 0">
+                <ion-icon :icon="createOutline" class="edit-icon"></ion-icon>
+              </span>
+            </h3>
+          </div>
+
+          <div class="questions-stats">
+            <div class="stats">
+              <div class="stats-item">
+                单选题:<span class="stats-number">{{ stats.singleCount }}</span>
               </div>
-              <div class="stats">
-                <ion-note
-                  >单选题:<span class="stats-number">{{
-                    stats.singleCount
-                  }}</span></ion-note
-                >
-                <ion-note
-                  >多选题:<span class="stats-number">{{
-                    stats.multiCount
-                  }}</span></ion-note
-                >
-                <ion-note
-                  >判断题:<span class="stats-number">{{
-                    stats.booleanCount
-                  }}</span></ion-note
-                >
+              <div class="stats-item">
+                多选题:<span class="stats-number">{{ stats.multiCount }}</span>
+              </div>
+              <div class="stats-item">
+                判断题:<span class="stats-number">{{
+                  stats.booleanCount
+                }}</span>
               </div>
             </div>
           </div>
@@ -295,7 +291,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 ion-content {
   --padding-top: 8px;
   --padding-bottom: 16px;
@@ -320,27 +316,54 @@ ion-item {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  justify-items: space-around;
+
+  .total-score,
+  // .question-count,
+  .questions-stats {
+    width: 33%;
+    margin-left: 28px;
+  }
+
+  .question-count {
+    width: 70px;
+    position: relative;
+
+    .edit-icon {
+      position: absolute;
+      right: 0;
+
+      color: var(--ion-color-primary);
+      font-size: 14px;
+    }
+  }
 }
 
 .questions-stats {
-  margin-left: 32px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex: 1;
 }
 
 .stats {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   font-size: 12px;
 }
 
-.stats-number {
-  width: 20px;
-  margin-right: 8px;
+.stats-item {
+  color: gray;
+  margin-bottom: 4px;
+  font-size: 12px;
+
+  .stats-number {
+    font-weight: bold;
+    margin-left: 8px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .question-count-input-wrapper {
