@@ -221,6 +221,9 @@ export default defineComponent({
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
+      scanner.onAsk(() => {
+        console.log("valdiate")
+      })
 
       try {
         await scanner.start(true);

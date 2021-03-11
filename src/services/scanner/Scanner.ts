@@ -8,6 +8,7 @@ interface ScanDriver {
   bind: Function;
   unbind: Function;
   ready: Function;
+  onAsk: Function;
 
   getCameraList: Function;
   setCamera: Function;
@@ -54,6 +55,10 @@ export default class Scanner {
 
   unbind() {
     return this.driver().unbind();
+  }
+
+  onAsk(cb: Function) {
+    return this.driver().onAsk(cb);
   }
 
   getCameraList() {

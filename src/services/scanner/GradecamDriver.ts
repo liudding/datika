@@ -8,6 +8,8 @@ declare global {
 type Event = 'scan' | 'issue' | 'validate';
 // scan, scanIssue, pluginLoad
 
+// scanIssue: examLength, duplicateId, cannotHighRes, badStructure, networkError
+
 interface EventsBag {
   [key: string]: any
 }
@@ -22,6 +24,8 @@ export default class GradeCam {
 
   private events: EventsBag = {};
   // private events: Array<Object> = [];
+
+  private validateCallback: Function = () => {};
 
   private gradecam: any;
 
@@ -96,10 +100,14 @@ export default class GradeCam {
 
       this.gradecam.bind(event, cb);
     }
+
+    this.onAsk(this.validateCallback);
   }
 
-  onAsk(type: string, callback: Function) {
-    this.gradecam.setValidateCallback(callback)
+  onAsk(callback: Function) {
+    this.validateCallback = callback;
+
+    this.gradecam && this.gradecam.setValidateCallback(callback)
   }
 
 
@@ -173,7 +181,7 @@ export default class GradeCam {
 
         this.resume();
 
-        this.gradecam.setShowMessages(true)
+        this.gradecam.setShowMessages(false)
 
         this.gradecam.bind('pluginLoad', () => {
           this.pluginLoaded = true;
