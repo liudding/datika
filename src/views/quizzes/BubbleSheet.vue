@@ -186,6 +186,7 @@ ion-spinner {
 #bubble-sheet .box {
   border: 18px solid rgb(0, 0, 0);
   position: relative;
+  border-radius: 16px;
 }
 
 #bubble-sheet .number {
@@ -276,8 +277,7 @@ ion-spinner {
   text-align: center;
   line-height: 63px;
   font-size: 36px;
-  font-weight: lighter;
-  color: rgb(71, 71, 71);
+  color: rgb(34, 34, 34);
   text-transform: uppercase;
 }
 </style>

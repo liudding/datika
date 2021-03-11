@@ -23,7 +23,7 @@ export default class NumberSection extends Section {
             this.digits * 2 * Config.NUMBER_SECTION.COLUMN_PADDING_X +
             Config.NUMBER_SECTION.BORDER_WIDTH +
             this.digits * 2 * Config.NUMBER_SECTION.COLUMN_BORDER_WIDTH +
-            Config.NUMBER_SECTION.PADDING_LEFT + Config.NUMBER_SECTION.PADDING_RIGHT
+            Config.NUMBER_SECTION.PADDING_LEFT + Config.NUMBER_SECTION.PADDING_RIGHT + Config.NUMBER_SECTION.MARGIN_LEFT
 
         const height = 10 * Config.BUBBLE.RADIUS +
             9 * this.columnGap +

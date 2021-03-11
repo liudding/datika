@@ -36,10 +36,11 @@ export default {
         COLUMN_BORDER_WIDTH: 1,
         COLUMN_GAP: 8,
         BORDER_WIDTH: 8,
-        PADDING_LEFT: 64,
+        PADDING_LEFT: 0,
         PADDING_RIGHT: 0,
         PADDING_TOP: 30,
         PADDING_BOTTOM: 150,
+        MARGIN_LEFT: 150,
     }
     
 }
