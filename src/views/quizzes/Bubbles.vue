@@ -109,7 +109,8 @@ export default defineComponent({
 }
 
 .mode-answer .selected {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
 }
 
 .mode-answer .correct {
@@ -132,10 +133,10 @@ export default defineComponent({
 }
 
 .bubble.correct .answer-result {
-  color: rgb(4, 241, 75);
+  color: var(--ion-color-success);
   border-radius: 100px;
-  box-shadow: 0px 0px 6px rgba(4, 241, 75, 0.719);
-  border: 2px solid rgba(4, 241, 75, 1);
+  box-shadow: 0px 0px 6px rgba(28, 250, 95, 0.2);
+  border: 2px solid var(--ion-color-success);
 }
 
 .bubble.incorrect .answer-result {
