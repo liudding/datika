@@ -159,6 +159,7 @@ export default defineComponent({
 
   created() {
     this.getDetail();
+    this.getRecords();
   },
   methods: {
     showAttachClassrooms() {
@@ -190,6 +191,14 @@ export default defineComponent({
       const loading = await this.loading();
 
       await this.store.dispatch("quiz/quiz", +this.$route.params.id);
+
+      loading.dismiss();
+    },
+
+    async getRecords() {
+      const loading = await this.loading();
+
+      await this.store.dispatch("quiz/studentRecords", +this.$route.params.id);
 
       loading.dismiss();
     },

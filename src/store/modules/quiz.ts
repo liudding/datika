@@ -7,9 +7,13 @@ export default {
         archived: [],
         total: 0,
 
-        quizId: 0,
+        // 
         quiz: {},
+
+        studentsCacheId: 0,
         students: [],
+
+        recordsCacheId: 0,
         records: []
     }),
     mutations: {
@@ -18,8 +22,9 @@ export default {
             state.archived = [];
             state.total = 0;
 
-            state.quizId = 0;
             state.quiz = {};
+
+            // state.quizId = 0;
             state.students = [];
             state.records = [];
         },
@@ -84,8 +89,8 @@ export default {
                     return +a.label > +b.label ? 1 : -1;
                 });
             }
+
             state.quiz = data;
-            state.quizId = data.id;
         },
 
         UPDATE_QUESTION(state: any, data: any) {
@@ -117,12 +122,13 @@ export default {
 
         SET_STUDENTS(state: any, data: any) {
             state.students = data.students
-            state.quizId = data.quizId;
+            state.studentCacheId = data.quizId;
         },
 
         SET_RECORDS(state: any, data: any) {
+
+            state.recordsCacheId = data.quizId;
             state.records = data.records
-            state.quizId = data.quizId;
         },
 
         ADD_RECORDS(state: any, data: any) {
@@ -137,7 +143,7 @@ export default {
                 state.records.splice(index, 1)
             }
 
-            state.quiz.recordCount = state.records.length
+            state.recordCount = state.records.length
 
             const idx = state.list.findIndex((i: any) => i.id === data.quizId)
             console.log(data)
@@ -203,15 +209,15 @@ export default {
         },
 
         async quiz(context: any, id: number) {
-            const quizId = id;
+            const quizId = +id;
 
-            if (context.state.quizId === +quizId && context.state.quiz) {
+            if (context.state.quiz && context.state.quiz.id === quizId) {
                 return {
                     data: context.state.quiz
                 };
             }
 
-            const resp = await Api.quiz.show(id, {
+            const resp = await Api.quiz.show(quizId, {
                 with: ["classrooms", "questions"],
             });
 
@@ -228,7 +234,7 @@ export default {
         async studentRecords(context: any, quiz: any) {
             const quizId = quiz.id || quiz;
 
-            if (context.state.quizId === quizId && context.state.records.length) {
+            if ( context.state.recordsCacheId === quizId && context.state.records.length) {
                 return {
                     data: context.state.records
                 };

@@ -34,21 +34,9 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.getRecords();
+    // 
   },
   methods: {
-    async getRecords() {
-      const query: any = { size: 20 };
-      if (this.quiz.studentCount <= 100) {
-        query.size = 100;
-      }
-
-      const loading = await this.loading();
-
-      await this.store.dispatch("quiz/studentRecords", this.quiz);
-
-      loading.dismiss();
-    },
   },
 });
 </script>
