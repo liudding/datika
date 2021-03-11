@@ -4,33 +4,33 @@ import ua from '@/utils/uaDetect'
 
 function getUid(): string {
     if (typeof window !== 'undefined') {
-      let uid = window.localStorage.getItem('_uuid');
-      if (uid) {
-        return uid;
-      }
+        let uid = window.localStorage.getItem('_uuid');
+        if (uid) {
+            return uid;
+        }
 
-      uid = uuid();
-      window.localStorage.setItem('_uuid', uid);
-      return uid;
+        uid = uuid();
+        window.localStorage.setItem('_uuid', uid);
+        return uid;
     }
 
     return uuid();
-  }
+}
 
 export function detect(): any {
 
-    let env = 'browser';
+    let client = 'browser';
 
     if (location.search.indexOf('source=pwa') > 0) {
-        env = 'pwa';
+        client = 'pwa';
+    } else if (navigator.userAgent.toLocaleLowerCase().indexOf('youce') >= 0) {
+        client = 'app';
     }
-
 
     const uaFields = ua.properties;
 
-
     return {
-        env,
+        client,
         model: uaFields.model,
         platform: <const>'web',
         operatingSystem: uaFields.operatingSystem,
@@ -43,27 +43,35 @@ export function detect(): any {
 }
 
 export function env() {
-    const env = localStorage.getItem('env')
-    if (env) return env;
+    const env = localStorage.getItem('ENVIRONMENT')
+    if (env) return JSON.parse(env);
 
     const infos = detect();
 
-    localStorage.setItem('env', infos.env);
+    localStorage.setItem('ENVIRONMENT', JSON.stringify(infos));
 
-    return infos.env;
+    return infos;
+}
+
+/**
+ * app, browser, pwa
+ * @returns string
+ */
+export function client() {
+    return env().client;
 }
 
 
 export function isPwa() {
-    return env() === 'pwa';
+    return client() === 'pwa';
 }
 
 export function isBrowser() {
-    return env() === 'browser' || env() === 'web';
+    return !isPwa() && client() === 'browser' || client() === 'web';
 }
 
 export function isApp() {
-    return navigator.userAgent.toLocaleLowerCase().indexOf('youce') >= 0;
+    return client() === 'app';
 }
 
 export function isInWechat() {
@@ -79,18 +87,9 @@ export function isAndroid() {
 }
 
 export function isIos() {
-  
+
     return ua.isIos;
 }
 
-/**
- * pwa  
- * browser
- * wechat
- * app
- * 
- * ios/android
- */
-
-
-detect()
+const envInfos = detect()
+localStorage.setItem('ENVIRONMENT', JSON.stringify(envInfos));

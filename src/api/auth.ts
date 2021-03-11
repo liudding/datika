@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { env } from '@/utils/env'
+import { client } from '@/utils/env'
 
 type LoginParam = {
   username: string;
@@ -11,7 +11,7 @@ type LoginParam = {
 
 function login(data: LoginParam) {
 
-  data.deviceName = data.deviceName as any || env();
+  data.deviceName = data.deviceName as any || client();
 
   return request({
     url: data.code ? '/login/verification_code' : '/login',
@@ -28,7 +28,7 @@ function login(data: LoginParam) {
 
 function register(data: any) {
 
-  data.deviceName = data.deviceName || env();
+  data.deviceName = data.deviceName || client();
 
   return request({
     url: '/register',
@@ -45,7 +45,7 @@ function register(data: any) {
 
 function registerWithNoVerification(data: any) {
 
-  data.deviceName = data.deviceName || env();
+  data.deviceName = data.deviceName || client();
 
   return request({
     url: '/register/no_verification',
