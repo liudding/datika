@@ -126,6 +126,7 @@ export default defineComponent({
   methods: {
     onBubbleChange(selected: string, name: string) {
       //
+      console.log(selected, name);
     },
     async delete() {
       const loading = await this.loading();

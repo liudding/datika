@@ -62,7 +62,6 @@ import { useRouter } from "vue-router";
 import Loading from "@/mixins/Loading";
 import Alert from "@/mixins/Alert";
 import Toast from "@/mixins/Toast";
-import Api from "@/api";
 import Validator from "@/utils/validator";
 
 export default defineComponent({

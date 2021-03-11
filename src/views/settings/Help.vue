@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Tucao from "@/services/tucao";
+// import Tucao from "@/services/tucao";
 import { mapState } from "vuex";
 
 export default {

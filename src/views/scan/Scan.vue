@@ -52,7 +52,7 @@ import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
 import beep from "@/services/scanner/beep";
-import { canSpeak, speak } from "@/services/speech";
+import { speak } from "@/services/speech";
 import Records from "./Records.vue";
 import Result from "./Result.vue";
 import Settings from "./Settings.vue";

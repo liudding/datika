@@ -18,15 +18,24 @@
       <div class="brief-infos">
         <div class="infos">
           <div @click="showAttachClassrooms" class="info-item">
-            <span class="info-title">班级</span> <span class="info-content">{{ quiz.classroomCount }}</span>
+            <span class="info-title">班级</span>
+            <span class="info-content">{{ quiz.classroomCount }}</span>
             <ion-icon :icon="createOutline" class="info-edit"></ion-icon>
           </div>
           <div class="info-item">
-            <span class="info-title">学生</span> <span class="info-content">{{ quiz.studentCount }}</span>
+            <span class="info-title">学生</span>
+            <span class="info-content">{{ quiz.studentCount }}</span>
           </div>
           <div class="info-item">
-            <span class="info-title">已录</span> <span class="info-content">{{ quiz.recordCount }}</span>
-            <ion-icon v-if="quiz.recordCount > 0 && quiz.recordCount >= quiz.studentCount" :icon="checkmarkCircle" style="color: green;"></ion-icon>
+            <span class="info-title">已录</span>
+            <span class="info-content">{{ quiz.recordCount }}</span>
+            <ion-icon
+              v-if="
+                quiz.recordCount > 0 && quiz.recordCount >= quiz.studentCount
+              "
+              :icon="checkmarkCircle"
+              style="color: green"
+            ></ion-icon>
           </div>
         </div>
 
@@ -76,7 +85,7 @@ import {
   scanOutline,
   documentTextOutline,
   readerOutline,
-  checkmarkCircle
+  checkmarkCircle,
 } from "ionicons/icons";
 import { defineComponent } from "vue";
 import Records from "./Records.vue";
@@ -128,7 +137,6 @@ export default defineComponent({
       showFab: true,
 
       students: [],
-      records: [],
 
       attachModal,
     };
@@ -145,7 +153,7 @@ export default defineComponent({
       createOutline,
       documentTextOutline,
       readerOutline,
-      checkmarkCircle
+      checkmarkCircle,
     };
   },
 
@@ -168,9 +176,13 @@ export default defineComponent({
         this.modal(AttachClassrooms, {
           onAttached: onAttached(resolve),
           selected: this.quiz.classrooms.map((i: any) => i.id),
-        }).then((modal: any) => {
-          this.attachModal = modal;
-        });
+        })
+          .then((modal: any) => {
+            this.attachModal = modal;
+          })
+          .catch((e: any) => {
+            reject(e);
+          });
       });
     },
 
@@ -263,7 +275,6 @@ ion-item {
   /* background: white; */
 }
 
-
 .infos {
   margin-right: 8px;
   display: flex;
@@ -315,7 +326,6 @@ ion-item {
   color: var(--ion-color-primary);
 }
 
-
 .stats {
   background: white;
   flex: 1;
@@ -348,7 +358,7 @@ ion-item {
   font-size: 40px;
   color: var(--ion-color-primary);
 }
-                                                                                      
+
 .report-btn div {
   font-size: 12px;
   color: gray;

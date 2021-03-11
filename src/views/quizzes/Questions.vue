@@ -79,7 +79,7 @@
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { add, createOutline } from "ionicons/icons";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";

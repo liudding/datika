@@ -2,7 +2,6 @@ import { Size } from './Size'
 import Section from './Section'
 import Config from './Config'
 import BubbleGroup from './BubbleGroup';
-import Bubble from './Bubble';
 import NumberSection from './NumberSection';
 import BubbleSection from './BubbleSection';
 
