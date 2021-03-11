@@ -47,7 +47,7 @@
             return Object.prototype.hasOwnProperty.call(t, e)
         }, n.p = "", n(n.s = 59)
     }([
-        // 0
+        // 0 lodash
         function (t, e, n) {
             var r;
             (function () {
@@ -826,7 +826,7 @@
                 }(i || (i = {})), t.exports = i
         }, 
         
-        // bind unbind
+        // 3 bind unbind
         function (t, e, n) {
             "use strict";
             Object.defineProperty(e, "__esModule", {
@@ -890,6 +890,7 @@
             e.FormMode = a
         }, 
         
+        // 5
         function (t, e, n) {
             "use strict";
             var r = n(65),
@@ -1667,7 +1668,7 @@
             t.exports = r
         }, 
         
-        // version compare
+        // 15 version compare
         function (t, e, n) {
             "use strict";
             Object.defineProperty(e, "__esModule", {
@@ -1902,6 +1903,7 @@
             e.rxSubscriber = "function" == typeof r && "function" == typeof r.for ? r.for("rxSubscriber") : "@@rxSubscriber", e.$$rxSubscriber = e.rxSubscriber
         }, 
         
+        // 20
         function (t, e, n) {
             "use strict";
             var r = this && this.__extends || function (t, e) {
@@ -1922,7 +1924,7 @@
             e.ObjectUnsubscribedError = i
         }, 
         
-        // auth
+        // 21 auth
         function (t, e, n) {
             "use strict";
             var r = n(0),
@@ -1939,8 +1941,7 @@
                     p = 0,
                     f = 5,
                     h = "us",
-                    d = "https://downloads.gradecam.com";
-                window._GCREGION && (h = window._GCREGION), "asia" == h && (d = "https://downloads.gradecam.com");
+                    d = ""; // https://downloads.gradecam.com
                 var A = d + "/auth/auth.js",
                     g = {
                         challenge: a,
@@ -1962,7 +1963,7 @@
             }
         }, 
         
-        // promise
+        // 22 promise
         function (t, e, n) {
             (function (e) {
                 ! function (n) {
@@ -2143,7 +2144,7 @@
                 }(e.CameraRotate || (e.CameraRotate = {}))
         }, 
         
-        // image reader
+        // 25 image reader
         function (t, e, n) {
             "use strict";
             var r = this && this.__awaiter || function (t, e, n, r) {
@@ -2756,6 +2757,7 @@
             e.Observable = s
         }, 
         
+        // 35
         function (t, e, n) {
             "use strict";
             e.isFunction = function (t) {
@@ -2904,7 +2906,7 @@
             }
         }, 
         
-        // localStorage
+        // 40 localStorage
         function (t, e, n) {
             "use strict";
             var r, i, o = n(41),
@@ -3168,7 +3170,7 @@
                                 A = u.find(e, function (t) {
                                     return "noOutput" == t.type
                                 });
-                            p ? (s = "File " + p.msg + " appears to have an unsupported format.", a = p.msg) : f ? (s = "File " + f.fileName + " appears to be corrupted or have an unsupported format.", a = f.fileName) : h ? (s = "File " + h.fileName + " appears to be scanned in black and white and cannot be accurately graded.", s += "Please rescan using grayscale or color.", a = h.fileName) : A ? (s = "File " + A.fileName + " does not appear to have a GradeCam form in it.", a = A.fileName) : l && (s = "Could not read " + l.fileName + " -- " + l.msg), i++, o.push(a), n && n(s)
+                            p ? (s = "File " + p.msg + " appears to have an unsupported format.", a = p.msg) : f ? (s = "File " + f.fileName + " appears to be corrupted or have an unsupported format.", a = f.fileName) : h ? (s = "File " + h.fileName + " appears to be scanned in black and white and cannot be accurately graded.", s += "Please rescan using grayscale or color.", a = h.fileName) : A ? (s = "File " + A.fileName + " does not appear to have a form in it.", a = A.fileName) : l && (s = "Could not read " + l.fileName + " -- " + l.msg), i++, o.push(a), n && n(s)
                         } else {
                             var g = e && 1 === e.length && e[0],
                                 y = d.newDeferred();
@@ -3358,7 +3360,7 @@
             t.exports = C
         }, 
         
-        // firebreath
+        // 43 firebreath
         function (t, e, n) {
             "use strict";
             var r = this && this.__awaiter || function (t, e, n, r) {
@@ -3600,7 +3602,7 @@
             }(w || (w = {})), a.mozilla && a.versionNumber >= 50 && (a.mac || a.win) && (w.supported = !0), t.exports = w
         },
         
-        // file input
+        // 44 file input
         function (t, e, n) {
             "use strict";
             var r = n(0),
@@ -3629,7 +3631,7 @@
             }
         }, 
         
-        // setModel
+        // 45 setModel
         function (t, e, n) {
             "use strict";
             Object.defineProperty(e, "__esModule", {
@@ -3691,8 +3693,7 @@
             Object.defineProperty(e, "__esModule", {
                 value: !0
             }), e.hasGCMobile = function () {
-                return false;
-                // return "undefined" != typeof window && window.navigator && window.navigator.userAgent && /GradeCamMobile/.test(navigator.userAgent)
+                return "undefined" != typeof window && window.navigator && window.navigator.userAgent && /GradeCamMobile/.test(navigator.userAgent)
             }
         },
         
@@ -3735,7 +3736,10 @@
         },
         
         // 49
-        function (t, e) { }, function (t, e, n) {
+        function (t, e) { }, 
+        
+        // 50
+        function (t, e, n) {
             "use strict";
             var r = n(0);
             t.exports = function (t) {
@@ -3752,7 +3756,7 @@
             }
         },
          
-        // 50 form 可移除
+        // 51 form 可移除
         function (t, e, n) {
             "use strict";
             var r, i = n(160),
@@ -3763,7 +3767,7 @@
 
             function u() {
                 return r || ((r = document.createElement("iframe")).style.display = "none", r.src = c.formServerComm, document.body.appendChild(r), a = setTimeout(function () {
-                    alert("Error communicating with GradeCam servers; form management will not work"), s.reject()
+                    alert("Error communicating with servers; form management will not work"), s.reject()
                 }, 5e3), r)
             }
             var l = 0,
@@ -3848,7 +3852,7 @@
             t.exports = d
         }, 
         
-        // 51 form 结构识别
+        // 52 form 结构识别
         function (t, e, n) {
             "use strict";
             Object.defineProperty(e, "__esModule", {
@@ -4199,6 +4203,7 @@
             t.exports = {}
         }, 
         
+        // 55
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -4372,6 +4377,7 @@
             t.exports = p
         }, 
         
+        // 56
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -4770,7 +4776,7 @@
                                     case 2:
                                         return [2, i.sent()];
                                     case 3:
-                                        throw n = i.sent(), A.error("Could not instantiate GradeCam Reader: ", n), n;
+                                        throw n = i.sent(), A.error("Could not instantiate Form Reader: ", n), n;
                                     case 4:
                                         return [2]
                                 }
@@ -5135,7 +5141,7 @@
             }), f.SDK_VERSION = "6.5.1.3", t.exports = f
         }, 
         
-        // 59 scan & events & result
+        // 60 scan & events & result
         function (t, e, n) {
             "use strict";
             var r = this && this.__awaiter || function (t, e, n, r) {
@@ -5489,7 +5495,7 @@
                                                         return "bw" == t.type
                                                     }), f = a.find(t, function (t) {
                                                         return "noOutput" == t.type
-                                                    }), u ? (o = "File " + u.msg + " appears to have an unsupported format.", s = u.msg) : l ? (o = "File " + l.fileName + " appears to be corrupted or have an unsupported format.", s = l.fileName) : p ? (o = "File " + p.fileName + " appears to be scanned in black and white and cannot be accurately graded.", o += "Please rescan using grayscale or color.", s = p.fileName) : f ? (o = "File " + f.fileName + " does not appear to have a GradeCam form in it.", s = f.fileName) : c && (o = "Could not read " + c.fileName + " -- " + c.msg), a.defer(e, {
+                                                    }), u ? (o = "File " + u.msg + " appears to have an unsupported format.", s = u.msg) : l ? (o = "File " + l.fileName + " appears to be corrupted or have an unsupported format.", s = l.fileName) : p ? (o = "File " + p.fileName + " appears to be scanned in black and white and cannot be accurately graded.", o += "Please rescan using grayscale or color.", s = p.fileName) : f ? (o = "File " + f.fileName + " does not appear to have a form in it.", s = f.fileName) : c && (o = "Could not read " + c.fileName + " -- " + c.msg), a.defer(e, {
                                                         message: o,
                                                         fileName: s
                                                     }, null, n), [3, 15]) : [3, 2];
@@ -6123,7 +6129,7 @@
             t.exports = p
         }, 
         
-        // gcmobilesdk
+        // 63 gcmobilesdk
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -6269,6 +6275,7 @@
             }
         }, 
         
+        // 66
         function (t, e, n) {
             "use strict";
             e.isObject = function (t) {
@@ -6326,7 +6333,7 @@
             e.getSymbolObservable = i, e.observable = i(r.root), e.$$observable = e.observable
         }, 
         
-        // 69
+        // 70
         function (t, e, n) {
             "use strict";
             var r = n(71),
@@ -6334,6 +6341,7 @@
             e.queue = new i.QueueScheduler(r.QueueAction)
         }, 
         
+        // 71
         function (t, e, n) {
             "use strict";
             var r = this && this.__extends || function (t, e) {
@@ -6484,6 +6492,7 @@
             e.AsyncScheduler = i
         }, 
     
+        // 76
         function (t, e, n) {
             "use strict";
             var r = function () {
@@ -6629,7 +6638,7 @@
             }(r || (r = {})), t.exports = r
         }, 
         
-        // 79
+        // 80
         function (t, e, n) {
             (function (t) {
                 var r = void 0 !== t && t || "undefined" != typeof self && self || window,
@@ -7076,7 +7085,11 @@
             t.exports = u
         }, 
         
-        // 84  pic #1
+        // 85  pic #1
+        function (t, e) {
+        }, 
+        
+        // 86
         function (t, e) {
         }, 
         
@@ -7089,14 +7102,12 @@
         function (t, e) {
         }, 
         
-        function (t, e) {
-        }, 
-        
-        // 89
+        // 90
         function (t, e) {
 
         }, 
         
+        // 91
         function (t, e) {
         }, 
         
@@ -7115,6 +7126,7 @@
         function (t, e) {
         }, 
         
+        // 96
         function (t, e) {
         }, 
         
@@ -7127,11 +7139,41 @@
         function (t, e) {
         }, 
         
-        // 99
+        // 100
         function (t, e) {
             t.exports = ''
         }, 
         
+        // 101
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        // 106
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        function (t, e) {
+        }, 
+        
+        // 110
         function (t, e) {
         }, 
         
@@ -7150,19 +7192,7 @@
         function (t, e) {
         }, 
         
-        function (t, e) {
-        }, 
-        
-        function (t, e) {
-        }, 
-        
-        function (t, e) {
-        }, 
-        
-        // 109
-        function (t, e) {
-        }, 
-        
+        // 116
         function (t, e) {
         }, 
         
@@ -7175,25 +7205,11 @@
         function (t, e) {
         }, 
         
+        // 120
         function (t, e) {
         }, 
         
-        function (t, e) {
-        }, 
-        
-        function (t, e) {
-        }, 
-        
-        function (t, e) {
-        }, 
-        
-        function (t, e) {
-        }, 
-        
-        // 119
-        function (t, e) {
-        }, 
-        
+        // 121
         function (t, e) {
         }, 
         
@@ -7208,7 +7224,7 @@
             t.exports = '';
         }, 
         
-        // background image
+        // 125 background image
         function (t, e) {
             t.exports = '';
         }, 
@@ -7404,7 +7420,7 @@
             }
         }, 
         
-        // 129 RawReader
+        // 130 RawReader
         function (t, e, n) {
             "use strict";
             var r = this && this.__awaiter || function (t, e, n, r) {
@@ -7875,6 +7891,7 @@
             t.exports = u
         },
         
+        // 136
         function (t, e, n) {
             "use strict";
             var r = n(137),
@@ -8713,7 +8730,7 @@
             t.exports = g
         }, 
         
-        // 139
+        // 140
         function (t, e, n) {
             "use strict";
             Object.defineProperty(e, "__esModule", {
@@ -9280,24 +9297,26 @@
             }
         }, 
         
+        // 146
         function (t, e) {
             t.exports = '<img style="visibility: hidden; position: absolute;" />\n<canvas style="width: 1px; height: 1px;"></canvas>\n<video autoplay="true" muted="true" playsinline="true" style="position: absolute; top: 50%; left: 50%; width: 1px; height: 1px; opacity: 0;"></video>\n<div style="visibility: hidden; position: absolute;"></div>\n'
         }, 
         
-        // 147 
+        // 147
         function (t, e) {
-            t.exports = '<div style="position: relative; width: 100%; height: 100%; border: none; text-decoration: none; background: #babec1; background: -moz-radial-gradient(center, ellipse cover,  #babec1 0%, #0d2535 100%); background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#babec1), color-stop(100%,#0d2535)); background: -webkit-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: -ms-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); ">\n    <div style="position: absolute; width: 120px; top: 50%; left: 50%; margin: -60px 0 0 -60px; text-align: center;">\n        <a href="<%= url %>" style="display: block;  padding-top: 60px; color: #fff; text-shadow: 0px 0px 2px #555; font-size: 16px; text-decoration: none;">\n        <% if(upgrade) { %>\n            Upgrade the<br/>GradeCam Plugin\n        <% }else{ %>\n            Install the<br/>GradeCam Plugin\n        <% }%>\n        </a>\n<% if (canTryNext) { %>\n    -or-<br/>\n    <a href="javascript:<%= canTryNext %>();" style="color: #fff; text-decoration: none; text-shadow: 0px 0px 2px #555; font-size: 11px;">\n        Continue without\n    </a>\n<% } %>\n    </div>\n</div>\n'
+            t.exports = '<div style="position: relative; width: 100%; height: 100%; border: none; text-decoration: none; background: #babec1; background: -moz-radial-gradient(center, ellipse cover,  #babec1 0%, #0d2535 100%); background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#babec1), color-stop(100%,#0d2535)); background: -webkit-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: -ms-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); ">\n    <div style="position: absolute; width: 120px; top: 50%; left: 50%; margin: -60px 0 0 -60px; text-align: center;">\n        <a href="<%= url %>" style="display: block;  padding-top: 60px; color: #fff; text-shadow: 0px 0px 2px #555; font-size: 16px; text-decoration: none;">\n        <% if(upgrade) { %>\n            Upgrade the<br/>Plugin\n        <% }else{ %>\n            Install the<br/>Plugin\n        <% }%>\n        </a>\n<% if (canTryNext) { %>\n    -or-<br/>\n    <a href="javascript:<%= canTryNext %>();" style="color: #fff; text-decoration: none; text-shadow: 0px 0px 2px #555; font-size: 11px;">\n        Continue without\n    </a>\n<% } %>\n    </div>\n</div>\n'
+        }, 
+        
+        // 148 plugin not install error
+        function (t, e) {
+            t.exports = '<a href="#" style="position: relative; display: block; width: 100%; height: 100%; border: none; text-decoration: none; background-color: #babec1; ">\n    <div style="position: absolute; width: 120px; height: 60px; padding-top: 60px; top: 50%; left: 50%; margin: -60px 0 0 -60px; color: #fff; text-shadow: 0px 0px 2px #555; font-size: 16px; text-align: center;">\n        Please disable ActiveX Filtering.\n    </div>\n</a>\n'
         }, 
         
         function (t, e) {
-            t.exports = '<a href="http://support.gradecam.com/entries/21648913" style="position: relative; display: block; width: 100%; height: 100%; border: none; text-decoration: none; background-color: #babec1; ">\n    <div style="position: absolute; width: 120px; height: 60px; padding-top: 60px; top: 50%; left: 50%; margin: -60px 0 0 -60px; color: #fff; text-shadow: 0px 0px 2px #555; font-size: 16px; text-align: center;">\n        Please disable ActiveX Filtering.\n    </div>\n</a>\n'
+            t.exports = '<div style="position: relative; width: 100%; height: 100%; border: none; text-decoration: none; background: #babec1; background: -moz-radial-gradient(center, ellipse cover,  #babec1 0%, #0d2535 100%); background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#babec1), color-stop(100%,#0d2535)); background: -webkit-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: -ms-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); ">\n    <div style="position: absolute; width: 120px; top: 50%; left: 50%; margin: -60px 0 0 -60px; text-align: center;">\n        <a href="<%= url %>" style="display: block; padding-top: 60px; color: #fff; text-shadow: 0px 0px 2px #555; font-size: 16px; text-decoration: none;">\n            not supported on your system\n        </a>\n    </div>\n</div>\n'
         }, 
         
-        function (t, e) {
-            t.exports = '<div style="position: relative; width: 100%; height: 100%; border: none; text-decoration: none; background: #babec1; background: -moz-radial-gradient(center, ellipse cover,  #babec1 0%, #0d2535 100%); background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#babec1), color-stop(100%,#0d2535)); background: -webkit-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: -ms-radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); background: radial-gradient(center, ellipse cover,  #babec1 0%,#0d2535 100%); ">\n    <div style="position: absolute; width: 120px; top: 50%; left: 50%; margin: -60px 0 0 -60px; text-align: center;">\n        <a href="<%= url %>" style="display: block; padding-top: 60px; color: #fff; text-shadow: 0px 0px 2px #555; font-size: 16px; text-decoration: none;">\n            GradeCam is not supported on your system\n        </a>\n    </div>\n</div>\n'
-        }, 
-        
-        // 149
+        // 150
         function (t, e, n) {
             "use strict";
             var r = {
@@ -9307,6 +9326,7 @@
             t.exports = r
         }, 
         
+        // 151
         function (t, e, n) {
             "use strict";
             var r = n(152);
@@ -9537,6 +9557,7 @@
             t.exports = r.InterpretedScan
         }, 
         
+        // 156
         function (t, e, n) {
             "use strict";
             var r = this && this.__awaiter || function (t, e, n, r) {
@@ -9920,7 +9941,7 @@
             e.Form1Manager = a
         }, 
         
-        // 158 form 可移除
+        // 159 form 可移除
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -10072,7 +10093,7 @@
             }(h || (h = {})), t.exports = h
         }, 
         
-        // 159
+        // 160
         function (t, e, n) {
             "use strict";
             t.exports = function (t) {
@@ -10084,6 +10105,7 @@
             }
         }, 
         
+        // 161
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -10123,7 +10145,7 @@
             e.Form2Manager = p
         }, 
         
-        // 161 form 可移除
+        // 162 form 可移除
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -10452,6 +10474,7 @@
             e.FormDescription = p
         }, 
         
+        // 166
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -10576,7 +10599,7 @@
             e.NumberItemDescription = o
         }, 
         
-        // 169
+        // 170
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -10615,6 +10638,7 @@
             e.QuestionItemDescription = s
         }, 
         
+        // 171
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -11204,6 +11228,7 @@
             }
         }, 
         
+        // 176
         function (t, e, n) {
             "use strict";
             Object.defineProperty(e, "__esModule", {
@@ -11401,13 +11426,14 @@
             t.exports = i
         }, 
         
-        // 179
+        // 180
         function (t, e, n) {
             "use strict";
             var r = n(181);
             t.exports = r
         }, 
         
+        // 181
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -11895,6 +11921,7 @@
             t.exports = f
         }, 
         
+        // 186
         function (t, e, n) {
             "use strict";
             var r = function () {
@@ -12216,7 +12243,7 @@
             t.exports = u
         }, 
         
-        // 189
+        // 190
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -12423,22 +12450,22 @@
                         case "examLength":
                             o.filter(this.queue, function (t) {
                                 return "examLength" == t.result
-                            }).length > 3 && (n = "This form does not appear to be long enough for the exam length.", this.reportProblem("examLength", n));
+                            }).length > 3 && (n = "题目数量不足", this.reportProblem("examLength", n));
                             break;
                         case "alreadyProcessed":
-                            s(this.lastSuccess) > 5e3 && (n = "You have already scanned this form.  GradeCam will not scan the same form two times in a row.", this.reportProblem("duplicateId", n));
+                            s(this.lastSuccess) > 5e3 && (n = "已经扫描过了", this.reportProblem("duplicateId", n));
                             break;
                         case "needHighRes":
-                            s(this.lastSuccess) > 8e3 && (n = "GradeCam is having difficulty getting high resolution images from the camera. Clips may not work.", this.reportProblem("cannotHighRes", n));
+                            s(this.lastSuccess) > 8e3 && (n = "无法获取高分辨率图像. Clips may not work.", this.reportProblem("cannotHighRes", n));
                             break;
                         case "structure":
                             var i = o.filter(this.queue, function (t) {
                                 return "structure" == t.result
                             });
-                            new Date - i[0].time > 6e3 && i.length > 10 && i.length / this.queue.length > .7 && (n = "GradeCam is having difficulty reading this form.  Check the form position, lighting, camera focus, and camera zoom.", this.reportProblem("badStructure", n), this.trigger("enableHighRes", 3e3));
+                            new Date - i[0].time > 6e3 && i.length > 10 && i.length / this.queue.length > .7 && (n = "无法识别这张答题卡。请检查摆放位置、光线等。", this.reportProblem("badStructure", n), this.trigger("enableHighRes", 3e3));
                             break;
                         case "networkError":
-                            this.reportProblem("networkError", "Could not reach " + e.domain + "; check your internet connection and firewall settings.", e), console && console.error && console.error(e.error)
+                            this.reportProblem("networkError", "无法访问 " + e.domain + "; 请检查网络连接.", e), console && console.error && console.error(e.error)
                     }
                 }, e
             }(n(3).ClassTS);
@@ -12458,6 +12485,8 @@
             }
         }, 
         
+
+        // 193
         function (t, e, n) {
             "use strict";
             var r, i = this && this.__extends || (r = Object.setPrototypeOf || {
@@ -12475,7 +12504,7 @@
                     r(t, e), t.prototype = null === e ? Object.create(e) : (n.prototype = e.prototype, new n)
                 }),
                 o = n(1),
-                s = "https://scansupport.gradecam.com/formdata/",
+                s = "", // https://scansupport.gradecam.com/formdata/
                 a = function (t) {
                     function e(e, n) {
                         var r = t.call(this, e) || this;
@@ -12663,7 +12692,7 @@
             }
         },
         
-        // 195
+        // 196
         function (t, e, n) {
             "use strict";
             var r = this && this.__extends || function (t, e) {
