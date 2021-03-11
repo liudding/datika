@@ -253,7 +253,7 @@ export default class GradeCam {
       const ele = this.gradecam.getElement()
 
       if (!ele || ele.children.length === 0) {
-        throw new Error('初始化失败');
+        // throw new Error('初始化失败');
       }
 
       container.appendChild(ele)
