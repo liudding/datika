@@ -11,8 +11,9 @@
     <param name="onload" value="true"/>
   </feature>
 
-  <feature name="FileTransfer">
-    <param name="ios-package" value="CDVFileTransfer"/>
+  <feature name="PhotoLibrary">
+    <param name="ios-package" value="PhotoLibrary"/>
+    <param name="onload" value="true"/>
   </feature>
 
   <feature name="Wechat">

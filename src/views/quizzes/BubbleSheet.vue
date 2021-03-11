@@ -8,7 +8,7 @@
       </div>
 
       <ion-button :disabled="!previewUrl" @click="download" class="download-btn"
-        >下载</ion-button
+        >下载22</ion-button
       >
     </div>
   </div>
@@ -20,19 +20,20 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Toast from "@/mixins/Toast";
+import Alert from "@/mixins/Alert";
 import Form from "@/services/sheetGenerator/Form";
 import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
-import { isApp } from "@/utils/env";
-import { Plugins } from "@capacitor/core";
-
-const { PhotosPlugin } = Plugins;
+import { isAndroid, isApp, isIos } from "@/utils/env";
+import { PhotoLibrary } from "@ionic-native/photo-library";
 
 export default defineComponent({
   props: {
     questions: Array,
   },
   emits: ["downloaded", "backdrop"],
+  mixins: [Toast, Alert],
   data() {
     return {
       previewUrl: "",
@@ -71,17 +72,44 @@ export default defineComponent({
       const dataUrl = this.previewUrl;
 
       if (isApp()) {
-        await PhotosPlugin.savePhoto({
-          data: dataUrl,
-        });
+        try {
+          await PhotoLibrary.requestAuthorization({ write: true });
+        } catch (e) {
+          // iOS: plugin 会自动跳转到 settings
+
+          return;
+        }
+
+        try {
+          await PhotoLibrary.saveImage(dataUrl, "");
+        } catch (e) {
+          console.error("download image error: ", e);
+          // ios: 用户限制了只能访问指定的照片 FetchResult has no PHAssetCollection
+
+          this.alert({
+            title: "下载失败",
+            message: isIos() ? "请允许访问全部照片" : "",
+          });
+
+          return;
+        }
       } else {
-        const a = document.createElement("a");
-        a.setAttribute("download", "答题卡");
-        a.setAttribute("href", dataUrl);
-        a.click();
+        this.downloadOnWeb(dataUrl);
       }
 
+      this.toast({
+        title: "下载成功",
+        duration: 3000,
+      });
+
       this.$emit("downloaded");
+    },
+
+    downloadOnWeb(dataUrl: string) {
+      const a = document.createElement("a");
+      a.setAttribute("download", "答题卡");
+      a.setAttribute("href", dataUrl);
+      a.click();
     },
 
     onClickBackdrop() {
