@@ -234,7 +234,9 @@ export default {
         async studentRecords(context: any, quiz: any) {
             const quizId = quiz.id || quiz;
 
-            if ( context.state.recordsCacheId === quizId && context.state.records.length) {
+            const force = quiz.force;
+
+            if (!force && context.state.recordsCacheId === quizId && context.state.records.length) {
                 return {
                     data: context.state.records
                 };

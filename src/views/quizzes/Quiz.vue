@@ -169,6 +169,8 @@ export default defineComponent({
 
           this.store.commit("quiz/ATTACH_CLASSROOMS", classrooms);
 
+          this.getRecords(true);
+
           resolve(classrooms);
         };
       };
@@ -195,10 +197,13 @@ export default defineComponent({
       loading.dismiss();
     },
 
-    async getRecords() {
+    async getRecords(force = false) {
       const loading = await this.loading();
 
-      await this.store.dispatch("quiz/studentRecords", +this.$route.params.id);
+      await this.store.dispatch("quiz/studentRecords", {
+        id: +this.$route.params.id,
+        force: force,
+      });
 
       loading.dismiss();
     },
