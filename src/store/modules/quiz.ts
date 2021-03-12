@@ -115,9 +115,11 @@ export default {
             }, 0)
 
             const idx = state.list.findIndex((i: any) => i.id === state.quizId)
-            state.list[idx].classrooms = classes;
-            state.list[idx].classroomCount = classes.length
-            state.list[idx].studentCount = state.quiz.studentCount
+            if (idx >= 0) {
+                state.list[idx].classrooms = classes;
+                state.list[idx].classroomCount = classes.length
+                state.list[idx].studentCount = state.quiz.studentCount
+            }
         },
 
         SET_STUDENTS(state: any, data: any) {

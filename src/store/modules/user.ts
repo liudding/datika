@@ -1,6 +1,7 @@
 import Api from '@/api';
 import { MutationTree } from 'vuex';
-import { UserState } from '../type'
+import { UserState } from '../type';
+import Storage from '@/utils/storage';
 
 
 const mutations: MutationTree<UserState> = {
@@ -28,7 +29,7 @@ export default {
         uuid: '',
         name: '',
         mobile: '',
-        token: localStorage.getItem('AUTH_TOKEN'),
+        token: Storage.get('AUTH_TOKEN'),
 
         settings: {
             default_question_count: 10,
@@ -52,6 +53,8 @@ export default {
             context.commit('classroom/CLEAR')
 
             context.commit('SET_AUTH_TOKEN', resp.data.token);
+
+            Storage.set('AUTH_TOKEN', resp.data.token);
         },
 
         async register(context: any, data: any) {
@@ -76,12 +79,14 @@ export default {
                 context.commit('classroom/CLEAR')
                 context.commit('SET_AUTH_TOKEN', '');
                 context.commit('SET_PROFILE', {});
+
+                Storage.remove('AUTH_TOKEN')
             }
         },
 
         async feLogout(context: any) {
             context.commit('SET_AUTH_TOKEN', '');
-            localStorage.removeItem('AUTH_TOKEN')
+            Storage.remove('AUTH_TOKEN')
         },
 
         async getSettings(context: any) {
