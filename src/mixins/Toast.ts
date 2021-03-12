@@ -24,7 +24,7 @@ export default {
                 await Toast.show({
                     text: options.title || options.header,
                     duration: duration > 3000 ? 'long' : 'short',
-                    position: options.position || 'top'
+                    position: options.position || 'bottom'
                 });
 
                 return
@@ -35,7 +35,7 @@ export default {
                     header: options.title || options.header,
                     message: options.message || options.msg,
                     color: options.color,
-                    position: options.position || 'top',
+                    position: options.position || 'bottom',
                     duration,
                     buttons: options.buttons
                 })

@@ -28,7 +28,7 @@ instance.interceptors.response.use(
             if (response.status === 401) {
                 // 未认证
                 store.dispatch('feLogout').then(() => {
-                    // location.reload()
+                    location.reload()
                 })
                 return Promise.reject(error)
             }
