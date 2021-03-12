@@ -979,6 +979,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@ionic-native/photo-library@^5.31.1":
+  version "5.31.1"
+  resolved "https://registry.yarnpkg.com/@ionic-native/photo-library/-/photo-library-5.31.1.tgz#b2016b8f19de9ee40a9f86c8cb2e406c19fff6fe"
+  integrity sha512-GHaEMlWvsjqdhPSa7Aa799NkMu9ud+biAzjLWZ5IB/rmXOkM7TgT+L9USWybMEidLoJXwO3sg64es5taP7uvBA==
+  dependencies:
+    "@types/cordova" latest
+
 "@ionic-native/wechat@^5.31.1":
   version "5.31.1"
   resolved "https://registry.yarnpkg.com/@ionic-native/wechat/-/wechat-5.31.1.tgz#54737e98eab6cb2c49aa70f19b1fec06ee87281c"
@@ -2442,7 +2449,7 @@ async@2.6.1:
   dependencies:
     lodash "^4.17.10"
 
-async@^2.6.2:
+async@^2.1.4, async@^2.6.2:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
   integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
@@ -3716,17 +3723,19 @@ cordova-plugin-file@^6.0.2:
   resolved "https://registry.yarnpkg.com/cordova-plugin-file/-/cordova-plugin-file-6.0.2.tgz#f3911479f8357e9aacb5576674f8d95b31a1fb20"
   integrity sha512-m7cughw327CjONN/qjzsTpSesLaeybksQh420/gRuSXJX5Zt9NfgsSbqqKDon6jnQ9Mm7h7imgyO2uJ34XMBtA==
 
+cordova-plugin-photo-library-ld@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-photo-library-ld/-/cordova-plugin-photo-library-ld-2.3.1.tgz#d38546da188a449c9441b41db97b635bdaf3faed"
+  integrity sha512-W/4p1mUu5GPM+CGbNXKmJWl67PbIUvSljpum/dnvM78xyDZyGziSHfgAwlMJj//ZZ8Ho9dNBTV7+/raKAnB6sw==
+  dependencies:
+    async "^2.1.4"
+
 cordova-plugin-wechat@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cordova-plugin-wechat/-/cordova-plugin-wechat-3.0.0.tgz#d8f5344f7ffd0f1e6c46dd6a06aa43697db33519"
   integrity sha512-GZtQOaQAURvbi9rJU2HbQI9tHUhS4/i2TiH4R9k12jLY6rTJ4VmhSgEO3xAGBKlVn9bXofYnKZBWXtU3GvFP7A==
   dependencies:
     shelljs "^0.5.3"
-
-cordova-plugin-zip@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/cordova-plugin-zip/-/cordova-plugin-zip-3.1.0.tgz#176c8248ea20d39f1cf959ef5e6156acca96b217"
-  integrity sha1-F2yCSOog058c+VnvXmFWrMqWshc=
 
 core-js-compat@^3.6.5, core-js-compat@^3.8.1, core-js-compat@^3.9.0:
   version "3.9.0"
