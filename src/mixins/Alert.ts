@@ -46,8 +46,8 @@ export default {
                 if (isApp()) {
                     if (buttons.length === 1) {
                         Modals.alert({
-                            title: options.header || options.title,
-                            message: options.message || options.msg,
+                            title: options.header || options.title || "",
+                            message: options.message || options.msg || "",
                             buttonTitle: options.confirmText || options.cancelText || "确定"
                         }).then(() => {
                             resolve();

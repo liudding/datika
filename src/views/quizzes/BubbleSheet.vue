@@ -82,6 +82,8 @@ export default defineComponent({
 
         try {
           await PhotoLibrary.saveImage(dataUrl, "");
+
+          console.log('下载成功')
         } catch (e) {
           console.error("download image error: ", e);
           // ios: 用户限制了只能访问指定的照片 FetchResult has no PHAssetCollection

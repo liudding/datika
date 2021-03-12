@@ -158,6 +158,7 @@ export default defineComponent({
 
     async onShowMore(classroom: any) {
       this.showActionSheet({
+        title: classroom.name,
         buttons: [
           {
             text: "编辑",

@@ -155,6 +155,7 @@ export default defineComponent({
 
     async onShowMore(quiz: any) {
       this.showActionSheet({
+        title: quiz.name,
         cancel: true,
         buttons: [
           {

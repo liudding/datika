@@ -139,6 +139,7 @@ export default defineComponent({
     onClickDelete() {
       this.alert({
         title: "确定删除该学生吗",
+        message: "不会删除该学生的测验记录",
         confirmText: "删除",
         cancel: true,
       }).then(() => {
