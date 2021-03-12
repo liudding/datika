@@ -8,7 +8,7 @@
       </div>
 
       <ion-button :disabled="!previewUrl" @click="download" class="download-btn"
-        >下载22</ion-button
+        >下载</ion-button
       >
     </div>
   </div>
@@ -25,7 +25,7 @@ import Alert from "@/mixins/Alert";
 import Form from "@/services/sheetGenerator/Form";
 import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
-import { isAndroid, isApp, isIos } from "@/utils/env";
+import { isApp, isIos } from "@/utils/env";
 import { PhotoLibrary } from "@ionic-native/photo-library";
 
 export default defineComponent({

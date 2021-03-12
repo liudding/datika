@@ -67,7 +67,7 @@ export function isPwa() {
 }
 
 export function isBrowser() {
-    return !isPwa() && client() === 'browser' || client() === 'web';
+    return !isPwa() && (client() === 'browser' || client() === 'web');
 }
 
 export function isApp() {
