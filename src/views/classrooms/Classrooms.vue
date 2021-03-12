@@ -271,7 +271,7 @@ export default defineComponent({
     async deleteClassroom(classroom: any) {
       this.alert({
         header: "确定删除吗",
-        message: "该测验的所有相关数据将一并删除。",
+        message: "该班级的所有学生将一并删除。所参与的测验会被保留",
         cancel: true,
         confirmText: "删除",
       }).then(() => {
