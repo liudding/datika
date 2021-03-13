@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts">
-import { IonItemDivider } from "@ionic/vue";
 import { mapState } from "vuex";
 import ActionSheet from "@/mixins/ActionSheet";
 import { useStore } from "vuex";
@@ -37,9 +36,7 @@ const { Browser } = Plugins;
 
 export default defineComponent({
   name: "My",
-  components: {
-    IonItemDivider,
-  },
+  components: {},
   mixins: [ActionSheet],
   computed: {
     ...mapState({

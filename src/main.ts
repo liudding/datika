@@ -30,7 +30,7 @@ import "@/utils/env";
 import ionicConfig from '@/utils/ionic-config';
 
 import {
-  IonItem, IonItemDivider, IonPage, IonContent, IonHeader, IonList,
+  IonItem, IonItemDivider, IonItemGroup, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
   IonInput, IonCheckbox, IonToggle,
   IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel, IonNote,
@@ -55,6 +55,7 @@ app.component('IonPage', IonPage)
   .component('IonList', IonList)
   .component('IonItem', IonItem)
   .component('IonItemDivider', IonItemDivider)
+  .component('IonItemGroup', IonItemGroup)
   .component('IonInput', IonInput)
   .component('IonCheckbox', IonCheckbox)
   .component('IonToggle', IonToggle)

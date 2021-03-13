@@ -58,7 +58,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore, mapState } from "vuex";
-import { IonItemDivider, IonItemGroup } from "@ionic/vue";
 import QuestionCount from "./QuestionCount.vue";
 import AutoArchive from "./AutoArchive.vue";
 import Modal from "@/mixins/Modal";
@@ -66,7 +65,6 @@ import ActionSheet from "@/mixins/ActionSheet";
 
 export default defineComponent({
   name: "Settings",
-  components: { IonItemDivider, IonItemGroup },
   mixins: [Modal, ActionSheet],
   setup() {
     return {

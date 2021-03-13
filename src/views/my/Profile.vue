@@ -28,7 +28,6 @@
 </template>
 
 <script lang="ts">
-import { IonItemDivider, IonItemGroup } from "@ionic/vue";
 import { mapState } from "vuex";
 import Modal from "@/mixins/Modal";
 import UpdateProfileItem from "./UpdateProfileItem.vue";
@@ -36,10 +35,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "My",
-  components: {
-    IonItemDivider,
-    IonItemGroup,
-  },
+  components: {},
   mixins: [Modal],
   computed: {
     ...mapState({
