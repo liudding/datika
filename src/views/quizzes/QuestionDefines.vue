@@ -1,11 +1,14 @@
 <template>
   <ion-header>
     <ion-toolbar>
-      <ion-title>设置题目</ion-title>
-      <ion-buttons slot="end">
+      <ion-buttons slot="start">
         <ion-button @click="add"
           ><ion-icon :icon="addCircle"></ion-icon
         ></ion-button>
+      </ion-buttons>
+      <ion-title>设置题目</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消</ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -189,6 +192,10 @@ export default defineComponent({
       if (+def.choices === 2) return "TF";
 
       return "ABCDEFGHIJK".substr(0, +def.choices);
+    },
+
+    dismissModal() {
+      window._modal.dismiss();
     },
   },
 });

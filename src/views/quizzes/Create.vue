@@ -2,6 +2,9 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>{{ title }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消</ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content class="content">
@@ -133,6 +136,10 @@ export default defineComponent({
     resetData() {
       this.name = "";
     },
+
+    dismissModal() {
+      window._modal.dismiss();
+    },
   },
 });
 </script>
@@ -151,7 +158,7 @@ ion-item {
   margin-bottom: 8px;
 }
 
-ion-button {
+ion-content ion-button {
   margin-top: 32px;
   --border-radius: 100px;
 }

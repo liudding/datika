@@ -1,5 +1,11 @@
 import { modalController } from '@ionic/vue'
 
+
+declare global {
+    interface Window { _modal: any }
+}
+
+
 export default {
     methods: {
         async modal(component: any, props?: any, cssClass?: string, swipeToClose = true) {
@@ -27,7 +33,9 @@ export default {
 
             document.body.classList.add('modal')
 
+            window._modal = modal;
+
             return modal;
-        }
+        },
     }
 }

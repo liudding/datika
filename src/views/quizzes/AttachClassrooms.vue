@@ -2,6 +2,9 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>关联班级</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消</ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content class="content">
@@ -26,11 +29,20 @@
       </ion-item>
     </ion-list>
 
-    <div v-if="showLoading" class="d-flex flex-column align-items-center" style="height: 100px;">
-       <ion-spinner name="circles"></ion-spinner>
+    <div
+      v-if="showLoading"
+      class="d-flex flex-column align-items-center"
+      style="height: 100px"
+    >
+      <ion-spinner name="circles"></ion-spinner>
     </div>
 
-    <ion-button v-if="classrooms.length" @click="attachClassrooms" expand="block">确定</ion-button>
+    <ion-button
+      v-if="classrooms.length"
+      @click="attachClassrooms"
+      expand="block"
+      >确定</ion-button
+    >
 
     <Emptyset v-else title="尚无班级" message="请先去添加班级"></Emptyset>
   </ion-content>
@@ -46,7 +58,7 @@ export default defineComponent({
   props: ["selected"],
   emits: ["attached"],
   mixins: [Loading],
-  components: {Emptyset},
+  components: { Emptyset },
   data() {
     const classrooms: any[] = [];
     return {
@@ -54,7 +66,7 @@ export default defineComponent({
       isSelected: (classroom: any) => {
         return this.selected.indexOf(classroom.id) > -1;
       },
-      showLoading: true
+      showLoading: true,
     };
   },
   created() {
@@ -97,8 +109,12 @@ export default defineComponent({
         return classroom;
       });
 
-       this.showLoading = false;
-    }
+      this.showLoading = false;
+    },
+
+    dismissModal() {
+      window._modal.dismiss();
+    },
   },
 });
 </script>
@@ -129,7 +145,7 @@ ion-item {
   margin-bottom: 8px;
 }
 
-ion-button {
+ion-content ion-button {
   margin-top: 32px;
   --border-radius: 100px;
 }

@@ -1,6 +1,11 @@
 <template>
   <ion-header>
-    <div class="header"></div>
+    <ion-toolbar>
+      <ion-title>默认题目数量</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
@@ -39,28 +44,9 @@ export default defineComponent({
     onChange($event: CustomEvent) {
       this.$emit("change", $event.detail.value);
     },
+    dismissModal() {
+      window._modal.dismiss();
+    },
   },
 });
 </script>
-
-<style scoped>
-.header {
-  height: 40px;
-  width: 100%;
-  background: white;
-
-  border-top-left-radius: 16px;
-
-  border-top-right-radius: 16px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .header {
-    background: #252525;
-  }
-
-  ion-content {
-    --background: #252525;
-  }
-}
-</style>

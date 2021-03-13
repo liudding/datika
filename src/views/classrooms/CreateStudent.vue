@@ -2,6 +2,9 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>{{ title }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消 </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content class="content">
@@ -132,8 +135,8 @@ export default defineComponent({
 
       this.toast({
         title: "已复制",
-        duration: 2000
-      })
+        duration: 2000,
+      });
     },
 
     onClickDelete() {
@@ -174,6 +177,10 @@ export default defineComponent({
       this.name = "";
       this.number = "";
     },
+
+    dismissModal() {
+      window._modal.dismiss();
+    },
   },
 });
 </script>
@@ -192,7 +199,7 @@ ion-item {
   margin-bottom: 8px;
 }
 
-ion-button {
+ion-content ion-button {
   margin-top: 32px;
   --border-radius: 100px;
 }

@@ -2,6 +2,9 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>成绩</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消</ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content class="content">
@@ -36,7 +39,11 @@ export default defineComponent({
   data() {
     return {};
   },
-  components: {},
+  methods: {
+    dismissModal() {
+      window._modal.dismiss();
+    },
+  },
 });
 </script>
 

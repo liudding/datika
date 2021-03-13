@@ -2,6 +2,9 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>{{ title }}</ion-title>
+      <ion-buttons slot="end">
+        <ion-button @click="dismissModal">取消 </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
@@ -21,6 +24,7 @@
 
 <script>
 import { defineComponent } from "vue";
+import { addCircle } from "ionicons/icons";
 import Api from "@/api";
 import Loading from "@/mixins/Loading";
 import Toast from "@/mixins/Toast";
@@ -33,6 +37,7 @@ export default defineComponent({
   data() {
     return {
       name: this.classroom ? this.classroom.name : "",
+      addCircle,
     };
   },
   computed: {
@@ -65,7 +70,7 @@ export default defineComponent({
         this.toast({
           title: "保存成功",
           color: "success",
-          duration: 1000
+          duration: 1000,
         });
 
         this.$emit("saved", resp.data, !this.classroom);
@@ -85,6 +90,10 @@ export default defineComponent({
       this.name = "";
       this.number = "";
     },
+
+    dismissModal() {
+      window._modal.dismiss();
+    }
   },
 });
 </script>
@@ -103,7 +112,7 @@ ion-item {
   margin-bottom: 8px;
 }
 
-ion-button {
+ion-content ion-button {
   margin-top: 32px;
   --border-radius: 100px;
 }
