@@ -94,6 +94,9 @@ ion-item-divider {
 }
 .profile .name {
   margin-left: 8px;
-  font-weight: 700;
+  /* font-weight: 700; */
+  font-size: 36px;
+  height: 80px;
+  line-height: 80px;
 }
 </style>
