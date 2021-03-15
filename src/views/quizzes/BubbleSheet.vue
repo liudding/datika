@@ -22,6 +22,7 @@
 import { defineComponent } from "vue";
 import Toast from "@/mixins/Toast";
 import Alert from "@/mixins/Alert";
+import Loading from "@/mixins/Loading";
 import Form from "@/services/sheetGenerator/Form";
 import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
@@ -33,7 +34,7 @@ export default defineComponent({
     questions: Array,
   },
   emits: ["downloaded", "backdrop"],
-  mixins: [Toast, Alert],
+  mixins: [Toast, Alert, Loading],
   data() {
     return {
       previewUrl: "",
@@ -77,13 +78,22 @@ export default defineComponent({
         } catch (e) {
           // iOS: plugin 会自动跳转到 settings
 
+          console.log("request permission error", e);
+
+          this.toast({
+            title: '您拒绝了访问相册的权限',
+            message: '请允许此权限，否则无法下载答题卡'
+          })
+
           return;
         }
 
-        try {
-          await PhotoLibrary.saveImage(dataUrl, "");
+        const loading = await this.loading();
 
-          console.log('下载成功')
+        try {
+          await PhotoLibrary.saveImage(dataUrl, process.env.VUE_APP_NAME);
+
+          console.log("下载成功");
         } catch (e) {
           console.error("download image error: ", e);
           // ios: 用户限制了只能访问指定的照片 FetchResult has no PHAssetCollection
@@ -94,13 +104,15 @@ export default defineComponent({
           });
 
           return;
+        } finally {
+          loading.dismiss();
         }
       } else {
         this.downloadOnWeb(dataUrl);
       }
 
       this.toast({
-        title: "下载成功",
+        title: "已保存至相册",
         duration: 3000,
       });
 
