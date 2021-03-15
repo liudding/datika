@@ -8,7 +8,7 @@ declare global {
 
 export default {
     methods: {
-        async modal(component: any, props?: any, cssClass?: string, swipeToClose = true) {
+        async modal(component: any, props?: any, cssClass?: string, backdropDismiss = true) {
 
             let modal = null;
 
@@ -21,8 +21,9 @@ export default {
                 .create({
                     component: component,
                     componentProps: props,
-                    swipeToClose: swipeToClose,
-                    cssClass: cssClass
+                    swipeToClose: true,
+                    cssClass: cssClass,
+                    backdropDismiss: backdropDismiss,
                 })
 
             modal.onWillDismiss().then(() => {
