@@ -54,6 +54,7 @@ import Scanner from "@/services/scanner/Scanner";
 import beep from "@/services/scanner/beep";
 import { speak } from "@/services/speech";
 import Records from "./Records.vue";
+import StudentPicker from "./StudentPicker";
 import Result from "./Result.vue";
 import Settings from "./Settings.vue";
 import Api from "@/api";
@@ -222,8 +223,8 @@ export default defineComponent({
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
       scanner.onAsk(() => {
-        console.log("valdiate")
-      })
+        console.log("valdiate");
+      });
 
       try {
         await scanner.start(true);
@@ -239,16 +240,23 @@ export default defineComponent({
 
       await this.hideResult();
 
-      if (this.settings.sound) {
-        beep();
-      }
+      this.settings.sound && beep();
 
-      const record = this.records.find(
-        (item) => item.studentNumber === scanObj.gradecam_id
-      );
+      let record = this.findRecord(scanObj.gradecam_id);
 
       if (!record) {
-        alert(`学号：${scanObj.gradecam_id} 不存在`);
+        try {
+          const studentId = await this.pickerStudent();
+
+          record = this.findRecord(studentId);
+        } catch (e) {
+          return;
+        }
+      }
+
+      const needValidate = this.checkNeedValidate(scanObj);
+
+      if (needValidate) {
         return;
       }
 
@@ -271,6 +279,31 @@ export default defineComponent({
         this.showResult(this.currentRecord);
       });
     },
+
+    findRecord(studentId) {
+      return this.records.find((item) => item.studentNumber === studentId);
+    },
+
+    checkNeedValidate(data) {
+      const questions = this.quiz.questions;
+
+      const answers = data.answers;
+
+      const toValidate = [];
+
+      for (let i = 0; i < questions.length; i++) {
+        if (questions[i].type === 1 && answers[i].value.length > 1) {
+          toValidate.push({
+            index: i,
+            question: questions[i],
+            answer: answers[i].value,
+          });
+        }
+      }
+
+      return toValidate.length > 0 ? toValidate : false;
+    },
+
     onIssue(issue) {
       console.log("ISSUE: ", issue);
 
@@ -310,8 +343,7 @@ export default defineComponent({
     },
 
     async showResult(result) {
-      
-      speak(result.name.split('').join('-') + "," + result.score + ",分");
+      speak(result.name.split("").join("-") + "," + result.score + ",分");
 
       this.resultModal = await this.modal(
         Result,
@@ -320,6 +352,28 @@ export default defineComponent({
         },
         "scan-result-modal"
       );
+    },
+
+    async pickerStudent() {
+      return new Promise((resolve, reject) => {
+        this.modal(
+          StudentPicker,
+          {
+            records: this.records,
+            onChange: (res) => {
+              console.log(res);
+
+              resolve(res);
+            },
+          },
+          null,
+          false
+        ).then((modal) => {
+          modal.onWillDismiss().then(() => {
+            reject();
+          });
+        });
+      });
     },
 
     onClickFab() {
