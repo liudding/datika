@@ -1,0 +1,14 @@
+{
+  "appId": "cn.menco.cordova",
+  "appName": "Quiz",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "appendUserAgent": "youce",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
