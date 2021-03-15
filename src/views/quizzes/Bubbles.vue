@@ -36,12 +36,14 @@ export default defineComponent({
     choices: String,
     answer: String,
     correct: String,
+    selected: String,
     mode: {
       type: String,
       default: "question", // answer
     },
     name: String,
   },
+  emits: ["change"],
   setup() {
     return { closeOutline, checkmark };
   },
@@ -58,15 +60,15 @@ export default defineComponent({
   },
   methods: {
     onClickBubble(bubble) {
-      let correct = this.correct || "";
+      let selected = this.selected || "";
 
-      if (this.isCorrect(bubble)) {
-        correct = correct.replace(bubble, "");
+      if (selected.indexOf(bubble) >= 0) {
+        selected = selected.replace(bubble, "");
       } else {
-        correct += bubble;
+        selected += bubble;
       }
 
-      this.$emit("change", correct, this.name);
+      this.$emit("change", selected, this.name);
     },
   },
 });
