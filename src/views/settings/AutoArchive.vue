@@ -21,17 +21,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { IonRadio, IonRadioGroup } from "@ionic/vue";
 export default defineComponent({
   props: {
     months: {
       type: Number,
       default: 6,
     },
-  },
-  components: {
-    IonRadio,
-    IonRadioGroup,
   },
   emits: ["change"],
   data() {
