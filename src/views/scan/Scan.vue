@@ -51,7 +51,7 @@ import { defineComponent } from "vue";
 import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
-import beep from "@/services/scanner/beep";
+import Sound from "@/utils/sound";
 import { speak } from "@/services/speech";
 import Records from "./Records.vue";
 import StudentPicker from "./StudentPicker";
@@ -240,11 +240,13 @@ export default defineComponent({
 
       await this.hideResult();
 
-      this.settings.sound && beep();
+      this.settings.sound &&  Sound.beep();
 
       let record = this.findRecord(scanObj.gradecam_id);
 
       if (!record) {
+        this.settings.sound && Sound.warning();
+
         try {
           const studentId = await this.pickerStudent();
 
@@ -257,6 +259,8 @@ export default defineComponent({
       const needValidate = this.checkNeedValidate(scanObj);
 
       if (needValidate) {
+        this.settings.sound && Sound.warning();
+
         return;
       }
 
