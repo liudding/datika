@@ -1,5 +1,5 @@
 {
-  "appId": "cn.menco.cordova",
+  "appId": "com.youcce.youcce",
   "appName": "Quiz",
   "bundledWebRuntime": false,
   "npmClient": "npm",

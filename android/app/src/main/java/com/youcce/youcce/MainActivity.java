@@ -1,4 +1,4 @@
-package cn.menco.cordova;
+package com.youcce.youcce;
 
 import android.os.Bundle;
 
