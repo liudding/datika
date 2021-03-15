@@ -38,9 +38,6 @@ export default defineComponent({
       picked: null
     };
   },
-  created() {
-    console.log(this.records)
-  },
   methods: {
     onChange($event) {
       this.picked =  $event.detail.value
