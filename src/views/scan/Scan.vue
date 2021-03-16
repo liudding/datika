@@ -245,11 +245,15 @@ export default defineComponent({
         this.settings.sound && Sound.warning();
 
         try {
+          scanner.pause();
+
           const studentId = await this.pickerStudent();
 
           record = this.findRecord(studentId);
         } catch (e) {
           return;
+        } finally {
+          scanner.resume();
         }
       }
 
@@ -259,6 +263,8 @@ export default defineComponent({
         this.settings.sound && Sound.warning();
 
         try {
+          scanner.pause();
+
           const correctedAnswers = await this.doCorrection(needValidate);
 
           for (const corrected of correctedAnswers) {
@@ -266,6 +272,8 @@ export default defineComponent({
           }
         } catch (e) {
           return;
+        } finally {
+          scanner.resume();
         }
       }
 
@@ -316,16 +324,16 @@ export default defineComponent({
     onIssue(issue) {
       console.log("ISSUE: ", issue);
 
-      if (issue.type === 'examLength') {
-        this.toast('答题卡题目数量不足')
-      } else if (issue.type === 'duplicateId') {
-        this.toast('已经扫描过了');
-      } else if (issue.type === 'cannotHighRes') {
-        this.toast('无法获取高分辨率图像');
-      } else if (issue.type === 'badStructure') {
+      if (issue.type === "examLength") {
+        this.toast("答题卡题目数量不足");
+      } else if (issue.type === "duplicateId") {
+        this.toast("已经扫描过了");
+      } else if (issue.type === "cannotHighRes") {
+        this.toast("无法获取高分辨率图像");
+      } else if (issue.type === "badStructure") {
         this.toast({
-          title: '无法识别这张答题卡。请检查摆放位置、光线等。'
-        })
+          title: "无法识别这张答题卡。请检查摆放位置、光线等。",
+        });
       }
     },
 
