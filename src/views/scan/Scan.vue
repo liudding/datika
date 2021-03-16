@@ -62,6 +62,7 @@ import Api from "@/api";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
 import RadialProgressBar from "vue-radial-progress";
+import { checkIsSame, checkNeedCorrection } from "@/utils/answer";
 
 let scanner;
 
@@ -140,21 +141,13 @@ export default defineComponent({
         this.quiz.studentCount === 0 ? 100 : this.quiz.studentCount;
       this.completedCount = this.quiz.recordCount;
     },
+
     async getRecords() {
       await this.store.dispatch("quiz/studentRecords", +this.$route.params.id);
     },
-    checkIsOldRecordData(answers, record) {
-      if (!record || !record.id || !record.answers) return false;
 
-      const newAnswer = answers.join("_");
-      const oldAnswer = record.answers.map((i) => i.answer).join("_");
-
-      return newAnswer == oldAnswer ? record : false;
-    },
     async submit(data, record) {
-      const answers = data.answers;
-
-      if (this.checkIsOldRecordData(answers, record)) {
+      if (checkIsSame(data.answers, record.answers)) {
         return {
           type: "nochange",
           data: record,
@@ -163,7 +156,7 @@ export default defineComponent({
 
       const params = {
         student: record.studentId,
-        answers: answers,
+        answers: data.answers,
       };
 
       const resp = await Api.quiz.submit(+this.$route.params.id, params);
@@ -261,7 +254,7 @@ export default defineComponent({
         }
       }
 
-      const needValidate = this.checkNeedCorrection(scanData);
+      const needValidate = checkNeedCorrection(scanData);
 
       if (needValidate) {
         this.settings.sound && Sound.warning();
@@ -297,30 +290,6 @@ export default defineComponent({
 
     findRecord(studentId) {
       return this.records.find((item) => item.studentNumber === studentId);
-    },
-
-    /**
-     * 检测学生填涂是否需要校正
-     * 单选题，涂了多个
-     */
-    checkNeedCorrection(data) {
-      const questions = this.quiz.questions;
-
-      const answers = data.answers;
-
-      const toValidate = [];
-
-      for (let i = 0; i < questions.length; i++) {
-        if (questions[i].type === 1 && answers[i].length > 1) {
-          toValidate.push({
-            index: i,
-            question: questions[i],
-            answer: answers[i],
-          });
-        }
-      }
-
-      return toValidate.length > 0 ? toValidate : false;
     },
 
     doCorrection(answers) {
