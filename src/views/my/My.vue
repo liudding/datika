@@ -11,9 +11,7 @@
       <ion-item-group>
         <!-- <ion-item-divider></ion-item-divider> -->
 
-        <ion-item routerLink="/subscriptions" lines="none" detail
-          >订阅</ion-item
-        >
+        <!-- <ion-item routerLink="/subscriptions" lines="none" detail>订阅</ion-item> -->
         <ion-item-divider></ion-item-divider>
 
         <ion-item routerLink="/settings" detail>设置</ion-item>
