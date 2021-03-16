@@ -5,6 +5,7 @@
     </div>
     <div class="emptyset-message">
       {{ message }}
+      <slot></slot>
     </div>
   </div>
 </template>
