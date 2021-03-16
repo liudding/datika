@@ -66,7 +66,11 @@
       </div>
 
       <Records v-if="quiz.studentCount" :quiz="quiz"></Records>
-      <Emptyset v-else title="暂无成绩"></Emptyset>
+      <Emptyset v-else title="暂无成绩">
+        <p>1. 设置测验题目和分值</p>
+        <p>2. 关联参与测验的班级</p>
+        <p>3. 扫描答题卡录入成绩</p>
+      </Emptyset>
 
       <ion-fab vertical="bottom" horizontal="end" slot="fixed" v-if="showFab">
         <ion-fab-button @click="gotoScan">
