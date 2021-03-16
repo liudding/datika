@@ -214,9 +214,7 @@ export default defineComponent({
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
-      scanner.onAsk(() => {
-        console.log("valdiate");
-      });
+      scanner.onAsk(this.validateCallback);
 
       try {
         await scanner.start(true);
@@ -320,7 +318,7 @@ export default defineComponent({
       return issue;
     },
 
-    gcValidateCallback(validateObj, finish) {
+    validateCallback(validateObj, finish) {
       console.log(finish);
       return validateObj;
     },
