@@ -61,6 +61,7 @@ import Settings from "./Settings.vue";
 import Api from "@/api";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
+import Toast from "@/mixins/Toast";
 import RadialProgressBar from "vue-radial-progress";
 import { checkIsSame, checkNeedCorrection } from "@/utils/answer";
 
@@ -68,7 +69,7 @@ let scanner;
 
 export default defineComponent({
   name: "Scan",
-  mixins: [Modal, Alert],
+  mixins: [Modal, Alert, Toast],
   setup() {
     return {
       store: useStore(),
@@ -315,7 +316,17 @@ export default defineComponent({
     onIssue(issue) {
       console.log("ISSUE: ", issue);
 
-      return issue;
+      if (issue.type === 'examLength') {
+        this.toast('答题卡题目数量不足')
+      } else if (issue.type === 'duplicateId') {
+        this.toast('已经扫描过了');
+      } else if (issue.type === 'cannotHighRes') {
+        this.toast('无法获取高分辨率图像');
+      } else if (issue.type === 'badStructure') {
+        this.toast({
+          title: '无法识别这张答题卡。请检查摆放位置、光线等。'
+        })
+      }
     },
 
     validateCallback(validateObj, finish) {
