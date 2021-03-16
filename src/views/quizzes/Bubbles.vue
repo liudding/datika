@@ -12,13 +12,14 @@
       @click="onClickBubble(bubble)"
       class="bubble"
       :class="{
+        filled: isFilled(bubble),
+        correct: showResult && isCorrect(bubble),
+        incorrect: showResult && !isCorrect(bubble),
         selected: isSelected(bubble),
-        correct: isCorrect(bubble),
-        incorrect: !isCorrect(bubble),
       }"
     >
       <ion-icon
-        v-if="isSelected(bubble)"
+        v-if="showResult"
         :icon="isCorrect(bubble) ? checkmark : closeOutline"
         class="answer-result"
       ></ion-icon>
@@ -30,18 +31,22 @@
 <script>
 import { defineComponent } from "vue";
 import { closeOutline, checkmark } from "ionicons/icons";
+import Str from "@/utils/str";
 
 export default defineComponent({
   props: {
     choices: String,
     answer: String,
     correct: String,
+    selected: String,
+    showResult: Boolean,
     mode: {
       type: String,
       default: "question", // answer
     },
     name: String,
   },
+  emits: ["change"],
   setup() {
     return { closeOutline, checkmark };
   },
@@ -51,22 +56,26 @@ export default defineComponent({
       isCorrect(opt) {
         return (this.correct || "").indexOf(opt) >= 0;
       },
-      isSelected(opt) {
+      isFilled(opt) {
         return (this.answer || "").indexOf(opt) >= 0;
+      },
+
+      isSelected(opt) {
+        return (this.selected || "").indexOf(opt) >= 0;
       },
     };
   },
   methods: {
     onClickBubble(bubble) {
-      let correct = this.correct || "";
+      let selected = this.selected || "";
 
-      if (this.isCorrect(bubble)) {
-        correct = correct.replace(bubble, "");
+      if (selected.indexOf(bubble) >= 0) {
+        selected = selected.replace(bubble, "");
       } else {
-        correct += bubble;
+        selected += bubble;
       }
 
-      this.$emit("change", correct, this.name);
+      this.$emit("change", Str.ascending(selected), this.name);
     },
   },
 });
@@ -97,18 +106,18 @@ export default defineComponent({
   cursor: pointer;
 }
 
+.mode-answer .bubble {
+  border: 1px dashed gray;
+  color: gray;
+}
+
 .mode-question .correct {
   background: var(--ion-color-primary);
   border: 1px solid var(--ion-color-primary);
   color: white;
 }
 
-.mode-answer .bubble {
-  border: 1px dashed gray;
-  color: gray;
-}
-
-.mode-answer .selected {
+.mode-answer .filled {
   background: rgba(0, 0, 0, 0.4);
   border: none;
 }
@@ -119,8 +128,22 @@ export default defineComponent({
   line-height: 26px;
 }
 
+.mode-answer .correct {
+  border: 2px solid rgb(140, 151, 253);
+
+  line-height: 26px;
+}
+
 .bubble.selected.incorrect {
   /* background:rgb(248, 30, 2); */
+}
+
+.mode-question .selected,
+.mode-answer .selected {
+  border: none;
+  background: var(--ion-color-primary);
+  color: white;
+  /* line-height: 26px; */
 }
 
 .answer-result {

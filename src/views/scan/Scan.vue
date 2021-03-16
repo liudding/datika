@@ -51,9 +51,11 @@ import { defineComponent } from "vue";
 import { useStore, mapState } from "vuex";
 
 import Scanner from "@/services/scanner/Scanner";
-import beep from "@/services/scanner/beep";
+import Sound from "@/utils/sound";
 import { speak } from "@/services/speech";
 import Records from "./Records.vue";
+import StudentPicker from "./StudentPicker";
+import AnswerCorrection from "./AnswerCorrection";
 import Result from "./Result.vue";
 import Settings from "./Settings.vue";
 import Api from "@/api";
@@ -121,6 +123,12 @@ export default defineComponent({
     }
 
     this.initScanner();
+
+
+    this.doCorrection([{
+      question: this.quiz.questions[0],
+      answer: ['A', 'B']
+    }]);
   },
   ionViewWillLeave() {
     scanner && scanner.stop();
@@ -222,8 +230,8 @@ export default defineComponent({
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
       scanner.onAsk(() => {
-        console.log("valdiate")
-      })
+        console.log("valdiate");
+      });
 
       try {
         await scanner.start(true);
@@ -239,17 +247,28 @@ export default defineComponent({
 
       await this.hideResult();
 
-      if (this.settings.sound) {
-        beep();
-      }
+      this.settings.sound &&  Sound.beep();
 
-      const record = this.records.find(
-        (item) => item.studentNumber === scanObj.gradecam_id
-      );
+      let record = this.findRecord(scanObj.gradecam_id);
 
       if (!record) {
-        alert(`学号：${scanObj.gradecam_id} 不存在`);
-        return;
+        this.settings.sound && Sound.warning();
+
+        try {
+          const studentId = await this.pickerStudent();
+
+          record = this.findRecord(studentId);
+        } catch (e) {
+          return;
+        }
+      }
+
+      const needValidate = this.checkNeedCorrection(scanObj);
+
+      if (needValidate) {
+        this.settings.sound && Sound.warning();
+
+
       }
 
       console.log(record, "=====");
@@ -271,6 +290,58 @@ export default defineComponent({
         this.showResult(this.currentRecord);
       });
     },
+
+    findRecord(studentId) {
+      return this.records.find((item) => item.studentNumber === studentId);
+    },
+
+    /**
+     * 检测学生填涂是否需要校正
+     * 单选题，涂了多个
+     */
+    checkNeedCorrection(data) {
+      const questions = this.quiz.questions;
+
+      const answers = data.answers;
+
+      const toValidate = [];
+
+      for (let i = 0; i < questions.length; i++) {
+        if (questions[i].type === 1 && answers[i].value.length > 1) {
+          toValidate.push({
+            index: i,
+            question: questions[i],
+            answer: answers[i].value,
+          });
+        }
+      }
+
+      return toValidate.length > 0 ? toValidate : false;
+    },
+
+    doCorrection(answers) {
+       return new Promise((resolve, reject) => {
+        this.modal(
+          AnswerCorrection,
+          {
+            answers: answers,
+            onChange: (res) => {
+              console.log(res);
+
+              resolve(res);
+            },
+          },
+          null,
+          false
+        ).then((modal) => {
+          modal.onWillDismiss().then(() => {
+            reject();
+          });
+        });
+      });
+    },
+
+
     onIssue(issue) {
       console.log("ISSUE: ", issue);
 
@@ -310,8 +381,7 @@ export default defineComponent({
     },
 
     async showResult(result) {
-      
-      speak(result.name.split('').join('-') + "," + result.score + ",分");
+      speak(result.name.split("").join("-") + "," + result.score + ",分");
 
       this.resultModal = await this.modal(
         Result,
@@ -320,6 +390,28 @@ export default defineComponent({
         },
         "scan-result-modal"
       );
+    },
+
+    async pickerStudent() {
+      return new Promise((resolve, reject) => {
+        this.modal(
+          StudentPicker,
+          {
+            records: this.records,
+            onChange: (res) => {
+              console.log(res);
+
+              resolve(res);
+            },
+          },
+          null,
+          false
+        ).then((modal) => {
+          modal.onWillDismiss().then(() => {
+            reject();
+          });
+        });
+      });
     },
 
     onClickFab() {

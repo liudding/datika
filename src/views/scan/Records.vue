@@ -7,7 +7,7 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="content">
+  <ion-content>
     <ion-list>
       <ion-item-divider></ion-item-divider>
       <ion-item v-for="record in records" :key="record.id">
@@ -46,10 +46,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.container {
-  margin-top: 16px;
-  padding: 16px 8px;
-}
-</style>

@@ -10,6 +10,7 @@
           <Bubbles
             :choices="question.choices"
             :correct="question.answer"
+            :selected="question.answer"
             @change="onAnswerChange"
           ></Bubbles>
         </div>

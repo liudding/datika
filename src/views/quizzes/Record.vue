@@ -35,6 +35,7 @@
             :choices="answer.question.choices"
             :answer="answer.answer"
             :correct="answer.question.answer"
+            showResult
             @change="onBubbleChange"
             mode="answer"
           />

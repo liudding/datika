@@ -3,8 +3,6 @@ import App from './App.vue'
 import router from './router';
 import store from './store'
 
-import { IonicVue } from '@ionic/vue';
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
 
@@ -30,12 +28,13 @@ import "@/utils/env";
 import ionicConfig from '@/utils/ionic-config';
 
 import {
-  IonItem, IonItemDivider, IonItemGroup, IonPage, IonContent, IonHeader, IonList,
+  IonItem, IonItemDivider, IonItemGroup, IonRadioGroup, IonRadio, IonPage, IonContent, IonHeader, IonList,
   IonButton, IonButtons, IonBackButton, IonFab, IonFabButton,
   IonInput, IonCheckbox, IonToggle,
   IonRefresher, IonRefresherContent, IonIcon, IonTitle, IonLabel, IonNote,
   IonToolbar, IonSegment, IonSegmentButton,
-  IonAlert, IonSpinner, IonPopover
+  IonAlert, IonSpinner, IonPopover,
+  IonicVue
 } from '@ionic/vue';
 
 
@@ -56,6 +55,8 @@ app.component('IonPage', IonPage)
   .component('IonItem', IonItem)
   .component('IonItemDivider', IonItemDivider)
   .component('IonItemGroup', IonItemGroup)
+  .component('IonRadio', IonRadio)
+  .component('IonRadioGroup', IonRadioGroup)
   .component('IonInput', IonInput)
   .component('IonCheckbox', IonCheckbox)
   .component('IonToggle', IonToggle)
