@@ -57,7 +57,7 @@ export default defineComponent({
   components: { Bubbles },
   watch: {
     answers: function () {
-      this.updateCorrected();
+      this.resetCorrected();
     },
   },
   data() {
@@ -67,19 +67,15 @@ export default defineComponent({
     };
   },
   created() {
-    console.log(this.answers);
-
-    this.updateCorrected();
+    this.resetCorrected();
   },
   methods: {
-    updateCorrected() {
+    resetCorrected() {
       for (const answer of this.answers) {
         if (!answer.question) continue;
 
         this.corrected[answer.question.id] = answer.answer.join("");
       }
-
-      console.log(this.corrected);
     },
     onBubbleChange(selected, name) {
       this.corrected[name] = selected;
@@ -87,11 +83,20 @@ export default defineComponent({
       this.corrected = Object.assign({}, this.corrected);
     },
 
-    onChange($event) {
-      this.picked = $event.detail.value;
-    },
     confirm() {
-      this.$emit("change", this.corrected);
+      const data = [];
+
+      for (const answer of this.answers) {
+        const corrected = this.corrected[answer.question.id];
+
+        data.push({
+          index: answer.index,
+          question: answer.question,
+          corrected: corrected,
+        });
+      }
+
+      this.$emit("change", data);
 
       this.dismissModal();
     },

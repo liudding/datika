@@ -123,12 +123,6 @@ export default defineComponent({
     }
 
     this.initScanner();
-
-
-    this.doCorrection([{
-      question: this.quiz.questions[0],
-      answer: ['A', 'B']
-    }]);
   },
   ionViewWillLeave() {
     scanner && scanner.stop();
@@ -158,9 +152,7 @@ export default defineComponent({
       return newAnswer == oldAnswer ? record : false;
     },
     async submit(data, record) {
-      const answers = data.answers.map((item) => {
-        return item.value;
-      });
+      const answers = data.answers;
 
       if (this.checkIsOldRecordData(answers, record)) {
         return {
@@ -247,9 +239,15 @@ export default defineComponent({
 
       await this.hideResult();
 
-      this.settings.sound &&  Sound.beep();
+      // convert format
+      const scanData = {
+        studentId: scanObj.gradecam_id,
+        answers: scanObj.answers.map((i) => i.value),
+      };
 
-      let record = this.findRecord(scanObj.gradecam_id);
+      this.settings.sound && Sound.beep();
+
+      let record = this.findRecord(scanData.studentId);
 
       if (!record) {
         this.settings.sound && Sound.warning();
@@ -263,17 +261,23 @@ export default defineComponent({
         }
       }
 
-      const needValidate = this.checkNeedCorrection(scanObj);
+      const needValidate = this.checkNeedCorrection(scanData);
 
       if (needValidate) {
         this.settings.sound && Sound.warning();
 
+        try {
+          const correctedAnswers = await this.doCorrection(needValidate);
 
+          for (const corrected of correctedAnswers) {
+            scanData.answers[corrected.index] = corrected.corrected.split("");
+          }
+        } catch (e) {
+          return;
+        }
       }
 
-      console.log(record, "=====");
-
-      this.submit(scanObj, record).then((res) => {
+      this.submit(scanData, record).then((res) => {
         console.log("on sunmited", this.quiz.recordCount);
 
         const result = res.data;
@@ -307,11 +311,11 @@ export default defineComponent({
       const toValidate = [];
 
       for (let i = 0; i < questions.length; i++) {
-        if (questions[i].type === 1 && answers[i].value.length > 1) {
+        if (questions[i].type === 1 && answers[i].length > 1) {
           toValidate.push({
             index: i,
             question: questions[i],
-            answer: answers[i].value,
+            answer: answers[i],
           });
         }
       }
@@ -320,7 +324,7 @@ export default defineComponent({
     },
 
     doCorrection(answers) {
-       return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this.modal(
           AnswerCorrection,
           {
@@ -340,7 +344,6 @@ export default defineComponent({
         });
       });
     },
-
 
     onIssue(issue) {
       console.log("ISSUE: ", issue);
