@@ -12,6 +12,7 @@ import { IonApp, IonRouterOutlet } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { Plugins } from "@capacitor/core";
 const { Network } = Plugins;
+import Updater from "@/services/updater";
 
 export default defineComponent({
   name: "App",
@@ -24,10 +25,18 @@ export default defineComponent({
       showOffline: false,
     };
   },
-  created() {
+  async created() {
     Network.addListener("networkStatusChange", (status) => {
       this.showOffline = !status.connected;
     });
+
+    const updater = new Updater();
+
+    const newVersion = await updater.checkUpdate();
+
+    if (newVersion) {
+      // 
+    }
   },
 });
 </script>
