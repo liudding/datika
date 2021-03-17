@@ -7,6 +7,12 @@
         <ion-spinner v-else name="circles" color="medium"></ion-spinner>
       </div>
 
+      <div class="tips">
+        <ion-icon :icon="alertCircle"></ion-icon>请注意
+        <p>1. 不要改变答题卡的长宽比例</p>
+        <p>2. 打印后，确保答题卡边框清晰，无缺损</p>
+      </div>
+
       <ion-button :disabled="!previewUrl" @click="download" class="download-btn"
         >下载</ion-button
       >
@@ -20,6 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { alertCircle } from "ionicons/icons";
 import Toast from "@/mixins/Toast";
 import Alert from "@/mixins/Alert";
 import Loading from "@/mixins/Loading";
@@ -37,6 +44,7 @@ export default defineComponent({
   mixins: [Toast, Alert, Loading],
   data() {
     return {
+      alertCircle,
       previewUrl: "",
     };
   },
@@ -81,9 +89,9 @@ export default defineComponent({
           console.log("request permission error", e);
 
           this.toast({
-            title: '您拒绝了访问相册的权限',
-            message: '请允许此权限，否则无法下载答题卡'
-          })
+            title: "您拒绝了访问相册的权限",
+            message: "请允许此权限，否则无法下载答题卡",
+          });
 
           return;
         }
@@ -133,27 +141,30 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
   position: fixed;
   z-index: 1001;
+  left: 0px;
+  right: 0px;
   background-color: transparent;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 8px 16px;
+  box-sizing: border-box;
 }
 
 #preview {
-  width: 100%;
-  height: 300px;
+  width: 85vw;
+  height: 250px;
   text-align: center;
 }
 
 #preview img {
   width: 100%;
-  height: 300px;
+  height: inherit;
   object-fit: contain;
 }
 
@@ -163,7 +174,9 @@ export default defineComponent({
   align-items: center;
   background: white;
   padding: 16px;
+  box-sizing: border-box;
   border-radius: 16px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
 
   min-width: 200px;
   min-height: 300px;
@@ -173,11 +186,27 @@ ion-spinner {
   margin-top: 100px;
 }
 
+.tips {
+  color: gray;
+  font-size: 14px;
+  margin: 4px;
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  ion-icon {
+    color: var(--ion-color-warning);
+    margin-right: 4px;
+  }
+}
+
 .download-btn {
   margin-top: 16px;
   min-width: 120px;
-  width: 300px;
-  max-width: 400px;
+  width: 250px;
 }
 
 .backdrop {

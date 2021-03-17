@@ -167,9 +167,13 @@ export default defineComponent({
             },
           },
           {
-            text: "归档",
+            text: classroom.archivedAt ? "解除归档" : "归档",
             handler: () => {
-              this.archiveClassroom(classroom);
+              if (classroom.archivedAt) {
+                this.doUnarchive(classroom);
+              } else {
+                this.archiveClassroom(classroom);
+              }
             },
           },
 
@@ -217,7 +221,7 @@ export default defineComponent({
       const loading = await this.loading();
 
       try {
-        await Api.classroom.unarchive(classroom + classroom.id);
+        await Api.classroom.unarchive(classroom.id || +classroom);
 
         this.toast({
           title: "解档成功",

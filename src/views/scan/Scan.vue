@@ -61,13 +61,15 @@ import Settings from "./Settings.vue";
 import Api from "@/api";
 import Modal from "@/mixins/Modal";
 import Alert from "@/mixins/Alert";
+import Toast from "@/mixins/Toast";
 import RadialProgressBar from "vue-radial-progress";
+import { checkIsSame, checkNeedCorrection } from "@/utils/answer";
 
 let scanner;
 
 export default defineComponent({
   name: "Scan",
-  mixins: [Modal, Alert],
+  mixins: [Modal, Alert, Toast],
   setup() {
     return {
       store: useStore(),
@@ -123,12 +125,6 @@ export default defineComponent({
     }
 
     this.initScanner();
-
-
-    this.doCorrection([{
-      question: this.quiz.questions[0],
-      answer: ['A', 'B']
-    }]);
   },
   ionViewWillLeave() {
     scanner && scanner.stop();
@@ -146,23 +142,13 @@ export default defineComponent({
         this.quiz.studentCount === 0 ? 100 : this.quiz.studentCount;
       this.completedCount = this.quiz.recordCount;
     },
+
     async getRecords() {
       await this.store.dispatch("quiz/studentRecords", +this.$route.params.id);
     },
-    checkIsOldRecordData(answers, record) {
-      if (!record || !record.id || !record.answers) return false;
 
-      const newAnswer = answers.join("_");
-      const oldAnswer = record.answers.map((i) => i.answer).join("_");
-
-      return newAnswer == oldAnswer ? record : false;
-    },
     async submit(data, record) {
-      const answers = data.answers.map((item) => {
-        return item.value;
-      });
-
-      if (this.checkIsOldRecordData(answers, record)) {
+      if (checkIsSame(data.answers, record.answers)) {
         return {
           type: "nochange",
           data: record,
@@ -171,7 +157,7 @@ export default defineComponent({
 
       const params = {
         student: record.studentId,
-        answers: answers,
+        answers: data.answers,
       };
 
       const resp = await Api.quiz.submit(+this.$route.params.id, params);
@@ -229,9 +215,7 @@ export default defineComponent({
 
       scanner.bind("scan", this.onScan);
       scanner.bind("issue", this.onIssue);
-      scanner.onAsk(() => {
-        console.log("valdiate");
-      });
+      scanner.onAsk(this.validateCallback);
 
       try {
         await scanner.start(true);
@@ -247,33 +231,53 @@ export default defineComponent({
 
       await this.hideResult();
 
-      this.settings.sound &&  Sound.beep();
+      // convert format
+      const scanData = {
+        studentId: scanObj.gradecam_id,
+        answers: scanObj.answers.map((i) => i.value),
+      };
 
-      let record = this.findRecord(scanObj.gradecam_id);
+      this.settings.sound && Sound.beep();
+
+      let record = this.findRecord(scanData.studentId);
 
       if (!record) {
         this.settings.sound && Sound.warning();
 
         try {
+          scanner.pause();
+
           const studentId = await this.pickerStudent();
 
           record = this.findRecord(studentId);
         } catch (e) {
           return;
+        } finally {
+          scanner.resume();
         }
       }
 
-      const needValidate = this.checkNeedCorrection(scanObj);
+      const needValidate = checkNeedCorrection(scanData);
 
       if (needValidate) {
         this.settings.sound && Sound.warning();
 
+        try {
+          scanner.pause();
 
+          const correctedAnswers = await this.doCorrection(needValidate);
+
+          for (const corrected of correctedAnswers) {
+            scanData.answers[corrected.index] = corrected.corrected.split("");
+          }
+        } catch (e) {
+          return;
+        } finally {
+          scanner.resume();
+        }
       }
 
-      console.log(record, "=====");
-
-      this.submit(scanObj, record).then((res) => {
+      this.submit(scanData, record).then((res) => {
         console.log("on sunmited", this.quiz.recordCount);
 
         const result = res.data;
@@ -295,32 +299,8 @@ export default defineComponent({
       return this.records.find((item) => item.studentNumber === studentId);
     },
 
-    /**
-     * 检测学生填涂是否需要校正
-     * 单选题，涂了多个
-     */
-    checkNeedCorrection(data) {
-      const questions = this.quiz.questions;
-
-      const answers = data.answers;
-
-      const toValidate = [];
-
-      for (let i = 0; i < questions.length; i++) {
-        if (questions[i].type === 1 && answers[i].value.length > 1) {
-          toValidate.push({
-            index: i,
-            question: questions[i],
-            answer: answers[i].value,
-          });
-        }
-      }
-
-      return toValidate.length > 0 ? toValidate : false;
-    },
-
     doCorrection(answers) {
-       return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         this.modal(
           AnswerCorrection,
           {
@@ -341,14 +321,23 @@ export default defineComponent({
       });
     },
 
-
     onIssue(issue) {
       console.log("ISSUE: ", issue);
 
-      return issue;
+      if (issue.type === "examLength") {
+        this.toast("答题卡题目数量不足");
+      } else if (issue.type === "duplicateId") {
+        this.toast("已经扫描过了");
+      } else if (issue.type === "cannotHighRes") {
+        this.toast("无法获取高分辨率图像");
+      } else if (issue.type === "badStructure") {
+        this.toast({
+          title: "无法识别这张答题卡。请检查摆放位置、光线等。",
+        });
+      }
     },
 
-    gcValidateCallback(validateObj, finish) {
+    validateCallback(validateObj, finish) {
       console.log(finish);
       return validateObj;
     },

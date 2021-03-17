@@ -33,7 +33,7 @@
           :selected="corrected[answer.question.id] || ''"
           :showResult="false"
           :name="answer.question.id"
-          mode="answer"
+          mode="question"
           @change="onBubbleChange"
         />
         <div style="margin-left: 16px" slot="end">
@@ -55,6 +55,11 @@ export default defineComponent({
   props: ["answers"],
   emits: ["change"],
   components: { Bubbles },
+  watch: {
+    answers: function () {
+      this.resetCorrected();
+    },
+  },
   data() {
     return {
       corrected: {},
@@ -62,30 +67,36 @@ export default defineComponent({
     };
   },
   created() {
-    console.log(this.answers);
-
-    for (const answer in this.answers) {
-      if (!answer.question) continue;
-      this.corrected[answer.question.id] = answer.answer.join("")
-    }
+    this.resetCorrected();
   },
   methods: {
+    resetCorrected() {
+      for (const answer of this.answers) {
+        if (!answer.question) continue;
+
+        this.corrected[answer.question.id] = answer.answer.join("");
+      }
+    },
     onBubbleChange(selected, name) {
-      
       this.corrected[name] = selected;
 
-      this.corrected = Object.assign({}, this.corrected)
-
-      // this.$set(this.corrected, name, selected)
-
-      console.log(selected, name, this.corrected);
+      this.corrected = Object.assign({}, this.corrected);
     },
 
-    onChange($event) {
-      this.picked = $event.detail.value;
-    },
     confirm() {
-      this.$emit("change", this.corrected);
+      const data = [];
+
+      for (const answer of this.answers) {
+        const corrected = this.corrected[answer.question.id];
+
+        data.push({
+          index: answer.index,
+          question: answer.question,
+          corrected: corrected,
+        });
+      }
+
+      this.$emit("change", data);
 
       this.dismissModal();
     },
