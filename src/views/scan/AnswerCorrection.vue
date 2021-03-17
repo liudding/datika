@@ -74,7 +74,7 @@ export default defineComponent({
       for (const answer of this.answers) {
         if (!answer.question) continue;
 
-        this.corrected[answer.question.id] = answer.answer.join("");
+        this.corrected[answer.question.id] = answer.answer
       }
     },
     onBubbleChange(selected, name) {

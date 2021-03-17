@@ -261,8 +261,6 @@ export default defineComponent({
 
       const needValidate = checkNeedCorrection(scanData, this.quiz.questions);
 
-      console.log('==++++', needValidate)
-
       if (needValidate) {
         this.settings.sound && Sound.warning();
 
@@ -272,11 +270,12 @@ export default defineComponent({
           const correctedAnswers = await this.doCorrection(needValidate);
 
           for (const corrected of correctedAnswers) {
-            scanData.answers[corrected.index] = corrected.corrected.split("");
+            scanData.answers[corrected.index] = corrected.corrected
           }
         } catch (e) {
           return;
         } finally {
+          console.log('resume')
           scanner.resume();
         }
       }
