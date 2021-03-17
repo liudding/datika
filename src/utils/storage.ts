@@ -6,7 +6,7 @@ export default class Storage {
 
     static async set(key: string, value: any) {
         return BaseStorage.set({
-            key: 'user',
+            key: key,
             value: JSON.stringify(value)
         });
     }
