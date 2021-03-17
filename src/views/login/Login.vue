@@ -56,8 +56,6 @@ import { Wechat } from "@ionic-native/wechat";
 import Alert from "@/mixins/Alert";
 import { logoWechat, person } from "ionicons/icons";
 
-import '@/services/codepush'
-
 export default defineComponent({
   mixins: [Alert],
   data() {

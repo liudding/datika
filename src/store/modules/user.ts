@@ -94,7 +94,7 @@ export default {
 
             const settings = typeof resp.data.preferences === 'string' ? JSON.parse(resp.data.preferences) : resp.data.preferences
 
-            context.commit('SET_SETTINGS', Object.assign(context.state.settings, settings));
+            context.commit('SET_SETTINGS', Object.assign({}, context.state.settings, settings));
         },
 
         async updateSettings(context: any, data: any) {
