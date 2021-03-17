@@ -13,14 +13,14 @@
 
     <ion-list>
       <ion-radio-group @ionChange="onChange" value="">
-        <ion-item v-for="record in records" :key="record.studentId">
+        <ion-item v-for="record in records" :key="record.studentNumber">
           <ion-label>
             <span>{{ record.studentName }}</span>
             <span style="margin-left: 8px; color: gray">{{
               record.studentNumber
             }}</span></ion-label
           >
-          <ion-radio slot="end" :value="record.studentId"></ion-radio>
+          <ion-radio slot="end" :value="record.studentNumber"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>

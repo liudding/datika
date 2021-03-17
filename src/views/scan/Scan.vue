@@ -227,7 +227,7 @@ export default defineComponent({
       }
     },
     async onScan(scanObj) {
-      console.log("SCAN: ", scanObj, this.records);
+   
 
       await this.hideResult();
 
@@ -236,6 +236,8 @@ export default defineComponent({
         studentId: scanObj.gradecam_id,
         answers: scanObj.answers.map((i) => i.value),
       };
+
+         console.log("SCAN: ", scanObj, scanData, this.records);
 
       this.settings.sound && Sound.beep();
 
@@ -247,9 +249,9 @@ export default defineComponent({
         try {
           scanner.pause();
 
-          const studentId = await this.pickerStudent();
+          const studentNumber = await this.pickerStudent();
 
-          record = this.findRecord(studentId);
+          record = this.findRecord(studentNumber);
         } catch (e) {
           return;
         } finally {
@@ -257,7 +259,9 @@ export default defineComponent({
         }
       }
 
-      const needValidate = checkNeedCorrection(scanData);
+      const needValidate = checkNeedCorrection(scanData, this.quiz.questions);
+
+      console.log('==++++', needValidate)
 
       if (needValidate) {
         this.settings.sound && Sound.warning();
@@ -295,8 +299,8 @@ export default defineComponent({
       });
     },
 
-    findRecord(studentId) {
-      return this.records.find((item) => item.studentNumber === studentId);
+    findRecord(studentNumber) {
+      return this.records.find((item) => item.studentNumber === studentNumber);
     },
 
     doCorrection(answers) {

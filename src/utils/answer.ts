@@ -1,5 +1,3 @@
-import question from "@/api/question";
-
 
 export function checkIsSame(answers: string[], oldAnswers?: string[]) {
     if (!oldAnswers) return false;
