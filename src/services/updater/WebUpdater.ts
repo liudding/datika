@@ -5,6 +5,7 @@ import { File } from '@ionic-native/file';
 import Storage from '@/utils/storage';
 
 import { Zip as ZipPlugin } from 'capacitor-plugin-zip';
+import { cleanDataDirectory } from './utils';
 
 const Zip = new ZipPlugin();
 
@@ -16,9 +17,8 @@ import { Updater } from './definitions'
 const HOST_URL = 'https://meety-dev.menco.cn';
 const RELEASE_VERSIONS_URL = HOST_URL + '/versions.json';
 
-const STORAGE_KEY_LOCAL_VERSION = 'LOCAL_VERSION';
-
-const STORAGE_KEY_NEW_VERSION_PATH = 'new_version_path';
+const STORAGE_KEY_CURRENT_VERSION = 'CURRENT_VERSION';
+const STORAGE_KEY_NEW_VERSION = 'NEW_VERSION';
 
 export default class WebUpdater implements Updater {
 
@@ -33,18 +33,26 @@ export default class WebUpdater implements Updater {
      */
     public async getCurrentPackage() {
         if (!this.currentPackage) {
-            let version = await Storage.get(STORAGE_KEY_LOCAL_VERSION)
+            let version = await Storage.get(STORAGE_KEY_CURRENT_VERSION)
+
+            const appInfo = await Device.getInfo();
 
             if (!version) {
-                const appInfo = await Device.getInfo();
 
                 version = {
                     version: process.env.VUE_APP_VERSION || '0.0.0',
-                    native_version: appInfo.appVersion,
+                    nativeVersion: '1.2.2' || appInfo.appVersion,
+                    installPath: null,
+                    downloaded: null,
                 }
 
-                await Storage.set(STORAGE_KEY_LOCAL_VERSION, version);
+                await this.storeCurrentVersion(version);
             }
+
+            /**
+             * 原生包更新，并不会更新本地存储的版本信息，所以每次都读取最新的 native app version
+             */
+            // version.nativeVersion = appInfo.appVersion;
 
             this.currentPackage = version;
         }
@@ -85,23 +93,22 @@ export default class WebUpdater implements Updater {
     async checkUpdate() {
         const versions = await this.fetchRemoteVersions()
 
+
         const currentVersion = await this.getCurrentPackage();
 
+        console.log('++++++++++++++++++++++++++++++++++++++++++++++++' + currentVersion.version + ' ' + currentVersion.nativeVersion);
+
         let targetVersion;
-        let hasNewNativeVersion = false;
-        let nativeVersion;
 
         for (const version of versions) {
+            console.log('remote versions: ' + version.version + ' ' + (version.nativeVersions || version.native_versions));
             if (!semver.gt(version.version, currentVersion.version)) {
 
                 continue;
             }
 
-            if (!semver.satisfies(currentVersion.native_version, version.native_versions)) {
-                hasNewNativeVersion = true;
-
-                if (!nativeVersion) nativeVersion = version;
-
+            if (!semver.satisfies(currentVersion.nativeVersion, version.nativeVersions || version.native_versions)) {
+                console.log('+++++ newnewnenwnenw');
                 continue;
             }
 
@@ -109,18 +116,12 @@ export default class WebUpdater implements Updater {
             break;
         }
 
-        if (!targetVersion && hasNewNativeVersion) {
-            // 更新 native version
-            return {
-                type: 'native',
-                version: nativeVersion
-            };
-        }
-
         if (!targetVersion) {
+          
             return false
         }
 
+        targetVersion.downloadUrl = targetVersion.downloadUrl || targetVersion.download_url
         this.newPackage = targetVersion;
 
         return this.newPackage;
@@ -145,28 +146,39 @@ export default class WebUpdater implements Updater {
      * @returns 
      */
     async download() {
-        const uri = encodeURI(this.newPackage.download_url);
+        // TODO: 避免重复下载
 
-        const path = 'packages/' + this.newPackage.version + '.zip';
-        const absolutePath = File.dataDirectory + '' + path;
+        if (this.newPackage.version === this.currentPackage.version) {
+            return;
+        }
+
+        const uri = encodeURI(this.newPackage.downloadUrl);
+
+
+        console.log('BEGIN DOWNLOAD WEB PACKAGE: ' + this.newPackage.version)
 
         try {
-            const entry = await HTTP.downloadFile(uri, {}, {}, absolutePath);
 
-            console.log("download complete: ", entry, entry.toURL());
+            const destDir = 'packages'
+            const packagesDir = await cleanDataDirectory(destDir);
+            const filePath = packagesDir + this.newPackage.version + '.zip';
 
-            this.newPackage.downloaded = {
-                path,
-                abs_path: absolutePath,
-                url: entry.toURL()
-            }
+            const entry = await HTTP.downloadFile(uri, {}, {}, filePath);
 
-            // TODO: store downloaded package info
+            console.log("PACKAGE DOWNLOADED INTO: " + entry.toURL());
 
-            return {
-                path,
+
+            const downloadedInfo = {
+                path: destDir + '.zip',
                 url: entry.toURL(),
+                version: this.newPackage.version
             }
+
+            this.newPackage.downloaded = downloadedInfo
+
+            await this.storeNewVersionInfo(this.newPackage);
+
+            return downloadedInfo
 
         } catch (error) {
             console.log("download error source " + error.source);
@@ -179,11 +191,15 @@ export default class WebUpdater implements Updater {
      * 解压安装包，并放入安装路径
      */
     async install() {
-        const newPath = File.dataDirectory + 'ionic_built_snapshots/' + this.newPackage.version;
+        const releasePath = 'ionic_built_snapshots/' + this.newPackage.version;
+
+        const newPath = await cleanDataDirectory(releasePath);
 
         console.log('BEGIN INSTALL WEB VERSION');
 
         try {
+          
+
             await Zip.unzip({
                 src: this.newPackage.downloaded.url,
                 dest: newPath
@@ -198,7 +214,9 @@ export default class WebUpdater implements Updater {
 
         const startPath = newPath.replace('file://', '');
 
-        await this.storeNewPath(startPath);
+        this.newPackage.installedPath = startPath;
+
+        await this.storeNewVersionInfo(this.newPackage);
 
         console.log('NEW WEB VERSION INSTALLED', startPath);
     }
@@ -208,23 +226,29 @@ export default class WebUpdater implements Updater {
      * @returns 
      */
     async apply() {
-       
-        const newPath = await this.getNewPath();
 
-        if (!newPath) {
+        const newVersion = await this.getNewVersionInfo();
+
+        if (!newVersion || !newVersion.installedPath) {
             return false;
         }
 
 
         WebView.setServerBasePath({
-            path: newPath
+            path: newVersion.installedPath
         });
 
         console.log('NEW WEB VERSION APPLIED');
 
         WebView.persistServerBasePath();
 
-        await this.clearNewPath();
+        const currentVersion = await this.getCurrentPackage();
+
+        currentVersion.version = newVersion.version;
+        currentVersion.installedPath = newVersion.installedPath;
+
+        await this.storeCurrentVersion(currentVersion);
+        await this.clearNewVersionInfo();
 
         return true;
     }
@@ -232,33 +256,38 @@ export default class WebUpdater implements Updater {
     /**
      * 自动更新版本
      */
-    async auto() {
+    // async auto() {
 
-        this.apply();
+    //     /**
+    //      * 当再次启动时，应用更新
+    //      */
+    //     await this.apply();
 
-        const newVersion = await this.checkUpdate();
+    //     const newVersion = await this.checkUpdate();
 
-        if (!newVersion) {
-            return;
-        }
+    //     if (!newVersion) {
+    //         return;
+    //     }
 
-        await this.download();
+    //     await this.download();
 
-        await this.install();
+    //     await this.install();
+    // }
+
+    private async storeNewVersionInfo(infos: any) {
+        return Storage.set(STORAGE_KEY_NEW_VERSION, infos);
     }
 
-    private async getNewPath() {
-        return Storage.get(STORAGE_KEY_NEW_VERSION_PATH);
+    private async getNewVersionInfo() {
+        return Storage.get(STORAGE_KEY_NEW_VERSION)
     }
 
-    private async storeNewPath(startPath: string) {
-        return Storage.set(STORAGE_KEY_NEW_VERSION_PATH, startPath);
+    private async clearNewVersionInfo() {
+        return Storage.remove(STORAGE_KEY_NEW_VERSION);
     }
 
-    private async clearNewPath() {
-        return Storage.remove(STORAGE_KEY_NEW_VERSION_PATH);
+    private async storeCurrentVersion(infos: any) {
+        return Storage.set(STORAGE_KEY_CURRENT_VERSION, infos);
     }
-
-
 }
 

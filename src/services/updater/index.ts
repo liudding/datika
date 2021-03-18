@@ -35,25 +35,7 @@ export default class UpdateManager {
      * 获取当前版本的信息
      */
     public async getCurrentPackage() {
-        if (!this.currentPackage) {
-            // read package metadata from local file
-
-            let version = await Storage.get(STORAGE_KEY_LOCAL_VERSION)
-
-            if (!version) {
-                version = {
-                    version: process.env.VUE_APP_VERSION || '0.0.0',
-                    native_version: process.env.VUE_APP_NATIVE_VERSION || '1.2.2',
-                }
-
-                await Storage.set(STORAGE_KEY_LOCAL_VERSION, version);
-            }
-
-            this.currentPackage = version;
-        }
-
-
-        return this.currentPackage;
+       //
     }
 
 
@@ -62,19 +44,15 @@ export default class UpdateManager {
      * @returns 
      */
     async checkUpdate() {
+
         const nativeNewVersion = await this.nativeUpdater.checkUpdate();
 
-        console.log('++++++++++', nativeNewVersion)
-
         if (nativeNewVersion) {
-            // prompt user to update
-
             return {
                 type: 'native',
                 versionInfos: nativeNewVersion
             };
         }
-
 
         const webNewVersion = await this.webUpdater.checkUpdate();
 
@@ -108,9 +86,10 @@ export default class UpdateManager {
      */
     async auto() {
 
+        /**
+         * 当再次启动时，应用更新
+         */
         const applied = await this.webUpdater.apply();
-
-        console.log('++++ apply applied', applied);
 
         if (applied) {
             return;
@@ -118,19 +97,20 @@ export default class UpdateManager {
 
         const newVersion = await this.checkUpdate();
 
-        console.log('++++ newversion', newVersion);
 
         if (!newVersion) {
             return;
         }
 
+        console.log('NEW VERSION FOUND: ', newVersion.versionInfos.version, JSON.stringify(newVersion));
+
         if (newVersion.type === 'web') {
             await this.webUpdater.download();
             await this.webUpdater.install();
         } else if (newVersion.type === 'native') {
-            const result = await this.nativeUpdater.promptUserToUpdate();
+            const allowed = await this.nativeUpdater.promptUserToUpdate();
 
-            if (!result) {
+            if (!allowed) {
                 return;
             }
 
