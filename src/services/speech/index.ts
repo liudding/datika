@@ -1,21 +1,22 @@
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
-export function canSpeak() {
-    return !!window.speechSynthesis;
+async function findLocaleVoice() {
+    const result = await TextToSpeech.getSupportedVoices();
+
+    return result.voices.findIndex((i: any) => i.lang.indexOf(navigator.language) >= 0)
 }
 
-const synth = window.speechSynthesis;
+export async function speak(text: string) {
 
+    const voice = await findLocaleVoice();
 
-function findLocaleVoice() {
-    return synth.getVoices().filter(i => i.lang.indexOf(navigator.language) >= 0)[0]
-}
-
-export function speak(text: string) {
-    if (!canSpeak()) return;
-
-    const utter = new SpeechSynthesisUtterance(text);
-
-    utter.voice = findLocaleVoice();
-
-    synth.speak(utter);
+    await TextToSpeech.speak({
+        text: text,
+        locale: 'zh_CN',
+        speechRate: 1.0,
+        pitchRate: 1.0,
+        voice: voice,
+        volume: 1.0,
+        category: 'ambient',
+    });
 }

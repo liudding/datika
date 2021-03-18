@@ -857,6 +857,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@capacitor-community/text-to-speech@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@capacitor-community/text-to-speech/-/text-to-speech-0.2.3.tgz#2f5a9873aab97d93de62388101c8a08b57497254"
+  integrity sha512-9pSQoKicNZQ+mZy/4WJgmHrWtAVrhOpXWgHSguA5Naayn5otlaoA2HrW5sw/UR0keo0RU/pj7ZjhUHKx4/LaXQ==
+
 "@capacitor/android@^2.4.6":
   version "2.4.6"
   resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.6.tgz#57c65f67d6a4e6b67f7f0f7fd23fa4c3c324ecc2"
@@ -990,13 +995,6 @@
   version "5.31.1"
   resolved "https://registry.yarnpkg.com/@ionic-native/wechat/-/wechat-5.31.1.tgz#54737e98eab6cb2c49aa70f19b1fec06ee87281c"
   integrity sha512-SrRptqTlr1slLkXvxpGcudgzLIxndIWayW51XBEfVg0QdeFiMc36FX3DEaRhEkAkJWroSVP5HjCEKl6yHXFycg==
-  dependencies:
-    "@types/cordova" latest
-
-"@ionic-native/zip@^5.31.1":
-  version "5.31.1"
-  resolved "https://registry.yarnpkg.com/@ionic-native/zip/-/zip-5.31.1.tgz#f685dddb07dfcc9c51d8c1f1c11965b81b2039e1"
-  integrity sha512-a0/tynOGP8apjhFbH2VcNWEypOLYUZzYz3PVqtuFcjZXD8MqdepZG0IrwlBWgTz/0qo3ozWYpce8DqcvStEyPw==
   dependencies:
     "@types/cordova" latest
 
@@ -3175,6 +3173,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001181:
   version "1.0.30001191"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001191.tgz#bacb432b6701f690c8c5f7c680166b9a9f0843d9"
   integrity sha512-xJJqzyd+7GCJXkcoBiQ1GuxEiOBCLQ0aVW9HMekifZsAVGdj5eJ4mFB9fEhSHipq9IOk/QXFJUiIr9lZT+EsGw==
+
+capacitor-plugin-zip@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/capacitor-plugin-zip/-/capacitor-plugin-zip-0.0.3.tgz#b0a6731b38c5342649d09f7d3d84aa6682fc4025"
+  integrity sha512-Ul4+33RmxzSPGrJT92KS73m4YEh8sOcqPyQ8M5Yw4kY63FiATrXqNiygs8PZh4SavRGVUt7+cjba3l+3t4C7UA==
 
 capture-exit@^2.0.0:
   version "2.0.0"
