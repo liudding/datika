@@ -14,12 +14,12 @@
       :class="{
         filled: isFilled(bubble),
         correct: showResult && isCorrect(bubble),
-        incorrect: showResult && !isCorrect(bubble),
+        incorrect: showResult && isFilled(bubble) && !isCorrect(bubble),
         selected: isSelected(bubble),
       }"
     >
       <ion-icon
-        v-if="showResult"
+        v-if="showResult && isFilled(bubble)"
         :icon="isCorrect(bubble) ? checkmark : closeOutline"
         class="answer-result"
       ></ion-icon>
@@ -159,7 +159,9 @@ export default defineComponent({
   color: var(--ion-color-success);
   border-radius: 100px;
   box-shadow: 0px 0px 6px rgba(28, 250, 95, 0.2);
-  border: 2px solid var(--ion-color-success);
+  /* border: 2px solid var(--ion-color-success); */
+
+   color: rgba(255, 0, 0, 0.719);
 }
 
 .bubble.incorrect .answer-result {
