@@ -31,7 +31,7 @@
       </ion-item-group>
 
       <ion-item-divider></ion-item-divider>
-      <ion-item-group>
+      <!-- <ion-item-group>
         <ion-item @click="showQuestionCount" lines="none"
           >默认题目数量
           <div slot="end">{{ settings.default_question_count || 10 }}</div>
@@ -41,7 +41,7 @@
           >自动归档测验
           <div slot="end">{{settings.auto_archive_quizzes || 12}} 个月前的</div>
         </ion-item>
-      </ion-item-group>
+      </ion-item-group> -->
 
       <ion-item-group>
         <ion-item-divider></ion-item-divider>
