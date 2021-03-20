@@ -373,7 +373,7 @@ export default defineComponent({
     },
 
     async showResult(result) {
-      speak(result.name.split("").join("-") + "," + result.score + ",分");
+      speak(result.name + " " + result.score + " 分");
 
       this.resultModal = await this.modal(
         Result,

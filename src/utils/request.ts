@@ -12,9 +12,8 @@ instance.interceptors.request.use(config => {
         config.headers['Authorization'] = 'Bearer ' + token
     }
 
+    // 在 chrome 上无效
     config.headers['User-Agent'] = navigator.userAgent + ' youcce/' + process.env.VUE_APP_VERSION;
-   
-    console.log(config.headers);
 
     return config
 })
