@@ -12,6 +12,10 @@ instance.interceptors.request.use(config => {
         config.headers['Authorization'] = 'Bearer ' + token
     }
 
+    config.headers['User-Agent'] = navigator.userAgent + ' youcce/' + process.env.VUE_APP_VERSION;
+   
+    console.log(config.headers);
+
     return config
 })
 
