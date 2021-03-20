@@ -144,7 +144,7 @@ export default defineComponent({
         // choices stats;
         for (const choice of question.choices) {
           const selected = _.filter(questionAnswers, (item) => {
-            return item.answer.indexOf(choice) >= 0;
+            return (item.answer || '').indexOf(choice) >= 0;
           });
 
           const isCorrect =
