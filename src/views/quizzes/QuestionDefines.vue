@@ -118,7 +118,7 @@ export default defineComponent({
 
         temp.push(pre);
 
-        if (!item || +item.label - +pre.label > 1 || item.score != +pre.score) {
+        if (!item || +item.label - +pre.label > 1 || item.choices !== pre.choices || item.score != +pre.score) {
           result.push(temp);
           temp = [];
         }
