@@ -351,4 +351,35 @@ ion-spinner {
   color: rgb(34, 34, 34);
   text-transform: uppercase;
 }
+
+#bubble-sheet .bubble.placeholder {
+  position: relative;
+  display: inline-block;
+}
+
+#bubble-sheet .bubble.placeholder::before {
+  left: 50%;
+  top: 50%;
+  margin-left: -30px;
+  margin-top: -2px;
+  width: 60px;
+  height: 4px;
+  background-color: gray;
+  content: "";
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+#bubble-sheet .bubble.placeholder::after {
+  left: 50%;
+  top: 50%;
+  margin-left: -30px;
+  margin-top: -2px;
+  width: 60px;
+  height: 4px;
+  background-color: gray;
+  content: "";
+  position: absolute;
+  transform: rotate(-45deg);
+}
 </style>
