@@ -9,7 +9,7 @@
 
       <div class="tips">
         <ion-icon :icon="alertCircle"></ion-icon>请注意
-        <p>1. 不要改变答题卡的长宽比例</p>
+        <p>1. 可根据需要调节答题卡大小，但不能改变其长宽比例</p>
         <p>2. 打印后，确保答题卡边框清晰，无缺损</p>
       </div>
 
