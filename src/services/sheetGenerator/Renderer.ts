@@ -38,7 +38,7 @@ export default class Renderer {
     makeGroup(group: BubbleGroup, section: BubbleSection) {
         let ele = `<div class="group" style="grid-column-gap:${group.gap}px;"><div class="label" style="width:${group.labelWidth}px;">${group.label}</div>`
         for (let index = 0; index < section.bubbles; index++) {
-            const bubble = group.bubbles[index] || new Bubble('<span style="font-size: 80px;">&times</span>');
+            const bubble = group.bubbles[index] || new Bubble('<span style="font-size: 95px; line-height: 40px; color:gray;">&times</span>');
             ele += this.makeBubble(bubble.text, group.bubbleRadius);
         }
 
