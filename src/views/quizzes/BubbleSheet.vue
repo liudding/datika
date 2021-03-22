@@ -9,7 +9,7 @@
 
       <div class="tips">
         <ion-icon :icon="alertCircle"></ion-icon>请注意
-        <p>1. 不要改变答题卡的长宽比例</p>
+        <p>1. 可根据需要调节答题卡大小，但不能改变其长宽比例</p>
         <p>2. 打印后，确保答题卡边框清晰，无缺损</p>
       </div>
 
@@ -350,5 +350,36 @@ ion-spinner {
   font-size: 36px;
   color: rgb(34, 34, 34);
   text-transform: uppercase;
+}
+
+#bubble-sheet .bubble.placeholder {
+  position: relative;
+  display: inline-block;
+}
+
+#bubble-sheet .bubble.placeholder::before {
+  left: 50%;
+  top: 50%;
+  margin-left: -30px;
+  margin-top: -2px;
+  width: 60px;
+  height: 4px;
+  background-color: gray;
+  content: "";
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+#bubble-sheet .bubble.placeholder::after {
+  left: 50%;
+  top: 50%;
+  margin-left: -30px;
+  margin-top: -2px;
+  width: 60px;
+  height: 4px;
+  background-color: gray;
+  content: "";
+  position: absolute;
+  transform: rotate(-45deg);
 }
 </style>

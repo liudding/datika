@@ -38,8 +38,15 @@ export default class Renderer {
     makeGroup(group: BubbleGroup, section: BubbleSection) {
         let ele = `<div class="group" style="grid-column-gap:${group.gap}px;"><div class="label" style="width:${group.labelWidth}px;">${group.label}</div>`
         for (let index = 0; index < section.bubbles; index++) {
-            const bubble = group.bubbles[index] || new Bubble('<span style="font-size: 80px;">&times</span>');
-            ele += this.makeBubble(bubble.text, group.bubbleRadius);
+            const bubble = group.bubbles[index]
+
+            if (bubble) {
+                ele += this.makeBubble(bubble.text, group.bubbleRadius);
+            } else {
+                ele += this.makeBubble('', group.bubbleRadius, 8, true);
+            }
+
+
         }
 
         ele += ' </div>'
@@ -47,9 +54,11 @@ export default class Renderer {
         return ele;
     }
 
-    makeBubble(text: string, radius: number, border = 8) {
+    makeBubble(text: string, radius: number, border = 8, placeholder = false) {
         const lineHeight = this.form.bubbleRadius - border * 2;
-        return `<div class="bubble" style="height:${radius}px;width: ${radius}px;border: ${border}px solid black;box-sizing: border-box; line-height:${lineHeight}px;">${text}</div>`
+
+
+        return `<div class="bubble ${placeholder ? 'placeholder' : ''}" style="height:${radius}px;width: ${radius}px;border: ${border}px solid black;box-sizing: border-box; line-height:${lineHeight}px;">${text}</div>`
     }
 
     makeSection(section: BubbleSection, x: number, y = 0) {
@@ -122,7 +131,7 @@ export default class Renderer {
         }
 
         let html = '<div class="name-input">姓名: __________'
-       
+
         html += '</div>'
 
         return html;
@@ -130,7 +139,7 @@ export default class Renderer {
 
 
     render() {
-      
+
         let x = 0, y = 0;
         let html = ''
 
