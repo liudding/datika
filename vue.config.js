@@ -5,14 +5,14 @@ module.exports = {
     },
 
     pwa: {
-        name: "Quiz",
+        name: "优测",
         themeColor: "#ffffff",
         msTileColor: "#000000",
         appleMobileWebAppStatusBarStyle: "default",
         assetsVersion: "2",
         manifestOptions: {
             "start_url": "./?source=pwa",
-            "description": "答题卡扫描",
+            "description": "手机阅卷助手",
             "background_color": "#fff",
             "orientation": "portrait",
         },
