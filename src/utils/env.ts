@@ -2,6 +2,17 @@ import { uuid } from '@/utils/uuid';
 import ua from '@/utils/uaDetect'
 
 
+declare global {
+    interface Navigator {
+        standalone?: any;
+    }
+
+    interface Window {
+        standalone: any;
+    }
+}
+
+
 function getUid(): string {
     if (typeof window !== 'undefined') {
         let uid = window.localStorage.getItem('_uuid');
@@ -21,7 +32,7 @@ export function detect(): any {
 
     let client = 'browser';
 
-    if (location.search.indexOf('source=pwa') > 0) {
+    if ((window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || location.search.indexOf('source=pwa') >= 0)) {
         client = 'pwa';
     } else if (navigator.userAgent.toLocaleLowerCase().indexOf('youce') >= 0) {
         client = 'app';
