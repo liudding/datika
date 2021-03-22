@@ -67,7 +67,7 @@ export default defineComponent({
       const url =
         process.env.VUE_APP_BASE_URL +
         "/feedback?token=" +
-        this.user.token +
+        encodeURIComponent(this.user.token) +
         query;
 
       await Browser.open({ url });
