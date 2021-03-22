@@ -35,6 +35,8 @@ import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
 import { isApp, isIos, isBrowser } from "@/utils/env";
 import { PhotoLibrary } from "@ionic-native/photo-library";
+import { Media } from "@capacitor-community/media";
+const MediaLibrary = new Media();
 
 export default defineComponent({
   props: {
@@ -99,7 +101,11 @@ export default defineComponent({
         const loading = await this.loading();
 
         try {
-          await PhotoLibrary.saveImage(dataUrl, process.env.VUE_APP_NAME);
+          // await PhotoLibrary.saveImage(dataUrl, process.env.VUE_APP_NAME);
+          await MediaLibrary.savePhoto({
+            path: dataUrl,
+            album: process.env.VUE_APP_NAME,
+          });
 
           console.log("下载成功");
         } catch (e) {
