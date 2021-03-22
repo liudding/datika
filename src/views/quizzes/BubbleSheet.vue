@@ -3,7 +3,7 @@
   <div class="container">
     <div class="main">
       <div id="preview">
-        <img v-if="previewUrl" :src="previewUrl" />
+        <img v-if="previewUrl" :src="previewUrl" crossorigin="anonymous" />
         <ion-spinner v-else name="circles" color="medium"></ion-spinner>
       </div>
 
@@ -33,7 +33,7 @@ import Loading from "@/mixins/Loading";
 import Form from "@/services/sheetGenerator/Form";
 import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
-import { isApp, isIos } from "@/utils/env";
+import { isApp, isIos, isBrowser } from "@/utils/env";
 import { PhotoLibrary } from "@ionic-native/photo-library";
 
 export default defineComponent({
@@ -119,8 +119,13 @@ export default defineComponent({
         this.downloadOnWeb(dataUrl);
       }
 
+      let message = "已保存至相册";
+      if (isBrowser()) {
+        message = "已保存至文件";
+      }
+
       this.toast({
-        title: "已保存至相册",
+        title: message,
         duration: 3000,
       });
 
