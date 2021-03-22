@@ -14,7 +14,110 @@
   <meta name="msapplication-tap-highlight" content="no" />
 </head>
 
+<style>
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  #splash-screen {
+    position: fixed;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(37, 37, 37);
+    width: 100%;
+    height: 100%;
+
+    box-sizing: border-box;
+    padding: 16px;
+
+    color: rgb(255, 255, 255);
+  }
+</style>
+
 <body>
   <div id="app"></div>
+  <div id="splash-screen" style="width: 100w;">
+    <h2 style="margin-top: 80px;">优测</h2>
+    <div>手机阅卷助手</div>
+
+    <div style="margin-top: 80px;">
+      <div class="table-cell">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="#b2b2b2">
+          <circle cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(45 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.125s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(90 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.25s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(135 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.375s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(180 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.5s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(225 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.625s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(270 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.75s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(315 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.875s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+          <circle transform="rotate(180 16 16)" cx="16" cy="3" r="0">
+            <animate attributeName="r" values="0;3;0;0" dur="1s" repeatCount="indefinite"
+              begin="0.5s"
+              keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+              calcMode="spline"
+            />
+          </circle>
+        </svg>
+      </div>
+    </div>
+
+    <small style="margin-top: 16px;color:gray;">加载中 ...</small>
+ 
+  </div>
 </body>
+
+
+
 </html>

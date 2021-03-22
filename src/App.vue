@@ -32,6 +32,8 @@ export default defineComponent({
     };
   },
   async created() {
+    document.getElementById('splash-screen')?.remove();
+
     Network.addListener("networkStatusChange", (status) => {
       this.showOffline = !status.connected;
     });
