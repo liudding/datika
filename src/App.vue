@@ -3,6 +3,7 @@
     <div v-if="showOffline" class="network-status">
       <div>请检查网络连接</div>
     </div>
+    <OpenBrowser v-if="isWechat"></OpenBrowser>
     <ion-router-outlet />
   </ion-app>
 </template>
@@ -13,23 +14,29 @@ import { defineComponent } from "vue";
 import { Plugins } from "@capacitor/core";
 const { Network } = Plugins;
 import UpdateManager from "@/services/updater";
-import { isApp } from "@/utils/env";
+import { isApp, isInWechat } from "@/utils/env";
+import OpenBrowser from '@/components/open-browser/index.vue'
 
 export default defineComponent({
   name: "App",
   components: {
     IonApp,
     IonRouterOutlet,
+    OpenBrowser
   },
   data() {
     return {
       showOffline: false,
+
+      isWechat: false
     };
   },
   async created() {
     Network.addListener("networkStatusChange", (status) => {
       this.showOffline = !status.connected;
     });
+
+    this.isWechat = isInWechat();
 
     if (isApp()) {
       const updater = new UpdateManager();
