@@ -41,7 +41,7 @@ export default class WebUpdater implements Updater {
 
                 version = {
                     version: process.env.VUE_APP_VERSION || '0.0.0',
-                    nativeVersion: '1.2.2' || appInfo.appVersion,
+                    nativeVersion: appInfo.appVersion,
                     installPath: null,
                     downloaded: null,
                 }
@@ -52,7 +52,7 @@ export default class WebUpdater implements Updater {
             /**
              * 原生包更新，并不会更新本地存储的版本信息，所以每次都读取最新的 native app version
              */
-            // version.nativeVersion = appInfo.appVersion;
+            version.nativeVersion = appInfo.appVersion;
 
             this.currentPackage = version;
         }
@@ -93,22 +93,17 @@ export default class WebUpdater implements Updater {
     async checkUpdate() {
         const versions = await this.fetchRemoteVersions()
 
-
         const currentVersion = await this.getCurrentPackage();
-
-        console.log('++++++++++++++++++++++++++++++++++++++++++++++++' + currentVersion.version + ' ' + currentVersion.nativeVersion);
 
         let targetVersion;
 
         for (const version of versions) {
-            console.log('remote versions: ' + version.version + ' ' + (version.nativeVersions || version.native_versions));
             if (!semver.gt(version.version, currentVersion.version)) {
 
                 continue;
             }
 
             if (!semver.satisfies(currentVersion.nativeVersion, version.nativeVersions || version.native_versions)) {
-                console.log('+++++ newnewnenwnenw');
                 continue;
             }
 
@@ -117,7 +112,7 @@ export default class WebUpdater implements Updater {
         }
 
         if (!targetVersion) {
-          
+
             return false
         }
 
@@ -133,7 +128,6 @@ export default class WebUpdater implements Updater {
             reader.readAsDataURL(blob);
             reader.onloadend = function () {
                 const base64data = reader.result;
-                console.log(base64data);
 
                 resolve(base64data as string);
             }
@@ -198,8 +192,6 @@ export default class WebUpdater implements Updater {
         console.log('BEGIN INSTALL WEB VERSION');
 
         try {
-          
-
             await Zip.unzip({
                 src: this.newPackage.downloaded.url,
                 dest: newPath
