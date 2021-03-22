@@ -51,6 +51,13 @@
           </div>
         </div>
       </div>
+
+      <div class="for-preload" hidden>
+         <ion-item lines="none">
+          <ion-input></ion-input>
+          <ion-button></ion-button>
+        </ion-item>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -61,12 +68,6 @@ import { isApp, isInWechat } from "@/utils/env";
 import { Wechat } from "@ionic-native/wechat";
 import Alert from "@/mixins/Alert";
 import { logoWechat, person } from "ionicons/icons";
-import { personOutline, lockClosedOutline } from "ionicons/icons";
-import { useStore } from "vuex";
-import Loading from "@/mixins/Loading";
-import Toast from "@/mixins/Toast";
-import Api from "@/api";
-import Validator from "@/utils/validator";
 
 export default defineComponent({
   mixins: [Alert],
