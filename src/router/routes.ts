@@ -52,25 +52,25 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/quizzes/:id/questions',
         name: 'QuizQuestions',
-        component: () => import(/* webpackChunkName: "quiz" */  '@/views/quizzes/Questions.vue'),
+        component: () => import(/* webpackChunkName: "quiz_questions" */  '@/views/quizzes/Questions.vue'),
         props: true,
     },
     {
         path: '/quizzes/:id/report',
         name: 'QuizReport',
-        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/report/Report.vue'),
+        component: () => import(/* webpackChunkName: "quiz_records" */ '@/views/quizzes/report/Report.vue'),
         props: true,
     },
     {
         path: '/quizzes/:id/records',
         name: 'QuizRecords',
-        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/Records.vue'),
+        component: () => import(/* webpackChunkName: "quiz_records" */ '@/views/quizzes/Records.vue'),
         props: true,
     },
     {
         path: '/quizzes/:quizId/records/:recordId',
         name: 'QuizRecord',
-        component: () => import(/* webpackChunkName: "quiz" */ '@/views/quizzes/Record.vue'),
+        component: () => import(/* webpackChunkName: "quiz_records" */ '@/views/quizzes/Record.vue'),
         props: true,
     },
 
@@ -79,7 +79,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/quizzes/:id/scan',
         name: 'Scan',
-        component: () => import(/* webpackChunkName: "quiz" */ '@/views/scan/Scan.vue')
+        component: () => import(/* webpackChunkName: "scan" */ '@/views/scan/Scan.vue')
     },
 
     /**
