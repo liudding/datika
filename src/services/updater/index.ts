@@ -11,7 +11,7 @@ import WebUpdater from "./WebUpdater";
 // 2. env/
 // 3. key ?
 
-const HOST_URL = 'https://meety-dev.menco.cn';
+// const HOST_URL = 'https://meety-dev.menco.cn';
 
 const STORAGE_KEY_LOCAL_VERSION = 'LOCAL_VERSION';
 

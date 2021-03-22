@@ -14,7 +14,7 @@ const { WebView, Device } = Plugins;
 import { Updater } from './definitions'
 
 
-const HOST_URL = 'https://meety-dev.menco.cn';
+const HOST_URL = 'https://youcce-packages.oss-cn-shanghai.aliyuncs.com';
 const RELEASE_VERSIONS_URL = HOST_URL + '/versions.json';
 
 const STORAGE_KEY_CURRENT_VERSION = 'CURRENT_VERSION';
