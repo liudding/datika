@@ -1,8 +1,14 @@
 <template>
   <ion-page>
+    <ion-header :translucent="true" hidden>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button text="" default-href="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title>登录</ion-title>
+      </ion-toolbar>
+    </ion-header>
     <ion-content :fullscreen="true">
-      <!-- <ion-img src="" class="background"></ion-img> -->
-
       <div class="main">
         <div class="main-content">
           <div class="head">
@@ -55,6 +61,12 @@ import { isApp, isInWechat } from "@/utils/env";
 import { Wechat } from "@ionic-native/wechat";
 import Alert from "@/mixins/Alert";
 import { logoWechat, person } from "ionicons/icons";
+import { personOutline, lockClosedOutline } from "ionicons/icons";
+import { useStore } from "vuex";
+import Loading from "@/mixins/Loading";
+import Toast from "@/mixins/Toast";
+import Api from "@/api";
+import Validator from "@/utils/validator";
 
 export default defineComponent({
   mixins: [Alert],
