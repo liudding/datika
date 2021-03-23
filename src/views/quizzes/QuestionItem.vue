@@ -2,9 +2,7 @@
   <ion-item lines="none">
     <div style="width: 100%">
       <div class="d-flex align-items-center choices-wrapper">
-        <div class="question-label">
-          {{ question.label }}.
-        </div>
+        <div class="question-label">{{ question.label }}.</div>
 
         <div class="choices">
           <Bubbles
@@ -22,10 +20,10 @@
         </div>
 
         <div class="d-flex align-items-center">
-          <span class="mr-1" style="margin-right: 4px; color: gray;">分值</span>
+          <span class="mr-1" style="margin-right: 4px; color: gray">分值</span>
           <stepper
             :value="question.score"
-            :name="question.id"
+            :name="question.label"
             :min="0"
             @change="onScoreChange"
           ></stepper>
@@ -47,11 +45,10 @@ export default defineComponent({
     question: Object,
   },
   components: { Bubbles, Stepper },
-  setup() {
-    return { questionType};
-  },
+  emits: ["change"],
   data() {
     return {
+      questionType,
     };
   },
   methods: {
@@ -92,7 +89,7 @@ export default defineComponent({
     detectQuestionType(answer: string, choices: string) {
       if (choices.length === 2) return 3;
       return answer.length > 1 ? 2 : 1;
-    }
+    },
   },
 });
 </script>

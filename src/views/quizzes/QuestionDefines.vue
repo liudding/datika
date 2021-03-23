@@ -58,7 +58,7 @@
           <div class="flex-grow d-flex align-items-center">
             <stepper
               :value="definition.score"
-              :min="1"
+              :min="0"
               @change="definition.score = $event"
             ></stepper>
           </div>

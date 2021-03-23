@@ -96,7 +96,9 @@ export default {
         UPDATE_QUESTION(state: any, data: any) {
             const index = state.quiz.questions.findIndex((i: any) => i.id === data.id)
 
-            state.quiz.questions.splice(index, 1, data);
+            if (index >= 0) {
+                state.quiz.questions.splice(index, 1, data);
+            }
         },
 
         UPDATE_QUIZ_QUESTIONS(state: any, questions: any) {

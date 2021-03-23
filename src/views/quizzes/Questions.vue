@@ -63,14 +63,14 @@
       ></BubbleSheet>
 
       <ion-list>
-        <QuestionItem
-          v-for="question in questions"
-          :key="question.label"
-          :question="question"
-          :quiz="quiz"
-          @change="onQuestionChange"
-        >
-        </QuestionItem>
+        <template v-for="question in questions" :key="question.label">
+          <QuestionItem
+            :question="question"
+            :quiz="quiz"
+            @change="onQuestionChange"
+          >
+          </QuestionItem>
+        </template>
       </ion-list>
     </ion-content>
   </ion-page>
@@ -218,7 +218,8 @@ export default defineComponent({
         this.definesModal.dismiss();
       } catch (e) {
         this.toast({
-          title:  e.response.data && e.response.data.friendlyMessage || "更新失败",
+          title:
+            (e.response.data && e.response.data.friendlyMessage) || "更新失败",
           color: "danger",
         });
       } finally {
@@ -275,7 +276,9 @@ export default defineComponent({
               this.store.commit("quiz/UPDATE_QUESTION", oldQuestion);
 
               this.toast({
-                title:  e.response.data && e.response.data.friendlyMessage || "更新失败",
+                title:
+                  (e.response.data && e.response.data.friendlyMessage) ||
+                  "更新失败",
                 color: "danger",
               });
             });
