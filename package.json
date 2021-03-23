@@ -34,9 +34,9 @@
     "lodash": "^4.17.20",
     "register-service-worker": "^1.7.1",
     "semver": "^7.3.4",
-    "vue": "^3.0.0-0",
+    "vue": "^3.0.7",
     "vue-radial-progress": "^0.3.2",
-    "vue-router": "^4.0.0-0",
+    "vue-router": "^4.0.5",
     "vuex": "^4.0.0",
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
