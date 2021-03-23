@@ -40,6 +40,7 @@
 
     <div style="margin-left: 16px;">
       <div style="font-size: 14px">得分率 {{ question.correctRate }}</div>
+      <div style="font-size: 14px">平均分 {{ question.average }}</div>
     </div>
   </div>
 </template>

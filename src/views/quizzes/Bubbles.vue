@@ -40,6 +40,10 @@ export default defineComponent({
     correct: String,
     selected: String,
     showResult: Boolean,
+    isSingle: {
+      type: Boolean,
+      value: true,
+    },
     mode: {
       type: String,
       default: "question", // answer
@@ -57,6 +61,8 @@ export default defineComponent({
         return (this.correct || "").indexOf(opt) >= 0;
       },
       isFilled(opt) {
+        if (!opt) return false;
+
         return (this.answer || "").indexOf(opt) >= 0;
       },
 
@@ -69,10 +75,14 @@ export default defineComponent({
     onClickBubble(bubble) {
       let selected = this.selected || "";
 
-      if (selected.indexOf(bubble) >= 0) {
-        selected = selected.replace(bubble, "");
+      if (this.isSingle) {
+        selected = bubble;
       } else {
-        selected += bubble;
+        if (selected.indexOf(bubble) >= 0) {
+          selected = selected.replace(bubble, "");
+        } else {
+          selected += bubble;
+        }
       }
 
       this.$emit("change", Str.ascending(selected), this.name);
@@ -161,7 +171,7 @@ export default defineComponent({
   box-shadow: 0px 0px 6px rgba(28, 250, 95, 0.2);
   /* border: 2px solid var(--ion-color-success); */
 
-   color: rgba(255, 0, 0, 0.719);
+  color: rgba(255, 0, 0, 0.719);
 }
 
 .bubble.incorrect .answer-result {
