@@ -1,10 +1,24 @@
 <template>
   <div class="stepper-container">
-    <button class="stepper-button decrease" :disabled="value <= min"  @click.stop="onDecrease">
+    <button
+      class="stepper-button decrease"
+      :disabled="num <= min"
+      @click.stop="onDecrease"
+    >
       <ion-icon :icon="removeOutline"></ion-icon>
     </button>
-    <input type="number" :value="value" :min="min" :max="max" readonly/>
-    <button class="stepper-button increase" :disabled="value >= max" @click="onIncrease">
+    <input
+      type="number"
+      v-model="num"
+      :min="min"
+      :max="max"
+      @blur.stop="onInputChange"
+    />
+    <button
+      class="stepper-button increase"
+      :disabled="num >= max"
+      @click="onIncrease"
+    >
       <ion-icon :icon="addOutline"></ion-icon>
     </button>
   </div>
@@ -23,27 +37,58 @@ export default defineComponent({
     },
     min: {
       type: Number,
-      value: -Infinity
+      value: -Infinity,
     },
     max: {
       type: Number,
-      value: Infinity
+      value: Infinity,
     },
+
+    inputable: {
+      type: Boolean,
+      value: true,
+    },
+
+    name: String
   },
   emits: ["change"],
+  data() {
+    return { addOutline, removeOutline, num: 0 };
+  },
+  watch: {
+    value: function (val) {
+      this.num = val;
+    },
+  },
+  created() {
+    this.num = this.value;
+  },
   methods: {
     onDecrease() {
-      if (this.value - 1 < this.min) return;
+      if (this.num - 1 < this.min) return;
 
-      this.$emit("change", this.value - 1);
+      this.num--;
+
+      this.emit();
     },
 
     onIncrease() {
-      this.$emit("change", this.value + 1);
+      if (this.num >= this.max) return;
+
+      this.num++;
+      this.emit();
     },
-  },
-  data() {
-    return { addOutline, removeOutline };
+
+    onInputChange() {
+      if (this.num >= this.max) this.num = this.max;
+      if (this.num < this.min) this.num = this.min
+
+      this.emit();
+    },
+
+    emit() {
+      this.$emit("change", this.num, this.name);
+    },
   },
 });
 </script>
