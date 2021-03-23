@@ -6,10 +6,6 @@ declare global {
     interface Navigator {
         standalone?: any;
     }
-
-    interface Window {
-        standalone: any;
-    }
 }
 
 

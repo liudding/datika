@@ -67,6 +67,7 @@
           v-for="question in questions"
           :key="question.label"
           :question="question"
+          :quiz="quiz"
           @change="onQuestionChange"
         >
         </QuestionItem>

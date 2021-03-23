@@ -35,12 +35,13 @@ import Renderer from "@/services/sheetGenerator/Renderer";
 import domtoimage from "dom-to-image";
 import { isApp, isIos, isBrowser } from "@/utils/env";
 import { PhotoLibrary } from "@ionic-native/photo-library";
-import { Media } from "@capacitor-community/media";
-const MediaLibrary = new Media();
+
+import Media from "@/utils/Media";
 
 export default defineComponent({
   props: {
     questions: Array,
+    quiz: Object
   },
   emits: ["downloaded", "backdrop"],
   mixins: [Toast, Alert, Loading],
@@ -88,8 +89,6 @@ export default defineComponent({
         } catch (e) {
           // iOS: plugin 会自动跳转到 settings
 
-          console.log("request permission error", e);
-
           this.toast({
             title: "您拒绝了访问相册的权限",
             message: "请允许此权限，否则无法下载答题卡",
@@ -102,14 +101,16 @@ export default defineComponent({
 
         try {
           // await PhotoLibrary.saveImage(dataUrl, process.env.VUE_APP_NAME);
-          await MediaLibrary.savePhoto({
-            path: dataUrl,
-            album: process.env.VUE_APP_NAME,
+          await Media.savePhoto({
+            src: dataUrl, 
+            albumName: process.env.VUE_APP_NAME,
+            filename: (this.quiz?.name || '答题卡') + '.png'
           });
 
           console.log("下载成功");
         } catch (e) {
           console.error("download image error: ", e);
+          console.error(e.message);
           // ios: 用户限制了只能访问指定的照片 FetchResult has no PHAssetCollection
 
           this.alert({
