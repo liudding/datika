@@ -218,8 +218,7 @@ export default defineComponent({
         this.definesModal.dismiss();
       } catch (e) {
         this.toast({
-          title: "更新失败",
-          message: e.response.data && e.response.data.friendlyMessage,
+          title:  e.response.data && e.response.data.friendlyMessage || "更新失败",
           color: "danger",
         });
       } finally {
@@ -276,8 +275,7 @@ export default defineComponent({
               this.store.commit("quiz/UPDATE_QUESTION", oldQuestion);
 
               this.toast({
-                title: "更新失败",
-                message: e.response.data && e.response.data.friendlyMessage,
+                title:  e.response.data && e.response.data.friendlyMessage || "更新失败",
                 color: "danger",
               });
             });

@@ -205,8 +205,7 @@ export default defineComponent({
         });
       } catch (e) {
         this.toast({
-          title: "解档失败",
-          message: e.response.data && e.response.data.friendlyMessage,
+          title:  e.response.data && e.response.data.friendlyMessage || "解档失败",
           color: "danger",
         });
       } finally {
@@ -259,8 +258,7 @@ export default defineComponent({
         });
       } catch (e) {
         this.toast({
-          title: "创建失败",
-          message: e.response.data && e.response.data.friendlyMessage,
+          title:  e.response.data && e.response.data.friendlyMessage || "创建失败",
           color: "danger",
         });
       } finally {
@@ -282,8 +280,7 @@ export default defineComponent({
         });
       } catch (e) {
         this.toast({
-          title: "归档失败",
-          message: e.response.data && e.response.data.friendlyMessage,
+          title:  e.response.data && e.response.data.friendlyMessage || "归档失败",
           color: "danger",
         });
       } finally {
@@ -305,8 +302,7 @@ export default defineComponent({
         this.store.commit("quiz/REMOVE_QUIZ", quiz);
       } catch (e) {
         this.toast({
-          title: "删除失败",
-          message: e.response.data && e.response.data.friendlyMessage,
+          title:  e.response.data && e.response.data.friendlyMessage ||  "删除失败",
           color: "danger",
         });
       } finally {

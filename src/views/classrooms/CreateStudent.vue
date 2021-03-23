@@ -22,6 +22,7 @@
         :value="number"
         @ionChange="number = $event.target.value"
         required
+        type="number"
         placeholder="学号，至少两位数字"
       ></ion-input>
     </ion-item>
@@ -86,8 +87,13 @@ export default defineComponent({
         return;
       }
 
-      if (this.number.length < 2) {
+      if (this.name.length < 2) {
         this.toast("名称至少需要 2 个字符");
+        return;
+      }
+
+      if (this.number.length < 2) {
+        this.toast("学号至少需要 2 位数字");
         return;
       }
 
@@ -119,8 +125,7 @@ export default defineComponent({
       } catch (e) {
         console.log(e);
         this.toast({
-          title: "保存失败",
-          message: e.response.data.friendlyMessage,
+          title: e.response.data && e.response.data.friendlyMessage || "保存失败",
           color: "danger",
         });
       } finally {
@@ -163,7 +168,7 @@ export default defineComponent({
         });
       } catch (e) {
         this.toast({
-          title: "删除失败",
+          title: e.response.data && e.response.data.friendlyMessage || "删除失败",
           color: "danger",
         });
       }

@@ -65,8 +65,7 @@ export default defineComponent({
         this.resetData();
       } catch (e) {
         this.toast({
-          title: "保存失败",
-          message: e.response.data.friendlyMessage,
+          title: e.response.data && e.response.data.friendlyMessage || "保存失败",
           color: "danger",
         });
       } finally {

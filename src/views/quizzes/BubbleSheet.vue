@@ -90,8 +90,8 @@ export default defineComponent({
           // iOS: plugin 会自动跳转到 settings
 
           this.toast({
-            title: "您拒绝了访问相册的权限",
-            message: "请允许此权限，否则无法下载答题卡",
+            title: "请允许访问相册的权限",
+            message: "否则无法下载答题卡",
           });
 
           return;
