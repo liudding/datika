@@ -1,17 +1,17 @@
 type Event = 'scan' | 'issue' | 'validate';
 
-interface ScanDriver {
-  start: Function;
-  stop: Function;
-  pause: Function;
-  resume: Function;
-  bind: Function;
-  unbind: Function;
-  ready: Function;
-  onAsk: Function;
+export interface ScanDriver {
+  start(force: boolean): Promise<any>;
+  stop(): Promise<any>;
+  pause(): Promise<any>;
+  resume(): Promise<any>;
+  bind(event: Event, callback: any): void;
+  unbind(event: Event): void;
+  ready(): Promise<any>;
+  onAsk(callback: any): void;
 
-  getCameraList: Function;
-  setCamera: Function;
+  getCameraList(): Promise<any>;
+  setCamera(camera: string): void;
 }
 
 import GradecamDriver from './GradecamDriver';
@@ -22,8 +22,6 @@ export default class Scanner {
   private examLength: number;
   private autoLength: boolean;
 
-  private events: object = {};
-
   private currentDriver: ScanDriver|null = null;
 
   constructor(container: HTMLElement|string, examLength: number, autoLength: boolean) {
@@ -32,32 +30,32 @@ export default class Scanner {
     this.autoLength = autoLength;
   }
 
-  async start(force=false) {
+  async start(force=false): Promise<any> {
     return this.driver().start(force);
   }
 
-  async stop() {
+  async stop(): Promise<any> {
     return this.driver().stop();
   }
 
-  pause() {
+  async pause(): Promise<any> {
     return this.driver().pause();
   }
 
-  resume() {
+  async resume(): Promise<any> {
     return this.driver().resume();
   }
 
   
-  bind(event: Event, callback: Function) {
+  bind(event: Event, callback: any) {
     return this.driver().bind(event, callback);
   }
 
-  unbind() {
-    return this.driver().unbind();
+  unbind(event: Event) {
+    return this.driver().unbind(event);
   }
 
-  onAsk(cb: Function) {
+  onAsk(cb: any) {
     return this.driver().onAsk(cb);
   }
 
@@ -87,7 +85,7 @@ export default class Scanner {
   }
 
   createDefaultDriver() {
-    return new GradecamDriver(this.container, this.examLength, this.autoLength);
+    return (new GradecamDriver(this.container, this.examLength, this.autoLength)) as ScanDriver;
   }
 }
 

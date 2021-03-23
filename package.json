@@ -13,9 +13,9 @@
   "dependencies": {
     "@capacitor-community/media": "^1.0.1",
     "@capacitor-community/text-to-speech": "0.2.3",
-    "@capacitor/android": "^2.4.6",
-    "@capacitor/core": "2.4.6",
-    "@capacitor/ios": "^2.4.6",
+    "@capacitor/android": "^2.4.7",
+    "@capacitor/core": "2.4.7",
+    "@capacitor/ios": "^2.4.7",
     "@ionic-native/core": "^5.31.1",
     "@ionic-native/file": "^5.31.1",
     "@ionic-native/http": "^5.31.1",
@@ -64,7 +64,7 @@
     "eslint-plugin-vue": "^7.8.0",
     "jetifier": "^1.6.6",
     "node-sass": "^5.0.0",
-    "sass-loader": "^11.0.1",
+    "sass-loader": "^10.1.1",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-8"
   }

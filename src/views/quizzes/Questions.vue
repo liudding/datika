@@ -264,7 +264,7 @@ export default defineComponent({
 
       let func;
       if (_.has(this.debouncedUpdates, question.id)) {
-        func = this.debouncedUpdates[question.id] as Function;
+        func = this.debouncedUpdates[question.id];
       } else {
         func = _.debounce((question: any) => {
           Api.question

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-function list(quiz: number, query: object) {
+function list(quiz: number, query: any): Promise<any> {
   return request({
     url: '/quizzes/' + quiz + '/records',
     params: query
