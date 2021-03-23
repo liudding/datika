@@ -380,7 +380,9 @@ export default defineComponent({
         {
           result: result,
         },
-        "scan-result-modal"
+        "scan-result-modal",
+        true,
+        false
       );
     },
 
