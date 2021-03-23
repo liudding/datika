@@ -30,7 +30,11 @@
         </ion-item>
       </ion-list>
 
-      <Emptyset v-else title="尚无报告" message="请先扫描录入学生成绩"></Emptyset>
+      <Emptyset
+        v-else
+        title="尚无报告"
+        message="请先扫描录入学生成绩"
+      ></Emptyset>
     </ion-content>
   </ion-page>
 </template>
@@ -120,7 +124,7 @@ export default defineComponent({
       const allStats = [];
 
       for (const question of questions) {
-        const questionAnswers = _.filter(answers, { "question_id": question.id });
+        const questionAnswers = _.filter(answers, { question_id: question.id });
 
         const stats = {
           quesitonId: question.id,
@@ -128,23 +132,33 @@ export default defineComponent({
           score: question.score,
           recordCount: questionAnswers.length,
           choices: [],
+
+          correctRate: 0,
+          scoreRate: 0,
+          average: 0,
         };
 
-        const correct = _.filter(questionAnswers, { answer: question.answer });
-        stats.correct = _.map(correct, "studentId");
-        stats.correctRate =
-          (stats.correct.length / questionAnswers.length) * 100;
+        if (questionAnswers.length) {
+          // 有作答
+          const correct = _.filter(questionAnswers, {
+            answer: question.answer,
+          });
+          stats.correct = _.map(correct, "studentId");
 
-        const score = _.sumBy(questionAnswers, "score");
-        stats.scoreRate =
-          questionAnswers.length > 0
-            ? (score / question.score) * questionAnswers.length
-            : 0;
+          stats.correctRate =
+            (stats.correct.length / questionAnswers.length) * 100;
+
+          const score = _.sumBy(questionAnswers, "score");
+
+          stats.average = score / questionAnswers.length;
+
+          stats.scoreRate = stats.average / question.score;
+        }
 
         // choices stats;
         for (const choice of question.choices) {
           const selected = _.filter(questionAnswers, (item) => {
-            return (item.answer || '').indexOf(choice) >= 0;
+            return (item.answer || "").indexOf(choice) >= 0;
           });
 
           const isCorrect =
