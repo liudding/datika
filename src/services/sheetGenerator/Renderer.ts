@@ -20,7 +20,7 @@ export default class Renderer {
     createCanvas(): HTMLElement {
         const htmlString = `
         <div id="form-container" style="user-select: none; padding: 16px;background: white;">
-            <div class="header" style="position: relative;width: 100%;">
+            <div class="header" style="position: relative;width: 100%; margin-bottom: 16px;">
 
             </div>
             <div class="box" style="width:${this.form.width}px;min-width:${this.form.width}px;height:${this.form.height}px;min-height:${this.form.height}px;border: ${this.form.border}px solid black;position: relative;">

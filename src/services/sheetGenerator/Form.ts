@@ -44,6 +44,9 @@ export default class Form extends Section {
         let minLayoutHeight = Number.MAX_VALUE;
 
         for (const layout of layouts) {
+            if (layout.height / layout.width < 1.1) {
+                continue;
+            }
 
             if (layout.height < minLayoutHeight) {
                 minLayoutHeight = layout.height;
