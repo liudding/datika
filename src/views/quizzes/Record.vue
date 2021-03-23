@@ -84,11 +84,9 @@ export default defineComponent({
   },
 
   data() {
+    const record: any = { studentId: "", answers: [] };
     return {
-      record: {
-        studentId: null,
-        answers: [],
-      },
+      record,
       quiz: {
         questions: [],
       },
@@ -143,9 +141,23 @@ export default defineComponent({
     onBubbleChange(selected: string, name: string) {
       if (!this.editMode) return;
 
-      const answer: any = this.record.answers.find(
-        (i: any) => i.label === name
-      );
+      let answer: any = this.record.answers.find((i: any) => i.label === name);
+
+      if (!answer) {
+        const questionIndex = this.quiz.questions.findIndex(
+          (i: any) => i.label === name
+        );
+        const question: any = this.quiz.questions[questionIndex];
+
+        answer = {
+          label: question.label,
+          question_id: question.id,
+          answer: "",
+          score: 0,
+        };
+
+        this.record.answers[questionIndex] = answer;
+      }
 
       const oldAnswer = answer.answer;
 
