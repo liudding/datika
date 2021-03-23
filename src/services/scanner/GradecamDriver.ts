@@ -1,5 +1,5 @@
 /* eslint-disable*/
-
+import {ScanDriver} from './Scanner';
 declare global {
   interface Window { gradeCamOnAPILoad: Function; gradecam: Object | null; }
 }
@@ -14,7 +14,7 @@ interface EventsBag {
   [key: string]: any
 }
 
-export default class GradeCam {
+export default class GradeCam implements ScanDriver {
 
   sdkUrl: string = '/scanner/sdk/gcsdk_noui_6.5.1.3.js';
 
@@ -80,21 +80,21 @@ export default class GradeCam {
     return true;
   }
 
-  stop() {
+  async stop() {
     this.unbindEvents()
     this.gradecam.setValidateCallback(function () { })
     this.gradecam.stopCamera()
   }
 
 
-  pause() {
+  async pause() {
     for (const event in this.events) {
       this.events[event].bound = false;
       this.gradecam.unbind(event, this.events[event].callback)
     }
   }
 
-  resume() {
+  async resume() {
     for (let event in this.events) {
       const cb = this.events[event].callback as Function;
 

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-function list(query?: any) {
+function list(query?: any): Promise<any> {
   return request({
     url: '/quizzes',
     params: query
@@ -37,14 +37,14 @@ function destroy(id: number) {
   })
 }
 
-function studentRecords(id: number, query?: object) {
+function studentRecords(id: number, query?: any) {
   return request({
     url: '/quizzes/' + id + '/student_records',
     params: query
   })
 }
 
-function records(id: number, query?: object) {
+function records(id: number, query?: any) {
   return request({
     url: '/quizzes/' + id + '/records',
     params: query

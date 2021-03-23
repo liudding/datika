@@ -22,7 +22,7 @@ interface UaDetect {
     osVersion: string;
 }
 
-type Rule = string | Function;
+type Rule = any;
 
 interface RuleBag {
     [key: string]: Rule;
@@ -160,8 +160,8 @@ class UaDetect {
                 continue;
             }
 
-            if ((rule as any) instanceof Function) {
-                const result = (rule as Function)(this.ua, window);
+            if (typeof rule === 'function') {
+                const result = rule(this.ua, window);
                 if (result == false) continue;
 
                 if (result === true) { return key; }
