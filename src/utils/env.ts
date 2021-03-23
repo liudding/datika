@@ -49,7 +49,7 @@ export function detect(): any {
     };
 }
 
-export function env() {
+export function env(): any {
     const env = localStorage.getItem('ENVIRONMENT')
     if (env) return JSON.parse(env);
 
@@ -64,36 +64,36 @@ export function env() {
  * app, browser, pwa
  * @returns string
  */
-export function client() {
+export function client(): string {
     return env().client;
 }
 
 
-export function isPwa() {
+export function isPwa(): boolean {
     return client() === 'pwa';
 }
 
-export function isBrowser() {
+export function isBrowser(): boolean {
     return !isPwa() && (client() === 'browser' || client() === 'web');
 }
 
-export function isApp() {
+export function isApp(): boolean {
     return client() === 'app';
 }
 
-export function isInWechat() {
+export function isInWechat(): boolean {
     return ua.isWechat;
 }
 
-export function isSafari() {
+export function isSafari(): boolean {
     return ua.isSafari;
 }
 
-export function isAndroid() {
+export function isAndroid(): boolean {
     return ua.isAndroid;
 }
 
-export function isIos() {
+export function isIos(): boolean {
 
     return ua.isIos;
 }

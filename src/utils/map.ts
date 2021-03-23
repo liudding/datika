@@ -7,6 +7,6 @@ const QUESTION_TYPE_NAME_MAP = {
     3: '判断'
 }
 
-export function questionType(type: QUESTION_TYPE) {
+export function questionType(type: QUESTION_TYPE): string {
     return QUESTION_TYPE_NAME_MAP[type];
 }
