@@ -1,5 +1,5 @@
 <template>
-  <ion-item lines="none">
+  <div class="question">
     <div style="width: 100%">
       <div class="d-flex align-items-center choices-wrapper">
         <div class="question-label">{{ question.label }}.</div>
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-  </ion-item>
+  </div>
 </template>
 
 <script lang="ts">
@@ -113,6 +113,11 @@ ion-item {
 
   margin-bottom: 4px;
 }
+
+.question {
+  padding: 8px 16px;
+}
+
 
 .choices-wrapper {
   padding: 4px 0;
