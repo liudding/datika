@@ -23,7 +23,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default defineComponent({
   props: {
@@ -36,8 +36,8 @@ export default defineComponent({
   emits: ["change"],
   computed: {
     ...mapState({
-      settings: (state) => state.user.settings
-    })
+      settings: (state) => state.user.settings,
+    }),
   },
   data() {
     return {
@@ -51,7 +51,8 @@ export default defineComponent({
   async created() {
     const settings = this.getCache();
 
-    this.soundEnabled = settings.sound !== undefined ? settings.sound : this.settings.scan_beep;
+    this.soundEnabled =
+      settings.sound !== undefined ? settings.sound : this.settings.scan_beep;
 
     if (!this.cameraList || this.cameraList.length === 0) {
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -77,7 +78,11 @@ export default defineComponent({
 
       let index = this.cameras.indexOf(this.camera);
 
-      index += 1;
+      if (index < 0) {
+        index = this.cameras.length - 1;
+      } else {
+        index += 1;
+      }
 
       if (index < 0 || index >= this.cameras.length) {
         this.camera = this.cameras[0];
