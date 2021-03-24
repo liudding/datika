@@ -31,7 +31,7 @@ export default class WebUpdater implements Updater {
     /**
      * 获取当前版本的信息
      */
-    public async getCurrentPackage() {
+    public async getCurrentPackage(): Promise<any> {
         if (!this.currentPackage) {
             let version = await Storage.get(STORAGE_KEY_CURRENT_VERSION)
 
@@ -90,7 +90,7 @@ export default class WebUpdater implements Updater {
      * 检查更新
      * @returns 
      */
-    async checkUpdate() {
+    async checkUpdate(): Promise<any> {
         const versions = await this.fetchRemoteVersions()
 
         const currentVersion = await this.getCurrentPackage();
@@ -122,24 +122,11 @@ export default class WebUpdater implements Updater {
         return this.newPackage;
     }
 
-    async blob2base64(blob: Blob): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function () {
-                const base64data = reader.result;
-
-                resolve(base64data as string);
-            }
-        })
-
-    }
-
     /**
      * 下载远程版本到本地
      * @returns 
      */
-    async download() {
+    async download(): Promise<any> {
         // TODO: 避免重复下载
 
         if (this.newPackage.version === this.currentPackage.version) {
@@ -184,7 +171,7 @@ export default class WebUpdater implements Updater {
     /**
      * 解压安装包，并放入安装路径
      */
-    async install() {
+    async install(): Promise<any> {
         const releasePath = 'ionic_built_snapshots/' + this.newPackage.version;
 
         const newPath = await cleanDataDirectory(releasePath);
@@ -217,7 +204,7 @@ export default class WebUpdater implements Updater {
      * 立即启用新版本
      * @returns 
      */
-    async apply() {
+    async apply(): Promise<boolean> {
 
         const newVersion = await this.getNewVersionInfo();
 
@@ -245,27 +232,6 @@ export default class WebUpdater implements Updater {
         return true;
     }
 
-    /**
-     * 自动更新版本
-     */
-    // async auto() {
-
-    //     /**
-    //      * 当再次启动时，应用更新
-    //      */
-    //     await this.apply();
-
-    //     const newVersion = await this.checkUpdate();
-
-    //     if (!newVersion) {
-    //         return;
-    //     }
-
-    //     await this.download();
-
-    //     await this.install();
-    // }
-
     private async storeNewVersionInfo(infos: any) {
         return Storage.set(STORAGE_KEY_NEW_VERSION, infos);
     }
@@ -279,6 +245,8 @@ export default class WebUpdater implements Updater {
     }
 
     private async storeCurrentVersion(infos: any) {
+        await Storage.set('web_version', infos.version);
+
         return Storage.set(STORAGE_KEY_CURRENT_VERSION, infos);
     }
 }

@@ -17,7 +17,7 @@
         />
         <div>{{ appName }}</div>
 
-        <div class="version">{{nativeVersion}} ({{ version }})</div>
+        <div class="version">{{ nativeVersion }} ({{ version }})</div>
       </div>
     </ion-content>
   </ion-page>
@@ -26,6 +26,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Console from "@/services/console";
+import Storage from "@/utils/storage";
 import { Plugins } from "@capacitor/core";
 const { Device } = Plugins;
 
@@ -35,9 +36,9 @@ export default defineComponent({
     return {
       appName: process.env.VUE_APP_NAME,
 
-      version: process.env.VUE_APP_VERSION,
+      version: "",
 
-      nativeVersion: '',
+      nativeVersion: "",
 
       clickCount: 0,
     };
@@ -46,6 +47,10 @@ export default defineComponent({
     const appInfo = await Device.getInfo();
 
     this.nativeVersion = appInfo.appVersion;
+
+    const webVersion = await Storage.get("web_version");
+
+    this.version = webVersion || process.env.VUE_APP_VERSION;
   },
   methods: {
     onClickLogo() {
