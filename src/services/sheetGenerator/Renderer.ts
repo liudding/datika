@@ -3,6 +3,7 @@ import BubbleGroup from './BubbleGroup';
 import BubbleSection from './BubbleSection';
 import NumberSection from './NumberSection';
 import Bubble from './Bubble';
+import Config from './Config';
 
 
 
@@ -24,7 +25,7 @@ export default class Renderer {
 
             </div>
             <div class="box" style="width:${this.form.width}px;min-width:${this.form.width}px;height:${this.form.height}px;min-height:${this.form.height}px;border: ${this.form.border}px solid black;position: relative;">
-                <div class="number" id="number" style="position: absolute; right: 0;top: 0;display: flex;border-left: 9px solid black;border-bottom: 9px solid black;"></div>
+                <div class="number" id="number" style="position: absolute; right: 0;top: 0;border-left: 9px solid black;border-bottom: 9px solid black; padding: ${Config.NUMBER_SECTION.PADDING_TOP}px ${Config.NUMBER_SECTION.PADDING_RIGHT}px ${Config.NUMBER_SECTION.PADDING_BOTTOM}px ${Config.NUMBER_SECTION.PADDING_LEFT}px; margin-bottom: ${Config.NUMBER_SECTION.MARGIN_BOTTOM}px"></div>
                 <div id="bubbles" class="bubbles"></div>
             </div>
         </div>`;
@@ -62,7 +63,7 @@ export default class Renderer {
     }
 
     makeSection(section: BubbleSection, x: number, y = 0) {
-        let ele = `<div class="section" style="left:${x}px; top: ${y}px;grid-row-gap:${section.gap}px; padding:${section.paddingY}px ${section.paddingX}px;">`
+        let ele = `<div class="section" style="left:${x}px; top: ${y}px;grid-row-gap:${section.gap}px; padding:${Config.BUBBLE_SECTION.PADDING_TOP}px ${Config.BUBBLE_SECTION.PADDING_RIGHT}px ${Config.BUBBLE_SECTION.PADDING_BOTTOM}px ${Config.BUBBLE_SECTION.PADDING_LEFT}px;">`
         for (let index = 0; index < section.groups.length; index++) {
             ele += this.makeGroup(section.groups[index], section)
 

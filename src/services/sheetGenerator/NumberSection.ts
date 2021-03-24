@@ -24,12 +24,13 @@ export default class NumberSection extends Section {
             Config.NUMBER_SECTION.BORDER_WIDTH +
             this.digits * 2 * Config.NUMBER_SECTION.COLUMN_BORDER_WIDTH +
             Config.NUMBER_SECTION.PADDING_LEFT + Config.NUMBER_SECTION.PADDING_RIGHT + Config.NUMBER_SECTION.MARGIN_LEFT
+            + 9 * this.columnGap;
 
         const height = 10 * Config.BUBBLE.RADIUS +
-            9 * this.columnGap +
             this.columnPaddingY * 2 +
             Config.NUMBER_SECTION.BORDER_WIDTH +
-            Config.NUMBER_SECTION.PADDING_BOTTOM
+            Config.NUMBER_SECTION.PADDING_BOTTOM +
+            Config.NUMBER_SECTION.MARGIN_BOTTOM
 
         this._size = {
             width,

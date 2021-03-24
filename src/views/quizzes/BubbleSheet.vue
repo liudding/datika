@@ -41,7 +41,7 @@ import Media from "@/utils/Media";
 export default defineComponent({
   props: {
     questions: Array,
-    quiz: Object
+    quiz: Object,
   },
   emits: ["downloaded", "backdrop"],
   mixins: [Toast, Alert, Loading],
@@ -102,9 +102,9 @@ export default defineComponent({
         try {
           // await PhotoLibrary.saveImage(dataUrl, process.env.VUE_APP_NAME);
           await Media.savePhoto({
-            src: dataUrl, 
+            src: dataUrl,
             albumName: process.env.VUE_APP_NAME,
-            filename: (this.quiz?.name || '答题卡') + '.png'
+            filename: (this.quiz?.name || "答题卡") + ".png",
           });
 
           console.log("下载成功");
@@ -241,6 +241,9 @@ ion-spinner {
   right: -10000px;
 
   transform: scale(0.3, 0.3);
+
+  /* position: fixed;
+  z-index: 100000; */
 }
 
 #bubble-sheet {
@@ -285,14 +288,16 @@ ion-spinner {
 #bubble-sheet .number-group {
   display: grid;
   grid-auto-flow: row;
-  /* grid-column-gap: 20px; */
-  /* grid-row-gap: 8px; */
   flex-direction: column;
   align-items: center;
   justify-items: center;
 
-  border-right: 2px solid rgb(160, 160, 160);
   background: white;
+  border-right: 5px solid rgb(190, 190, 190);
+}
+
+#bubble-sheet .number-group:last-child {
+  border-right: none;
 }
 
 #bubble-sheet .header .number-grid {

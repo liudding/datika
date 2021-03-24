@@ -27,7 +27,7 @@ export default {
         PADDING_TOP: 150,
         PADDING_BOTTOM: 150,
         PADDING_LEFT: 100,
-        PADDING_RIGHT: 0,
+        PADDING_RIGHT: 20,
     },
 
     NUMBER_SECTION: {
@@ -36,10 +36,11 @@ export default {
         COLUMN_BORDER_WIDTH: 1,
         COLUMN_GAP: 8,
         BORDER_WIDTH: 8,
-        PADDING_LEFT: 0,
-        PADDING_RIGHT: 0,
-        PADDING_TOP: 30,
-        PADDING_BOTTOM: 150,
+        PADDING_LEFT: 20,
+        PADDING_RIGHT: 20,
+        PADDING_TOP: 0,
+        PADDING_BOTTOM: 0,
+        MARGIN_BOTTOM: 150,
         MARGIN_LEFT: 150,
     }
     

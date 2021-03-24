@@ -9,7 +9,7 @@
 		"sourceMap": false,
 		"rootDir": "./",
 		"outDir": "./out",
-		"outFile": "./out/generator.js",
+		// "outFile": "./out/generator.js",
 		"removeComments": true,
 		"allowJs": true
 	}

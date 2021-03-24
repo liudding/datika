@@ -37,7 +37,7 @@ export default class BubbleSection extends Section {
             })
 
             height += this.gap * (this.groups.length - 1) + this.paddingY * 2;
-            width += this.paddingX * 2;
+            width += Config.BUBBLE_SECTION.PADDING_LEFT + Config.BUBBLE_SECTION.PADDING_RIGHT;
 
             this._size = {
                 width,
