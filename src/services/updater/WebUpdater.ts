@@ -83,6 +83,7 @@ export default class WebUpdater implements Updater {
             i.version = semver.valid(semver.coerce(i.version))
             i.downloadUrl = i.downloadUrl || i.download_url
             i.nativeVersions = i.nativeVersions || i.native_versions
+            i.isMandatory = i.isMandatory || i.is_mandatory
             return i;
         });
 

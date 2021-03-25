@@ -1,0 +1,11 @@
+[
+    {
+        "version": "1.0.0",
+        "type": "web",
+        "downloadUrl": "https://youcce-packages.oss-cn-shanghai.aliyuncs.com/web/1.0.1.zip",
+        "label": "",
+        "description": "",
+        "isMandatory": false,
+        "nativeVersions": "^1.0.0"
+    }
+]

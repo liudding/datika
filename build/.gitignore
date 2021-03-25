@@ -1,0 +1,5 @@
+*
+!.gitignore
+!key_store
+!package.sh
+!versions.json
