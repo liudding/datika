@@ -1,9 +1,4 @@
 import { Updater } from './definitions';
-import { HTTP } from '@ionic-native/http';
-import semver from 'semver';
-import { File } from '@ionic-native/file';
-import Storage from '@/utils/storage';
-
 export default class NativeUpdater implements Updater {
 
 
@@ -14,7 +9,7 @@ export default class NativeUpdater implements Updater {
      * 检查更新
      * @returns 
      */
-    async checkUpdate() {
+    async checkUpdate(): Promise<any> {
         return false;
 
         // const lastedVersion = await this.fetchRemoteVersion()
@@ -31,12 +26,12 @@ export default class NativeUpdater implements Updater {
         // return lastedVersion;
     }
 
-    async promptUserToUpdate() {
+    async promptUserToUpdate(): Promise<any>{
         return true;
     }
 
 
-    download() {
+    async download(): Promise<any> {
         //
     }
 
@@ -44,14 +39,14 @@ export default class NativeUpdater implements Updater {
         return '';
     }
 
-    async apply() {
+    async apply(): Promise<any> {
         //
     }
 
     /**
      * 获取当前版本的信息
      */
-    public async getCurrentPackage() {
+    public async getCurrentPackage(): Promise<any>{
         // if (!this.currentPackage) {
         //     // read package metadata from local file
 

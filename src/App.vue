@@ -41,9 +41,7 @@ export default defineComponent({
     this.isWechat = isInWechat();
 
     if (isApp()) {
-      const updater = new UpdateManager();
-
-      await updater.auto();
+      await UpdateManager.auto();
     }
   },
 });

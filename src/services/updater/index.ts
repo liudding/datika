@@ -1,6 +1,3 @@
-
-import Storage from '@/utils/storage';
-
 import NativeUpdater from "./NativeUpdater";
 import WebUpdater from "./WebUpdater";
 
@@ -13,9 +10,9 @@ import WebUpdater from "./WebUpdater";
 
 // const HOST_URL = 'https://meety-dev.menco.cn';
 
-const STORAGE_KEY_LOCAL_VERSION = 'LOCAL_VERSION';
+// const STORAGE_KEY_LOCAL_VERSION = 'LOCAL_VERSION';
 
-export default class UpdateManager {
+class UpdateManager {
 
     protected webUpdater: WebUpdater;
     protected nativeUpdater: NativeUpdater;
@@ -35,7 +32,7 @@ export default class UpdateManager {
      * 获取当前版本的信息
      */
     public async getCurrentPackage() {
-       //
+        //
     }
 
 
@@ -43,7 +40,7 @@ export default class UpdateManager {
      * 检查更新
      * @returns 
      */
-    async checkUpdate() {
+    async checkUpdate(): Promise<any> {
 
         const nativeNewVersion = await this.nativeUpdater.checkUpdate();
 
@@ -66,30 +63,17 @@ export default class UpdateManager {
         return false;
     }
 
-    async blob2base64(blob: Blob): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = function () {
-                const base64data = reader.result;
-                console.log(base64data);
-
-                resolve(base64data as string);
-            }
-        })
-
-    }
-
 
     /**
      * 自动更新版本
      */
-    async auto() {
+    async auto(): Promise<void> {
+        console.log('BEGIN AUTO UPDATING')
 
         /**
          * 当再次启动时，应用更新
          */
-        const applied = await this.webUpdater.apply();
+        const applied = await this.apply();
 
         if (applied) {
             return;
@@ -97,8 +81,8 @@ export default class UpdateManager {
 
         const newVersion = await this.checkUpdate();
 
-
         if (!newVersion) {
+            console.log('NO NEW VERSION FOUND');
             return;
         }
 
@@ -119,5 +103,28 @@ export default class UpdateManager {
             await this.nativeUpdater.install();
         }
     }
+
+    async getNewVersion(): Promise<any> {
+        const web = await this.webUpdater.getNewVersionInfo();
+
+        if (web) {
+            return web;
+        }
+    }
+
+    async apply(): Promise<boolean> {
+        /**
+      * 当再次启动时，应用更新
+      */
+        const applied = await this.webUpdater.apply();
+
+        if (applied) {
+            return applied;
+        }
+
+        return false;
+    }
 }
 
+
+export default new UpdateManager();

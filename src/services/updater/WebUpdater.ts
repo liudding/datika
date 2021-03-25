@@ -1,7 +1,7 @@
 import { Plugins } from "@capacitor/core";
 import { HTTP } from '@ionic-native/http';
 import semver from 'semver';
-import { File } from '@ionic-native/file';
+import { SemVer } from 'semver';
 import Storage from '@/utils/storage';
 
 import { Zip as ZipPlugin } from 'capacitor-plugin-zip';
@@ -52,7 +52,7 @@ export default class WebUpdater implements Updater {
             /**
              * 原生包更新，并不会更新本地存储的版本信息，所以每次都读取最新的 native app version
              */
-            version.nativeVersion = appInfo.appVersion;
+            version.nativeVersion = semver.valid(semver.coerce(appInfo.appVersion));
 
             this.currentPackage = version;
         }
@@ -69,7 +69,8 @@ export default class WebUpdater implements Updater {
         const resp = await HTTP.get(RELEASE_VERSIONS_URL, {}, {});
 
         if (!resp.data) {
-            return;
+            console.error('FETCH REMOTE VERSIONS FAILED')
+            return [];
         }
 
         let versionInfos = resp.data as any;
@@ -80,6 +81,8 @@ export default class WebUpdater implements Updater {
 
         const versions = versionInfos.map((i: any) => {
             i.version = semver.valid(semver.coerce(i.version))
+            i.downloadUrl = i.downloadUrl || i.download_url
+            i.nativeVersions = i.nativeVersions || i.native_versions
             return i;
         });
 
@@ -99,11 +102,10 @@ export default class WebUpdater implements Updater {
 
         for (const version of versions) {
             if (!semver.gt(version.version, currentVersion.version)) {
-
                 continue;
             }
 
-            if (!semver.satisfies(currentVersion.nativeVersion, version.nativeVersions || version.native_versions)) {
+            if (!semver.satisfies(currentVersion.nativeVersion, version.nativeVersions)) {
                 continue;
             }
 
@@ -116,7 +118,7 @@ export default class WebUpdater implements Updater {
             return false
         }
 
-        targetVersion.downloadUrl = targetVersion.downloadUrl || targetVersion.download_url
+
         this.newPackage = targetVersion;
 
         return this.newPackage;
@@ -185,7 +187,7 @@ export default class WebUpdater implements Updater {
             })
 
         } catch (error) {
-            console.error('====', error);
+            console.error('UNZIP ERROR: ', error);
 
             return;
         }
@@ -236,7 +238,7 @@ export default class WebUpdater implements Updater {
         return Storage.set(STORAGE_KEY_NEW_VERSION, infos);
     }
 
-    private async getNewVersionInfo() {
+    public async getNewVersionInfo(): Promise<any> {
         return Storage.get(STORAGE_KEY_NEW_VERSION)
     }
 
