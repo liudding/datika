@@ -12,9 +12,9 @@ VERSION="$(cat $PROJECT_DIR/package.json | $SCRIPT_DIR/jq ' .version ' -j)"
 
 
 # build frontend
-# cd $SCRIPT_DIR/.. && ionic build
-# rm -rf $OUTPUT_WEB_DIR
-# cp -r $SCRIPT_DIR/../dist $OUTPUT_WEB_DIR
+cd $SCRIPT_DIR/.. && ionic build
+rm -rf $OUTPUT_WEB_DIR
+cp -r $SCRIPT_DIR/../dist $OUTPUT_WEB_DIR
 
 
 # # zip
