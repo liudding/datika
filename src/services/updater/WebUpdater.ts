@@ -221,19 +221,21 @@ export default class WebUpdater implements Updater {
             return false;
         }
 
-        const applied = await this.checkApplied(newVersion.version);
+        await this.resetInfos();
 
-        if (applied) {
-            await this.resetInfos();
-        } else {
-            // WebView.setServerBasePath({
-            //     path: newVersion.installedPath
-            // });
+        // const applied = await this.checkApplied(newVersion.version);
 
-            // WebView.persistServerBasePath();
-        }
+        // if (applied) {
+        //     await this.resetInfos();
+        // } else {
+        //     // WebView.setServerBasePath({
+        //     //     path: newVersion.installedPath
+        //     // });
 
-        console.log('NEW WEB VERSION APPLIED: ' + newVersion.installedPath);
+        //     // WebView.persistServerBasePath();
+        // }
+
+        // console.log('NEW WEB VERSION APPLIED: ' + newVersion.installedPath);
 
         return true;
     }
