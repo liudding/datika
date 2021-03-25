@@ -1,11 +1,11 @@
 import { Plugins } from "@capacitor/core";
 import { HTTP } from '@ionic-native/http';
 import semver from 'semver';
-import { SemVer } from 'semver';
 import Storage from '@/utils/storage';
 
 import { Zip as ZipPlugin } from 'capacitor-plugin-zip';
-import { cleanDataDirectory } from './utils';
+
+import { cleanDataDirectory, getReleasesDirectory } from './utils';
 
 const Zip = new ZipPlugin();
 
@@ -19,6 +19,8 @@ const RELEASE_VERSIONS_URL = HOST_URL + '/versions.json';
 
 const STORAGE_KEY_CURRENT_VERSION = 'CURRENT_VERSION';
 const STORAGE_KEY_NEW_VERSION = 'NEW_VERSION';
+
+// 注意： Capacitor 
 
 export default class WebUpdater implements Updater {
 
@@ -175,9 +177,11 @@ export default class WebUpdater implements Updater {
      * 解压安装包，并放入安装路径
      */
     async install(): Promise<any> {
-        const releasePath = 'ionic_built_snapshots/' + this.newPackage.version;
+        await getReleasesDirectory();
 
-        const newPath = await cleanDataDirectory(releasePath);
+        // const releasePath = releaseDirectory + this.newPackage.version;
+
+        const newPath = await cleanDataDirectory('ionic_built_snapshots/' + this.newPackage.version);
 
         console.log('BEGIN INSTALL WEB VERSION');
 
@@ -200,6 +204,8 @@ export default class WebUpdater implements Updater {
 
         await this.storeNewVersionInfo(this.newPackage);
 
+        await this.storeServerBasePath(startPath);
+
         console.log('NEW WEB VERSION INSTALLED', startPath);
     }
 
@@ -215,14 +221,48 @@ export default class WebUpdater implements Updater {
             return false;
         }
 
+        const applied = await this.checkApplied(newVersion.version);
 
-        WebView.setServerBasePath({
-            path: newVersion.installedPath
-        });
+        if (applied) {
+            await this.resetInfos();
+        } else {
+            // WebView.setServerBasePath({
+            //     path: newVersion.installedPath
+            // });
 
-        console.log('NEW WEB VERSION APPLIED');
+            // WebView.persistServerBasePath();
+        }
 
-        WebView.persistServerBasePath();
+        console.log('NEW WEB VERSION APPLIED: ' + newVersion.installedPath);
+
+        return true;
+    }
+
+    async checkApplied(newVersion: string): Promise<boolean> {
+        const path = (await this.getServerBasePath())|| "";
+
+        const parts = path.split('/');
+
+        console.log('======= ', path)
+
+        if (parts.length === 0) return false;
+
+        const version = parts[parts.length - 1];
+
+        console.log('======  ', version, newVersion)
+
+        return version === newVersion
+    }
+
+    /**
+     * 重置版本信息到最新版
+     */
+    protected async resetInfos(): Promise<void> {
+        const newVersion = await this.getNewVersionInfo();
+
+        if (!newVersion || !newVersion.installedPath) {
+            return;
+        }
 
         const currentVersion = await this.getCurrentPackage();
 
@@ -232,7 +272,6 @@ export default class WebUpdater implements Updater {
         await this.storeCurrentVersion(currentVersion);
         await this.clearNewVersionInfo();
 
-        return true;
     }
 
     private async storeNewVersionInfo(infos: any) {
@@ -251,6 +290,15 @@ export default class WebUpdater implements Updater {
         await Storage.set('web_version', infos.version);
 
         return Storage.set(STORAGE_KEY_CURRENT_VERSION, infos);
+    }
+
+
+    private async storeServerBasePath(path: string) {
+        return Storage.set('serverBasePath', path)
+    }
+
+    private async getServerBasePath() {
+        return Storage.get('serverBasePath')
     }
 }
 

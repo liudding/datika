@@ -1,5 +1,5 @@
 export interface Updater {
-    download: Function;
-    install: Function;
-    apply: Function;
+    download(): Promise<any>;
+    install(): Promise<any>;
+    apply(): Promise<any>;
 }

@@ -23,7 +23,7 @@
           v-if="newVersionInfo && newVersionInfo.installedPath"
           class="new-version"
         >
-          <div class="version-num">
+          <div class="version-num" @click="applyNewVersion">
             {{ newVersionInfo.version }}<span class="tag">新版本</span>
           </div>
           <small>重新启动后，将应用新版本</small>
@@ -75,6 +75,12 @@ export default defineComponent({
         Console.load();
       }
     },
+
+    async applyNewVersion() {
+      // const applied = await UpdateManager.apply();
+
+      // applied && console.log('NEW VERSION APPLIED');
+    }
   },
 });
 </script>
