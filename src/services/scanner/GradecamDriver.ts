@@ -16,7 +16,7 @@ interface EventsBag {
 
 export default class GradeCam implements ScanDriver {
 
-  sdkUrl: string = '/scanner/sdk/gcsdk_noui_6.5.1.3.js';
+  sdkUrl: string = '/scanner/sdk/gcsdk_noui_6.5.1.3.min.js';
 
   private container: HTMLElement | string;
   private examLength: Number;
