@@ -68,7 +68,7 @@ import Toast from "@/mixins/Toast";
 
 import Bubbles from "./Bubbles.vue";
 import Api from "@/api";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 export default defineComponent({
   props: ["recordId", "quizId"],

@@ -84,7 +84,8 @@ import { defineComponent } from "vue";
 import QuestionItem from "./QuestionItem.vue";
 import BubbleSheet from "./BubbleSheet.vue";
 import Api from "@/api";
-import _ from "lodash";
+import debounce from "lodash/debounce";
+import has from "lodash/has";
 import Alert from "@/mixins/Alert";
 import Modal from "@/mixins/Modal";
 import Toast from "@/mixins/Toast";
@@ -263,10 +264,10 @@ export default defineComponent({
       this.store.commit("quiz/UPDATE_QUESTION", question);
 
       let func;
-      if (_.has(this.debouncedUpdates, question.id)) {
+      if (has(this.debouncedUpdates, question.id)) {
         func = this.debouncedUpdates[question.id];
       } else {
-        func = _.debounce((question: any) => {
+        func = debounce((question: any) => {
           Api.question
             .update(question.id, question)
             .then(() => {
