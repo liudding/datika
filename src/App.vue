@@ -12,6 +12,8 @@
 import { IonApp, IonRouterOutlet } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { Plugins } from "@capacitor/core";
+import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
+
 const { Network } = Plugins;
 import UpdateManager from "@/services/updater";
 import { isApp, isInWechat } from "@/utils/env";
@@ -33,6 +35,8 @@ export default defineComponent({
   },
   async created() {
     document.getElementById('splash-screen')?.remove();
+
+    MobileAccessibility.usePreferredTextZoom(false);
 
     Network.addListener("networkStatusChange", (status) => {
       this.showOffline = !status.connected;

@@ -921,6 +921,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@ionic-native/mobile-accessibility@^5.31.1":
+  version "5.31.1"
+  resolved "https://registry.yarnpkg.com/@ionic-native/mobile-accessibility/-/mobile-accessibility-5.31.1.tgz#ae6400f5dfefab4db94cca9f5795f6ff16264beb"
+  integrity sha512-CtIcYbf9vMxwYFE+YGakDdLavr0r+VWKDAr8IowB5JRCv4fOcDJDCQLJlTLESPWaIUkSOmuPn65EDljE0hVRWA==
+  dependencies:
+    "@types/cordova" latest
+
 "@ionic-native/photo-library@^5.31.1":
   version "5.31.1"
   resolved "https://registry.yarnpkg.com/@ionic-native/photo-library/-/photo-library-5.31.1.tgz#b2016b8f19de9ee40a9f86c8cb2e406c19fff6fe"
@@ -7891,6 +7898,11 @@ pend@~1.2.0:
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
+
+phonegap-plugin-mobile-accessibility@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/phonegap-plugin-mobile-accessibility/-/phonegap-plugin-mobile-accessibility-1.0.5.tgz#95a8754d127508bc6e1ae259a53ce765836eac03"
+  integrity sha1-lah1TRJ1CLxuGuJZpTznZYNurAM=
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"
