@@ -12,7 +12,7 @@
       <div class="main">
         <img
           @click="onClickLogo"
-          src="/img/icons/android-chrome-512x512.png"
+          :src="Logo"
           class="logo"
         />
         <div>{{ appName }}</div>
@@ -37,6 +37,7 @@
 import { defineComponent } from "vue";
 import Console from "@/services/console";
 import Storage from "@/utils/storage";
+import Logo from "@/assets/images/logo.png"
 import UpdateManager from "@/services/updater";
 import { Plugins } from "@capacitor/core";
 const { Device } = Plugins;
@@ -46,6 +47,7 @@ export default defineComponent({
   data() {
     return {
       appName: process.env.VUE_APP_NAME,
+      Logo,
 
       version: "",
 

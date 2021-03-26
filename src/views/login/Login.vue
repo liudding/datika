@@ -12,11 +12,11 @@
       <div class="main">
         <div class="main-content">
           <div class="head">
-            <img src="/img/icons/android-chrome-512x512.png" class="logo" />
+            <img :src="Logo" class="logo" />
           </div>
           <div class="body">
             <h3 class="app-name">{{ appName }}</h3>
-            <!-- <div class="slogan">slogan</div> -->
+            <div class="slogan">{{ slogan }}</div>
           </div>
 
           <div class="bottom flex">
@@ -68,12 +68,15 @@ import { isApp, isInWechat } from "@/utils/env";
 import { Wechat } from "@ionic-native/wechat";
 import Alert from "@/mixins/Alert";
 import { logoWechat, person } from "ionicons/icons";
+import Logo from "@/assets/images/logo.png"
 
 export default defineComponent({
   mixins: [Alert],
   data() {
     return {
       appName: process.env.VUE_APP_NAME,
+      slogan: process.env.VUE_APP_SLOGAN,
+      Logo
     };
   },
   setup() {
