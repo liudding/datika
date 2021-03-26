@@ -21,7 +21,7 @@ cp -r $SCRIPT_DIR/../dist $OUTPUT_WEB_DIR
 PACKAGE_FILE=$VERSION.zip
 
 cd $OUTPUT_WEB_DIR
-zip -qr $PACKAGE_FILE * -x "*.map"
+zip -qr $PACKAGE_FILE * -x "*.map" -x "img/icons/*"
 mv $PACKAGE_FILE ../
 
 # make version json file
