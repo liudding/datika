@@ -11,19 +11,6 @@ export default class NativeUpdater implements Updater {
      */
     async checkUpdate(): Promise<any> {
         return false;
-
-        // const lastedVersion = await this.fetchRemoteVersion()
-
-        // const currentVersion = await this.getCurrentPackage();
-
-        // if (!semver.gt(lastedVersion.version, currentVersion.version)) {
-
-        //     return false;
-        // }
-
-        // this.newVersion = lastedVersion;
-
-        // return lastedVersion;
     }
 
     async promptUserToUpdate(): Promise<any>{
@@ -73,23 +60,6 @@ export default class NativeUpdater implements Updater {
      * @returns 
      */
     private async fetchRemoteVersion() {
-        // const resp = await HTTP.get(RELEASE_VERSIONS_URL, {}, {});
-
-        // if (!resp.data) {
-        //     return;
-        // }
-
-        // let versionInfos = resp.data as any;
-
-        // if (typeof versionInfos === 'string') {
-        //     versionInfos = JSON.parse(versionInfos)
-        // }
-
-        // const versions = versionInfos.map((i: any) => {
-        //     i.version = semver.valid(semver.coerce(i.version))
-        //     return i;
-        // });
-
-        // return versions
+        //
     }
 }

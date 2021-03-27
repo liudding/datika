@@ -1,17 +1,13 @@
 import { Plugins } from "@capacitor/core";
 import { HTTP } from '@ionic-native/http';
-import semver from 'semver';
+import semver from 'semver'
 import Storage from '@/utils/storage';
-
 import { Zip as ZipPlugin } from 'capacitor-plugin-zip';
-
 import { cleanDataDirectory, getReleasesDirectory } from './utils';
+import { Updater } from './definitions'
 
 const Zip = new ZipPlugin();
-
-const { WebView, Device } = Plugins;
-
-import { Updater } from './definitions'
+const { Device } = Plugins;
 
 
 const HOST_URL = 'https://youcce-packages.oss-cn-shanghai.aliyuncs.com';
@@ -241,7 +237,7 @@ export default class WebUpdater implements Updater {
     }
 
     async checkApplied(newVersion: string): Promise<boolean> {
-        const path = (await this.getServerBasePath())|| "";
+        const path = (await this.getServerBasePath()) || "";
 
         const parts = path.split('/');
 

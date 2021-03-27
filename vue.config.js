@@ -1,5 +1,20 @@
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 module.exports = {
+    configureWebpack: config =>{
+        if (process.env.NODE_ENV === 'production'){
+            return {
+                plugins: [
+                    new CompressionWebpackPlugin({
+                        test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i,
+                        threshold: 1024
+                    })
+                ]
+            }
+        }
+    },
+
+
     devServer: {
         // https: true
     },
