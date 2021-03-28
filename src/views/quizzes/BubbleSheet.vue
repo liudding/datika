@@ -308,13 +308,20 @@ ion-spinner {
   border: 4px solid black;
 }
 
+#bubble-sheet .header .number-label {
+  position: absolute;
+  right: 0;
+  font-size: 36px;
+  bottom: 16px;
+}
+
 #bubble-sheet .header .number-grid .item {
   width: 80px;
   height: 80px;
 }
 
 #bubble-sheet .header .number-grid .item:not(:last-child) {
-  border-right: 1px solid black;
+  border-right: 5px solid black;
 }
 
 #bubble-sheet .header .name-input {
