@@ -1,6 +1,6 @@
 {
   "appId": "com.youcce.youcce",
-  "appName": "Quiz",
+  "appName": "优测",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",
