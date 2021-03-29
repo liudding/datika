@@ -30,7 +30,7 @@ export function detect(): any {
 
     if ((window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || location.search.indexOf('source=pwa') >= 0)) {
         client = 'pwa';
-    } else if (navigator.userAgent.toLocaleLowerCase().indexOf('youce') >= 0) {
+    } else if (navigator.userAgent.toLocaleLowerCase().indexOf('youcce') >= 0 || navigator.userAgent.toLocaleLowerCase().indexOf('youce') >= 0) {
         client = 'app';
     }
 
