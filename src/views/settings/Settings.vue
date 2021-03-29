@@ -80,7 +80,7 @@ export default defineComponent({
     return {};
   },
   created() {
-    this.store.dispatch('getSettings');
+    this.store.dispatch("getSettings");
   },
   methods: {
     async showQuestionCount() {
@@ -97,7 +97,7 @@ export default defineComponent({
     },
 
     onQuestionCountChange(count: number) {
-       this.updateSettings("default_question_count", count);
+      this.updateSettings("default_question_count", count);
     },
     onAutoArchiveChange(months: number) {
       this.updateSettings("auto_archive_quizzes", months);
@@ -115,7 +115,7 @@ export default defineComponent({
       const settings = Object.assign({}, this.settings);
       settings[key] = value;
 
-      this.store.dispatch('updateSettings', settings);
+      this.store.dispatch("updateSettings", settings);
     },
 
     logout() {
@@ -135,9 +135,11 @@ export default defineComponent({
     async doLogout() {
       await this.store.dispatch("logout");
 
-      this.$router.replace({
-        name: "Login",
-      });
+      // this.$router.replace({
+      //   name: "Login",
+      // });
+
+      location.reload();
     },
   },
 });

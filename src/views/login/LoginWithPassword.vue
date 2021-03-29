@@ -85,6 +85,7 @@
 <script lang="ts">
 import { personOutline, lockClosedOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Loading from "@/mixins/Loading";
 import Alert from "@/mixins/Alert";
@@ -110,7 +111,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    return { store };
+    return { store, router: useRouter() };
   },
   components: {},
   mixins: [Loading, Alert, Toast],
@@ -138,10 +139,12 @@ export default defineComponent({
 
         await this.store.dispatch("profile");
 
-        this.$router.replace({ path: "/" });
+        this.router.replace({ path: "/" });
+
+        //  location.reload();
       } catch (e) {
         this.alert({
-          title: e.response && e.response.data.friendlyMessage || "登录失败",
+          title: (e.response && e.response.data.friendlyMessage) || "登录失败",
         });
       } finally {
         loading.dismiss();

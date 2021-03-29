@@ -20,7 +20,7 @@
           </div>
 
           <div class="bottom flex">
-            <ion-button
+            <!-- <ion-button
               v-if="isApp"
               @click="onClickWechat"
               expand="block"
@@ -30,7 +30,7 @@
                 style="margin-right: 8px"
               ></ion-icon>
               微信登录</ion-button
-            >
+            > -->
             <!-- <ion-button v-if="isInWechat" expand="block">微信登录</ion-button> -->
 
             <ion-button

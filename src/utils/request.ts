@@ -68,7 +68,7 @@ instance.interceptors.response.use(
         } else if (error.request) {
             // The request was made but no response was received
             console.error(error.request)
-            alert('请检测网络是否正常');
+            alert('网络请求失败');
         } else {
             // Something happened in setting up the request that triggered an Error
             alert('出错了');
