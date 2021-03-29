@@ -20,7 +20,7 @@ export default class Renderer {
 
     createCanvas(): HTMLElement {
         const htmlString = `
-        <div id="form-container" style="user-select: none; padding: 16px;background: white;">
+        <div id="form-container" style="user-select: none; padding: 16px;background: white;color:black;">
             <div class="header" style="position: relative;width: 100%; margin-bottom: 16px;">
 
             </div>
@@ -115,9 +115,11 @@ export default class Renderer {
             return '';
         }
 
-        let html = '<div class="number-grid" style="right: 12px;">'
+        const right = Config.NUMBER_SECTION.PADDING_RIGHT + 5;
+
+        let html = `<div class="number-label" style="right: ${ this.form.numberSection.width - Config.NUMBER_SECTION.MARGIN_LEFT}px">学号：</div><div class="number-grid" style="right: ${right}px;">`
         for (let i = 0; i < this.form.numberSection.digits; i++) {
-            const width = this.form.bubbleRadius + this.form.numberSection.columnPaddingX * 2
+            const width = this.form.bubbleRadius + Config.NUMBER_SECTION.COLUMN_PADDING_X  * 2 + 5;
             const height = 90;
             html += `<div class="item" style="width:${width}px;height:${height}px;"></div>`
         }
@@ -131,7 +133,7 @@ export default class Renderer {
             return '';
         }
 
-        let html = '<div class="name-input">姓名: __________'
+        let html = '<div class="name-input" style="color:black;">姓名: __________'
 
         html += '</div>'
 
