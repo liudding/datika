@@ -20,5 +20,15 @@
     <param name="android-package" value="xu.li.cordova.wechat.Wechat"/>
   </feature>
 
+  <feature name="Device">
+    <param name="android-package" value="org.apache.cordova.device.Device"/>
+  </feature>
+  <feature name="NetworkStatus">
+    <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager"/>
+  </feature>
+  <feature name="MobileAccessibility">
+    <param name="android-package" value="com.phonegap.plugin.mobileaccessibility.MobileAccessibility"/>
+  </feature>
+
   
 </widget>
