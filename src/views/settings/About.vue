@@ -10,11 +10,10 @@
     </ion-header>
     <ion-content :fullscreen="true">
       <div class="main">
-        <img
-          @click="onClickLogo"
-          :src="Logo"
-          class="logo"
-        />
+        <div class="logo-wrapper">
+          <img @click="onClickLogo" :src="Logo" class="logo" />
+        </div>
+
         <div>{{ appName }}</div>
 
         <div class="version">{{ nativeVersion }} ({{ version }})</div>
@@ -37,7 +36,7 @@
 import { defineComponent } from "vue";
 import Console from "@/services/console";
 import Storage from "@/utils/storage";
-import Logo from "@/assets/images/logo.png"
+import Logo from "@/assets/images/logo.png";
 import UpdateManager from "@/services/updater";
 import { Plugins } from "@capacitor/core";
 const { Device } = Plugins;
@@ -80,9 +79,8 @@ export default defineComponent({
 
     async applyNewVersion() {
       // const applied = await UpdateManager.apply();
-
       // applied && console.log('NEW VERSION APPLIED');
-    }
+    },
   },
 });
 </script>
@@ -96,9 +94,16 @@ export default defineComponent({
   padding: 16px;
 }
 
+.logo-wrapper {
+  margin-top: 32px;
+  // background: #3880FF;
+  border-radius: 100%;
+  margin-bottom: 16px;
+}
+
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 8px;
   border: none;
 }

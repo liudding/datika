@@ -175,6 +175,7 @@ ion-content {
   border: none;
 }
 .app-name {
+  color: black;
 }
 
 .slogan {
