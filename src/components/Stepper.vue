@@ -100,7 +100,7 @@ export default defineComponent({
 }
 
 input {
-  width: 30px;
+  width: 40px;
   border: none;
   border-radius: 0;
   text-align: center;
