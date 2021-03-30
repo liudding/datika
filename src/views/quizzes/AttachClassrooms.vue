@@ -44,7 +44,7 @@
       >确定</ion-button
     >
 
-    <Emptyset v-else title="尚无班级" message="请先去添加班级"></Emptyset>
+    <Emptyset v-if="!showLoading && !classrooms.length" title="尚无班级" message="请先去添加班级"></Emptyset>
   </ion-content>
 </template>
 
