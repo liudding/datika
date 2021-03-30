@@ -21,59 +21,62 @@
       </ion-item>
 
       <div
-        class="def"
+        class="def-container"
         v-for="(definition, index) in definitions"
         :key="definition.from"
-        lines="none"
       >
-        <div class="d-flex w-100">
-          <div class="flex-grow d-flex align-items-center">
-            <div class="input-wrapper">
-              <ion-input
-                :value="definition.from"
-                type="number"
-                @ionChange="definition.from = $event.target.value"
-              ></ion-input>
+        <div class="def">
+          <div class="d-flex w-100">
+            <div class="flex-grow d-flex align-items-center">
+              <div class="input-wrapper">
+                <ion-input
+                  :value="definition.from"
+                  type="number"
+                  @ionChange="definition.from = $event.target.value"
+                ></ion-input>
+              </div>
+
+              <small>至</small>
+              <div class="input-wrapper">
+                <ion-input
+                  :value="definition.to"
+                  type="number"
+                  @ionChange="definition.to = $event.target.value"
+                ></ion-input>
+              </div>
             </div>
 
-            <small>至</small>
-            <div class="input-wrapper">
-              <ion-input
-                :value="definition.to"
-                type="number"
-                @ionChange="definition.to = $event.target.value"
-              ></ion-input>
+            <div class="flex-grow d-flex align-items-center">
+              <Stepper
+                :value="definition.choices"
+                :min="2"
+                :max="6"
+                @change="definition.choices = $event"
+              ></Stepper>
+            </div>
+
+            <div class="flex-grow d-flex align-items-center">
+              <stepper
+                :value="definition.score"
+                :min="0"
+                @change="definition.score = $event"
+              ></stepper>
             </div>
           </div>
 
-          <div class="flex-grow d-flex align-items-center">
-            <Stepper
-              :value="definition.choices"
-              :min="2"
-              :max="6"
-              @change="definition.choices = $event"
-            ></Stepper>
-          </div>
-
-          <div class="flex-grow d-flex align-items-center">
-            <stepper
-              :value="definition.score"
-              :min="0"
-              @change="definition.score = $event"
-            ></stepper>
+          <div style="margin-left: 0px; min-width: 40px">
+            <ion-button
+              v-if="definitions.length > 1"
+              @click="remove(index)"
+              color="danger"
+              fill="clear"
+              size="small"
+              ><ion-icon :icon="removeCircle" color="danger"></ion-icon
+            ></ion-button>
           </div>
         </div>
 
-        <div style="margin-left: 0px; min-width: 40px">
-          <ion-button
-            v-if="definitions.length > 1"
-            @click="remove(index)"
-            color="danger"
-            fill="clear"
-            size="small"
-            ><ion-icon :icon="removeCircle" color="danger"></ion-icon
-          ></ion-button>
-        </div>
+        <ScoreRule></ScoreRule>
       </div>
     </ion-list>
 
@@ -87,9 +90,10 @@
 import { defineComponent } from "vue";
 import { addCircle, removeCircle } from "ionicons/icons";
 import Stepper from "@/components/Stepper.vue";
+import ScoreRule from "./QuestionScoreRule.vue";
 
 export default defineComponent({
-  components: { Stepper },
+  components: { Stepper, ScoreRule },
   props: ["questions"],
   emits: ["change"],
   setup() {
@@ -118,7 +122,12 @@ export default defineComponent({
 
         temp.push(pre);
 
-        if (!item || +item.label - +pre.label > 1 || item.choices !== pre.choices || item.score != +pre.score) {
+        if (
+          !item ||
+          +item.label - +pre.label > 1 ||
+          item.choices !== pre.choices ||
+          item.score != +pre.score
+        ) {
           result.push(temp);
           temp = [];
         }
@@ -260,7 +269,7 @@ ion-item {
 }
 
 .footer {
-  padding: 0 16px;
+  padding: 0 16px 32px 16px;
   ion-button {
     --border-radius: 100px;
     margin-top: 32px;
