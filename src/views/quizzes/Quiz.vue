@@ -230,8 +230,10 @@ export default defineComponent({
     gotoScan() {
       if (!this.questionsIsReady()) {
         this.alert({
-          title: "请先设置题目",
-          confirmText: "去设置题目",
+          title: "未设置正确答案",
+          message: '存在题目未设置正确答案',
+          confirmText: "去设置",
+          cancel: true,
         }).then(() => {
           this.gotoQuestions();
         });
