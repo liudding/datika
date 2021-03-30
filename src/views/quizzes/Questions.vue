@@ -205,7 +205,12 @@ export default defineComponent({
 
         const oldQuestion = this.questions[index] || null;
 
-        question.answer = oldQuestion.answer;
+        if (
+          oldQuestion.choices.length === question.choices.length ||
+          (oldQuestion.choice.length > 2 && question.choice.length > 2)
+        ) {
+          question.answer = oldQuestion.answer;
+        }
       }
 
       const loading = await this.loading();
