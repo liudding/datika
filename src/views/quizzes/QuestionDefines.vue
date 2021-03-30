@@ -170,7 +170,6 @@ export default defineComponent({
     },
 
     makeQuestions() {
-      console.log("def: ", this.definitions);
       const questions = [];
 
       for (const def of this.definitions) {

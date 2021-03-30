@@ -31,7 +31,7 @@
             </h3>
           </div>
 
-          <div class="questions-stats">
+          <div class="questions-stats" @click="onEditQuestionCount">
             <div class="stats">
               <div class="stats-item">
                 单选题:<span class="stats-number">{{ stats.singleCount }}</span>
