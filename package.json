@@ -25,6 +25,8 @@
     "@ionic-native/wechat": "^5.31.1",
     "@ionic/vue": "^5.5.5",
     "@ionic/vue-router": "^5.5.5",
+    "@sentry/browser": "^6.2.5",
+    "@sentry/integrations": "^6.2.5",
     "axios": "^0.21.1",
     "capacitor-plugin-zip": "^0.0.3",
     "cordova-plugin-advanced-http": "^3.1.0",

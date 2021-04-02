@@ -38,10 +38,24 @@ import {
 } from '@ionic/vue';
 
 
+
+import * as Sentry from '@sentry/browser';
+import { Vue as VueIntegration } from '@sentry/integrations';
+
+
+
 const app = createApp(App)
   .use(IonicVue, ionicConfig())
   .use(router)
   .use(store);
+
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://deafa841f7a2443b9f0894ae1ce4ae8b@sentry.menco.cn/14',
+    integrations: [new VueIntegration({ Vue: app as any, attachProps: true })],
+  });
+}
+
 
 router.isReady().then(() => {
   app.mount('#app');
