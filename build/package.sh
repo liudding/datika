@@ -4,6 +4,9 @@ PROJECT_DIR=$SCRIPT_DIR/..
 OUTPUT_DIR=$SCRIPT_DIR/output
 OUTPUT_WEB_DIR=$OUTPUT_DIR/web
 
+# 下载 jq
+# https://stedolan.github.io/jq/download/
+
 # 从 package.json 读取版本号
 VERSION="$(cat $PROJECT_DIR/package.json | $SCRIPT_DIR/jq ' .version ' -j)"
 
