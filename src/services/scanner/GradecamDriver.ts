@@ -5,7 +5,7 @@ declare global {
 }
 
 
-type Event = 'scan' | 'issue' | 'validate';
+type Event = 'scan' | 'scanIssue' | 'validate';
 // scan, scanIssue, pluginLoad
 
 // scanIssue: examLength, duplicateId, cannotHighRes, badStructure, networkError
@@ -181,7 +181,7 @@ export default class GradeCam implements ScanDriver {
 
         this.resume();
 
-        this.gradecam.setShowMessages(false)
+        this.gradecam.setShowMessages(true)
 
         this.gradecam.bind('pluginLoad', () => {
           this.pluginLoaded = true;

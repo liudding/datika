@@ -1,4 +1,4 @@
-type Event = 'scan' | 'issue' | 'validate';
+type Event = 'scan' | 'scanIssue' | 'validate';
 
 export interface ScanDriver {
   start(force: boolean): Promise<any>;
@@ -47,19 +47,19 @@ export default class Scanner {
   }
 
   
-  bind(event: Event, callback: any) {
+  bind(event: Event, callback: any): void {
     return this.driver().bind(event, callback);
   }
 
-  unbind(event: Event) {
+  unbind(event: Event): void {
     return this.driver().unbind(event);
   }
 
-  onAsk(cb: any) {
+  onAsk(cb: any): void {
     return this.driver().onAsk(cb);
   }
 
-  getCameraList() {
+  getCameraList(): Promise<any> {
     return this.driver().getCameraList();
   }
 

@@ -214,7 +214,7 @@ export default defineComponent({
       scanner = new Scanner("camera-container", this.quiz.questionCount, true);
 
       scanner.bind("scan", this.onScan);
-      scanner.bind("issue", this.onIssue);
+      scanner.bind("scanIssue", this.onIssue);
       scanner.onAsk(this.validateCallback);
 
       try {
@@ -227,8 +227,6 @@ export default defineComponent({
       }
     },
     async onScan(scanObj) {
-   
-
       await this.hideResult();
 
       // convert format
@@ -237,7 +235,9 @@ export default defineComponent({
         answers: scanObj.answers.map((i) => i.value),
       };
 
-         console.log("SCAN: ", scanObj, scanData, this.records);
+      this.duplicatedScanCount = 0;
+
+      console.log("SCAN: ", scanObj, scanData, this.records);
 
       this.settings.sound && Sound.beep();
 
@@ -270,12 +270,12 @@ export default defineComponent({
           const correctedAnswers = await this.doCorrection(needValidate);
 
           for (const corrected of correctedAnswers) {
-            scanData.answers[corrected.index] = corrected.corrected
+            scanData.answers[corrected.index] = corrected.corrected;
           }
         } catch (e) {
           return;
         } finally {
-          console.log('resume')
+          console.log("resume");
           scanner.resume();
         }
       }
@@ -327,17 +327,19 @@ export default defineComponent({
     onIssue(issue) {
       console.log("ISSUE: ", issue);
 
-      if (issue.type === "examLength") {
-        this.toast("答题卡题目数量不足");
-      } else if (issue.type === "duplicateId") {
-        this.toast("已经扫描过了");
-      } else if (issue.type === "cannotHighRes") {
-        this.toast("无法获取高分辨率图像");
-      } else if (issue.type === "badStructure") {
-        this.toast({
-          title: "无法识别这张答题卡。请检查摆放位置、光线等。",
-        });
-      }
+      this.hideResult();
+
+      // if (issue.type === "examLength") {
+      //   this.toast("答题卡题目数量不足");
+      // } else if (issue.type === "duplicateId") {
+      //   this.toast("已经扫描过了");
+      // } else if (issue.type === "cannotHighRes") {
+      //   this.toast("无法获取高分辨率图像");
+      // } else if (issue.type === "badStructure") {
+      //   this.toast({
+      //     title: "无法识别这张答题卡。请检查摆放位置、光线等。",
+      //   });
+      // }
     },
 
     validateCallback(validateObj, finish) {
