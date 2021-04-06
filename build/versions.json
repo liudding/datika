@@ -1,8 +1,10 @@
 [
+{ "version": "1.0.2", "type": "web", "downloadUrl": "https://youcce-packages.oss-cn-shanghai.aliyuncs.com/web/1.0.2.zip", "label": "1.0.2", "description": "", "nativeVersions": "^1.0.0" }, 
+{ "version": "1.0.1", "type": "web", "downloadUrl": "https://youcce-packages.oss-cn-shanghai.aliyuncs.com/web/1.0.1.zip", "label": "1.0.1", "description": "", "nativeVersions": "^1.0.0" }, 
     {
         "version": "1.0.0",
         "type": "web",
-        "downloadUrl": "https://youcce-packages.oss-cn-shanghai.aliyuncs.com/web/1.0.1.zip",
+        "downloadUrl": "https://youcce-packages.oss-cn-shanghai.aliyuncs.com/web/1.0.0.zip",
         "label": "",
         "description": "",
         "isMandatory": false,
