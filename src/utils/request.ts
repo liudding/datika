@@ -1,9 +1,10 @@
 import axios from 'axios'
 import store from '@/store'
+import ua from './uaDetect'
 
 const instance = axios.create({
     baseURL: process.env.VUE_APP_BASE_API_URL,
-    timeout:20000,
+    timeout: 20000,
 });
 
 instance.interceptors.request.use(config => {
@@ -12,8 +13,10 @@ instance.interceptors.request.use(config => {
         config.headers['Authorization'] = 'Bearer ' + token
     }
 
-    // 在 chrome 上无效
-    config.headers['User-Agent'] = navigator.userAgent + ' youcce/' + process.env.VUE_APP_VERSION;
+    if (!ua.isChrome) {
+        // 在 chrome 上无效
+        config.headers['User-Agent'] = navigator.userAgent + ' youcce/' + process.env.VUE_APP_VERSION;
+    }
 
     return config
 })
