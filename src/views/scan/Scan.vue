@@ -41,6 +41,11 @@
           </ion-fab-button>
         </radial-progress-bar>
       </ion-fab>
+
+      <div class="footer">
+        <div>保持答题卡边框在相机范围内</div>
+        <div>点击右上角设置按钮，可以切换相机</div>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -435,14 +440,6 @@ ion-content {
   background: transparent;
 }
 
-ion-toolbar {
-  /* --background: transparent !important;
-  --background-color: transparent;
-  --ion-color-base: transparent !important;
-  --border-width: 0px;
-  --border-color: transparent;
-  --box-shadow: none; */
-}
 
 ion-fab-button {
   --color: white;
@@ -465,5 +462,22 @@ ion-fab-button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.footer {
+  /* background: red; */
+  position: fixed;
+  z-index: 100;
+  bottom: env(safe-area-inset-bottom, 16px);
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-size: 12px;
+  line-height: 16px;
+  color: gray;
 }
 </style>
