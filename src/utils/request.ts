@@ -3,7 +3,7 @@ import store from '@/store'
 
 const instance = axios.create({
     baseURL: process.env.VUE_APP_BASE_API_URL,
-    timeout: 5000,
+    timeout:20000,
 });
 
 instance.interceptors.request.use(config => {
