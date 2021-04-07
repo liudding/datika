@@ -117,7 +117,7 @@ export default defineComponent({
   async created() {
     this.title = this.$route.query.studentName as string;
 
-    const resp = await this.store.dispatch(
+    await this.store.dispatch(
       "quiz/studentRecords",
       +this.$route.params.quizId
     );

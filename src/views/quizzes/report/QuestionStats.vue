@@ -45,18 +45,18 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent} from "vue";
+export default defineComponent({
   props: ["question"],
   emits: ["choice"],
   methods: {
-    onClickChoice(choice) {
+    onClickChoice(choice: string): void {
       // 展示选择了此选项的学生名单
-      console.log("choice: ", choice);
       this.$emit("choice", choice, this.question);
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

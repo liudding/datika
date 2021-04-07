@@ -1,5 +1,5 @@
 
-export function checkIsSame(answers: string[], oldAnswers?: string[]) {
+export function checkIsSame(answers: string[], oldAnswers?: string[]): boolean {
     if (!oldAnswers) return false;
 
     const newData = answers.join("_");
@@ -13,7 +13,7 @@ export function checkIsSame(answers: string[], oldAnswers?: string[]) {
 * 检测学生填涂是否需要校正
 * 单选题，涂了多个
 */
-export function checkNeedCorrection(data: any, questions: any) {
+export function checkNeedCorrection(data: any, questions: any[]): any {
 
     const sortedQuestions = questions.sort(function (a: any, b: any) {
         if (+a.label > +b.label) return 1;
