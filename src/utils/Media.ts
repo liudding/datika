@@ -8,7 +8,7 @@ const { Filesystem } = Plugins
 
 export default class Media {
 
-    public static async savePhoto(props: any) {
+    public static async savePhoto(props: any): Promise<void>{
 
         const filename = props.filename || '答题卡.png'
 
@@ -55,7 +55,7 @@ export default class Media {
 
     }
 
-    public static async downloadWeb(props: any) {
+    public static async downloadWeb(props: any): Promise<void> {
         const a = document.createElement("a");
         a.setAttribute("download", props.filename);
         a.setAttribute("href", props.src);
@@ -66,7 +66,7 @@ export default class Media {
         }, 500)
     }
 
-    public static async findAlbum(name: string) {
+    public static async findAlbum(name: string): Promise<any> {
         const res = await MediaLibrary.getAlbums()
 
         const album = res.albums.find((i: any) => i.name === name);
